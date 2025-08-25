@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfólio | Fabio Cruz Arte Digital</title>
+  <meta name="description" content="Portfólio de Fabio Cruz - Arte digital mística, cósmica e kawaii. Descobre prints, coleções e ilustrações exclusivas.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin:0;
+      font-family:Poppins, sans-serif;
+      background:linear-gradient(180deg,#0b0f1a,#141b2d);
+      color:#fff;
+    }
+    header {
+      padding:20px;
+      text-align:center;
+      background:rgba(255,255,255,.05);
+    }
+    header a {
+      color:#8a7dff;
+      text-decoration:none;
+      font-weight:600;
+    }
+    h1 {
+      font-size:32px;
+      margin:20px 0;
+      text-align:center;
+    }
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      padding:20px;
+    }
+    .card {
+      background:rgba(255,255,255,.08);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 6px 20px rgba(0,0,0,.4);
+      transition:transform .2s;
+    }
+    .card:hover { transform:translateY(-4px); }
+    .card img {
+      width:100%;
+      height:260px;
+      object-fit:cover;
+    }
+    .card .info {
+      padding:14px;
+    }
+    .card h3 { margin:0 0 8px; font-size:18px; }
+    .card p { margin:0; font-size:14px; color:#bbb; }
+    footer {
+      text-align:center;
+      padding:16px;
+      font-size:13px;
+      color:#aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">⬅ Voltar ao Início</a>
+  </header>
+
+  <h1>🌌 Portfólio de Arte</h1>
+
+  <div class="grid">
+    <!-- Card exemplo 1 -->
+    <div class="card">
+      <img src="https://placehold.co/400x260" alt="Arte 1">
+      <div class="info">
+        <h3>Deusa Cósmica</h3>
+        <p>Ilustração digital mística com detalhes dourados.</p>
+      </div>
+    </div>
+
+    <!-- Card exemplo 2 -->
+    <div class="card">
+      <img src="https://placehold.co/400x260" alt="Arte 2">
+      <div class="info">
+        <h3>Planeta Kawaii</h3>
+        <p>Planeta colorido em estilo anime kawaii.</p>
+      </div>
+    </div>
+
+    <!-- Card exemplo 3 -->
+    <div class="card">
+      <img src="https://placehold.co/400x260" alt="Arte 3">
+      <div class="info">
+        <h3>Signo Estelar</h3>
+        <p>Arte zodiacal com cristais e fundo cósmico.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>© <script>document.write(new Date().getFullYear())</script> Fabio Cruz · Arte Digital</footer>
+</body>
+</html>
