@@ -14,8 +14,7 @@ Aqui partilho o meu **site pessoal** e o meu **portfólio cósmico**:
 - 🌐 Site oficial: [https://darosvarao.github.io/fabiocruz.github.io/](https://darosvarao.github.io/fabiocruz.github.io/)  
 - ☕ Loja Ko-fi:  [https://ko-fi.com/fabiocruz](https://ko-fi.com/fabiocruz)  
 - 📖 eBooks na Amazon: [https://www.amazon.com/dp/B0FMPGSSCF](https://www.amazon.com/dp/B0FMPGSSCF)
-- 🔗 Linktree: [# 🌌 Fabio Cruz | Arte Digital Mística & Kawaii  
-
+- 🔗 Linktree: [https://linktr.ee/FabioCruzArteMisticaDigital](https://linktr.ee/FabioCruzArteMisticaDigital)
 Bem-vindo ao meu repositório oficial no GitHub Pages! 🚀  
 Aqui partilho o meu **site pessoal** e o meu **portfólio cósmico**:  
 
