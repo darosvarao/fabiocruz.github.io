@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>eBooks | Fabio Cruz Arte Digital</title>
+  <meta name="description" content="Catálogo de eBooks de Fabio Cruz - Arte mística, cósmica e espiritualidade em formato digital.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin:0;
+      font-family:Poppins, sans-serif;
+      background:linear-gradient(180deg,#0b0f1a,#141b2d);
+      color:#fff;
+      text-align:center;
+      padding:40px 20px;
+    }
+    header {
+      margin-bottom:20px;
+    }
+    header a {
+      color:#8a7dff;
+      text-decoration:none;
+      font-weight:600;
+    }
+    h1 {
+      font-size:32px;
+      margin-bottom:20px;
+    }
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      padding:20px;
+    }
+    .card {
+      background:rgba(255,255,255,.08);
+      border-radius:16px;
+      padding:20px;
+      box-shadow:0 6px 20px rgba(0,0,0,.4);
+      transition:transform .2s;
+    }
+    .card:hover { transform:translateY(-4px); }
+    .card h3 { margin:0 0 10px; }
+    .card p { font-size:14px; color:#bbb; margin:0 0 10px; }
+    .btn {
+      display:inline-block;
+      margin-top:10px;
+      padding:10px 16px;
+      border-radius:10px;
+      background:#8a7dff;
+      color:#fff;
+      font-weight:600;
+      text-decoration:none;
+      transition:background .2s;
+    }
+    .btn:hover { background:#6b5de6; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">⬅ Voltar ao Início</a>
+  </header>
+
+  <h1>📖 eBooks de Fabio Cruz</h1>
+
+  <div class="grid">
+    <!-- Livro 1 -->
+    <div class="card">
+      <h3>✨ Autoestima Cósmica</h3>
+      <p>Um guia prático inspirado em Jung para fortalecer a tua confiança.</p>
+      <a class="btn" href="https://www.amazon.com/dp/ASIN_DO_LIVRO1" target="_blank">Ver na Amazon</a>
+    </div>
+
+    <!-- Livro 2 -->
+    <div class="card">
+      <h3>🌌 Axolotl God</h3>
+      <p>A história mística do Deus Axolote e sua jornada cósmica.</p>
+      <a class="btn" href="https://www.amazon.com/dp/ASIN_DO_LIVRO2" target="_blank">Ver na Amazon</a>
+    </div>
+
+    <!-- Livro 3 -->
+    <div class="card">
+      <h3>🔮 Deusas Cósmicas</h3>
+      <p>Uma coleção de artes e textos sobre as deusas dos planetas.</p>
+      <a class="btn" href="https://www.amazon.com/dp/ASIN_DO_LIVRO3" target="_blank">Ver na Amazon</a>
+    </div>
+  </div>
+</body>
+</html>
