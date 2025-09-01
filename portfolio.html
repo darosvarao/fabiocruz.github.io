@@ -3,126 +3,473 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfólio | Fabio Cruz Arte Digital</title>
-  <meta name="description" content="Portfólio de Fabio Cruz - Arte digital mística, cósmica e kawaii. Descobre prints, coleções e ilustrações exclusivas.">
+  <title>Portfólio | Fabio Cruz - Arte Digital Mística & Kawaii</title>
+  <meta name="description" content="Explora o portfólio de arte digital de Fabio Cruz: arte cósmica, símbolos místicos, personagens kawaii e astrologia digital. Mais de 140 obras únicas.">
+  <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin:0;
-      font-family:Poppins, sans-serif;
-      background:linear-gradient(180deg,#0b0f1a,#141b2d);
-      color:#fff;
+    :root{
+      --bg-1:#0b0f1a; --bg-2:#141b2d; --accent:#8a7dff; --accent-2:#ffd08a; --text:#e9ecf1; --muted:#a8b0c3;
     }
-    header {
-      padding:20px;
-      text-align:center;
-      background:rgba(255,255,255,.05);
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #1a2240 0%, rgba(26,34,64,0) 60%),
+                  radial-gradient(900px 700px at 80% 20%, #2a1f55 0%, rgba(42,31,85,0) 55%),
+                  radial-gradient(1000px 900px at 50% 100%, #102235 0%, rgba(16,34,53,0) 65%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      overflow-x:hidden;
     }
-    header a {
-      color:#8a7dff;
-      text-decoration:none;
-      font-weight:600;
+    .stars{
+      position:fixed; inset:0; pointer-events:none; opacity:.35;
+      background:
+        radial-gradient(2px 2px at 20% 30%, #fff, transparent 60%),
+        radial-gradient(1.5px 1.5px at 60% 70%, #fff, transparent 60%),
+        radial-gradient(1.5px 1.5px at 75% 25%, #fff, transparent 60%),
+        radial-gradient(1.8px 1.8px at 35% 80%, #fff, transparent 60%),
+        radial-gradient(1.2px 1.2px at 90% 55%, #fff, transparent 60%);
+      animation: twinkle 4s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 6px #b9c8ff);
     }
-    h1 {
-      font-size:32px;
-      margin:20px 0;
-      text-align:center;
+    @keyframes twinkle { from{opacity:.2} to{opacity:.55} }
+
+    /* Floating elements animation */
+    .floating-element {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 6s ease-in-out infinite;
     }
-    .grid {
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
-      padding:20px;
+    .floating-1 { top: 20%; left: 10%; width: 8px; height: 8px; background: #ffd08a; animation-delay: 0s; }
+    .floating-2 { top: 60%; right: 15%; width: 6px; height: 6px; background: #8a7dff; animation-delay: 2s; }
+    .floating-3 { bottom: 30%; left: 20%; width: 10px; height: 10px; background: #ff8a9b; animation-delay: 4s; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+      50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
     }
-    .card {
-      background:rgba(255,255,255,.08);
-      border-radius:16px;
-      overflow:hidden;
-      box-shadow:0 6px 20px rgba(0,0,0,.4);
-      transition:transform .2s;
+
+    .container{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 20px;
+      min-height: 100vh;
     }
-    .card:hover { transform:translateY(-4px); }
-    .card img {
-      width:100%;
-      height:260px;
-      object-fit:cover;
+
+    .header{
+      text-align: center;
+      margin-bottom: 48px;
+      animation: slideUp 0.8s ease-out;
     }
-    .card .info {
-      padding:14px;
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .card h3 { margin:0 0 8px; font-size:18px; }
-    .card p { margin:0; font-size:14px; color:#bbb; }
-    footer {
-      text-align:center;
-      padding:16px;
-      font-size:13px;
-      color:#aaa;
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+      color:#0b0f1a; background:linear-gradient(90deg, var(--accent), var(--accent-2));
+      padding:8px 12px; border-radius:999px; font-weight:700;
+      box-shadow:0 6px 20px rgba(138,125,255,.35);
+      animation: pulse 2s ease-in-out infinite;
+      margin-bottom: 16px;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1{
+      margin:0 0 16px; font-size: clamp(32px, 5vw, 56px);
+      line-height:1.1; font-weight:800;
+      background: linear-gradient(180deg, #fff, #cfd6ff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 8px 32px rgba(138,125,255,.2);
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px rgba(138,125,255,.3)); }
+      to { filter: drop-shadow(0 0 20px rgba(138,125,255,.6)); }
+    }
+
+    .subtitle{
+      color:var(--muted); font-size: clamp(16px, 2.5vw, 20px); line-height:1.6; margin: 0 0 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stats{
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 48px;
+      animation: fadeIn 1s ease-out 0.4s both;
+      flex-wrap: wrap;
+    }
+
+    .stat{
+      text-align: center;
+      padding: 16px;
+      background: rgba(12,16,28,.4);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      min-width: 120px;
+    }
+
+    .stat-number{
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-label{
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .categories-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .category-card{
+      background: rgba(12,16,28,.6);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      animation: fadeIn 1s ease-out calc(0.6s + var(--delay)) both;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    
+    .category-card:hover{
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--border-color);
+      box-shadow: 0 20px 40px var(--shadow-color);
+    }
+    
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .category-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .category-card.cosmic{
+      --gradient: linear-gradient(90deg, #8a7dff, #ff8a9b);
+      --border-color: rgba(138,125,255,.4);
+      --shadow-color: rgba(138,125,255,.2);
+    }
+
+    .category-card.mystic{
+      --gradient: linear-gradient(90deg, #ffd08a, #ff8a9b);
+      --border-color: rgba(255,208,138,.4);
+      --shadow-color: rgba(255,208,138,.2);
+    }
+
+    .category-card.kawaii{
+      --gradient: linear-gradient(90deg, #ff8a9b, #8a7dff);
+      --border-color: rgba(255,138,155,.4);
+      --shadow-color: rgba(255,138,155,.2);
+    }
+
+    .category-card.astro{
+      --gradient: linear-gradient(90deg, #00ffff, #8a7dff);
+      --border-color: rgba(0,255,255,.4);
+      --shadow-color: rgba(0,255,255,.2);
+    }
+
+    .category-icon{
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .category-card h3{
+      margin: 0 0 12px;
+      font-size: 20px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .category-card p{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 16px;
+    }
+
+    .category-meta{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .works-count{
+      background: rgba(255,255,255,.1);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .commission-section{
+      background: linear-gradient(135deg, rgba(138,125,255,.15), rgba(255,208,138,.15));
+      border: 1px solid rgba(138,125,255,.3);
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+      animation: fadeIn 1s ease-out 1s both;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .commission-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .commission-section h2{
+      margin: 0 0 16px;
+      font-size: clamp(24px, 4vw, 32px);
+      background: linear-gradient(90deg, #ffd08a, #8a7dff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    .commission-section p{
+      color: var(--text);
+      font-size: 16px;
+      margin: 0 0 24px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,255,255,.1);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn.primary{
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #0b0f1a;
+      border: none;
+    }
+
+    .btn.primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(138,125,255,.4);
+    }
+
+    .back-link{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 32px;
+      transition: color 0.3s ease;
+      animation: fadeIn 1s ease-out 1.2s both;
+    }
+
+    .back-link:hover{
+      color: var(--accent);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats {
+        gap: 16px;
+      }
+      
+      .commission-section {
+        padding: 24px;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html">⬅ Voltar ao Início</a>
-  </header>
+  <div class="stars"></div>
+  <div class="floating-element floating-1"></div>
+  <div class="floating-element floating-2"></div>
+  <div class="floating-element floating-3"></div>
+  
+  <div class="container">
+    <a href="index.html" class="back-link">← Voltar ao Início</a>
+    
+    <header class="header">
+      <span class="badge">🌌 Galeria Digital</span>
+      <h1>Portfólio Artístico</h1>
+      <p class="subtitle">
+        Uma jornada visual através de universos místicos, personagens kawaii e paisagens cósmicas. 
+        Cada obra é uma porta para dimensões onde magia e tecnologia coexistem.
+      </p>
+    </header>
 
-  <h1>🌌 Portfólio de Arte</h1>
-
-  <div class="grid">
-    <!-- Axolote Super Sayan -->
-    <div class="card">
-     <img src="imagens/Axol Super Sayan.png" alt="Axolote Super Sayan">
-      <div class="info">
-        <h3>⚡ Axolote Super Sayan</h3>
-        <p>Axolote em modo guerreiro com energia dourada inspirada em Dragon Ball.</p>
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="stat">
+        <span class="stat-number">140+</span>
+        <span class="stat-label">Obras Criadas</span>
       </div>
-    </div>
-
-    <!-- Axolote & Bisou Super Sayan -->
-    <div class="card">
-     <img src="imagens/Axol&Bisou Super Sayan.png" alt="Axolote e Bisou">
-      <div class="info">
-        <h3>🐾 Axolote & Bisou</h3>
-        <p>Axolote e Bisou em forma épica, rodeados de aura cósmica e poder.</p>
+      <div class="stat">
+        <span class="stat-number">4</span>
+        <span class="stat-label">Categorias</span>
       </div>
-    </div>
-
-    <!-- Axolote, Pepeca e Bisou -->
-    <div class="card">
-     <img src="imagens/Axol,Pepeca Super Sayan&Bisou.png" alt="Axol, Pepeca e Bisou">
-      <div class="info">
-        <h3>🌟 Axol, Pepeca & Bisou</h3>
-        <p>O trio cósmico em estilo anime com aura mística e cenário vibrante.</p>
+      <div class="stat">
+        <span class="stat-number">2024</span>
+        <span class="stat-label">Ano Ativo</span>
       </div>
-    </div>
+    </section>
 
-    <!-- Pepeca & Axol Aquarium -->
-    <div class="card">
-      <img src="imagens/Pepeca&Axol Aquarium.png" alt="Pepeca e Axol no Aquário">
-      <div class="info">
-        <h3>🌊 Pepeca & Axol</h3>
-        <p>Pepeca e Axol dentro de um aquário místico com energia de Dragon Ball.</p>
-      </div>
-    </div>
+    <!-- Categories Grid -->
+    <section class="categories-grid">
+      <article class="category-card cosmic" style="--delay: 0s;">
+        <span class="category-icon">🌌</span>
+        <h3>Arte Cósmica</h3>
+        <p>
+          Paisagens galácticas, nebulosas coloridas e fenómenos cósmicos reimaginados 
+          através de uma lente artística única. Cada obra captura a majestade do universo.
+        </p>
+        <div class="category-meta">
+          <span>Estilo: Realismo Digital</span>
+          <span class="works-count">45 obras</span>
+        </div>
+      </article>
 
-    <!-- Axo -->
-    <div class="card">
-      <img src="imagens/axo.png" alt="Axo">
-      <div class="info">
-        <h3>🐉 Axo</h3>
-        <p>Axolote em estilo anime cósmico, com aura espiritual.</p>
-      </div>
-    </div>
+      <article class="category-card mystic" style="--delay: 0.1s;">
+        <span class="category-icon">🔮</span>
+        <h3>Símbolos Místicos</h3>
+        <p>
+          Símbolos sagrados e elementos esotéricos transformados em arte digital moderna. 
+          Uma fusão entre sabedoria ancestral e estética contemporânea.
+        </p>
+        <div class="category-meta">
+          <span>Estilo: Simbolismo Digital</span>
+          <span class="works-count">32 obras</span>
+        </div>
+      </article>
 
-    <!-- Axo 1 -->
-    <div class="card">
-      <img src="imagens/axo1.png" alt="Axo 1">
-      <div class="info">
-        <h3>✨ Axo 1</h3>
-        <p>Versão alternativa do Axolote, com energia suave e brilho místico.</p>
+      <article class="category-card kawaii" style="--delay: 0.2s;">
+        <span class="category-icon">🌸</span>
+        <h3>Personagens Kawaii</h3>
+        <p>
+          Criaturas adoráveis e personagens encantadores que habitam mundos fantásticos. 
+          Fofura e magia combinadas em designs irresistíveis.
+        </p>
+        <div class="category-meta">
+          <span>Estilo: Kawaii Cósmico</span>
+          <span class="works-count">28 obras</span>
+        </div>
+      </article>
+
+      <article class="category-card astro" style="--delay: 0.3s;">
+        <span class="category-icon">⭐</span>
+        <h3>Astrologia Digital</h3>
+        <p>
+          Mapas astrais, constelações e elementos zodiacais interpretados através 
+          de arte digital. O cosmos como fonte de inspiração e conhecimento.
+        </p>
+        <div class="category-meta">
+          <span>Estilo: Astrológico Moderno</span>
+          <span class="works-count">38 obras</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- Commission Section -->
+    <section class="commission-section">
+      <h2>✨ Comissões Personalizadas</h2>
+      <p>
+        Transformo as tuas ideias em arte digital única. Desde retratos cósmicos a símbolos 
+        personalizados, cada comissão é uma colaboração criativa que resulta numa obra 
+        verdadeiramente especial e significativa.
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">🎨 Solicitar Comissão</a>
+        <a href="https://linktr.ee/fabiocruz" class="btn primary" target="_blank" rel="noopener">💬 Contactar</a>
       </div>
-    </div>
+    </section>
+
+    <footer style="text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.1); margin-top: 48px; animation: fadeIn 1s ease-out 1.4s both;">
+      <p style="color: var(--muted); font-size: 14px; margin: 0 0 16px;">
+        Todas as obras são originais e criadas com amor • Licenças comerciais disponíveis
+      </p>
+      <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
+        <a href="https://ko-fi.com/fabiocruz" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
+          ☕ Ko-fi
+        </a>
+        <a href="https://ninotuga.gumroad.com/" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
+          🛒 Gumroad
+        </a>
+        <a href="https://linktr.ee/FabioCruzArteMisticaDigital" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
+          🔗 Linktree
+        </a>
+      </div>
+    </footer>
   </div>
-
-  <footer>© <script>document.write(new Date().getFullYear())</script> Fabio Cruz · Arte Digital</footer>
 </body>
 </html>
+
