@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Portfólio | Fabio Cruz - Arte Digital Mística & Kawaii</title>
-  <meta name="description" content="Explora o portfólio de arte digital de Fabio Cruz: arte cósmica, símbolos místicos, personagens kawaii e astrologia digital. Mais de 140 obras únicas.">
+  <meta name="description" content="Explora o portfólio de arte digital de Fabio Cruz: axolotes adoráveis, personagens kawaii e arte mística. Conhece Axol, Pepeca, Bisou e outros personagens únicos.">
   <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
@@ -111,136 +111,117 @@
       margin-right: auto;
     }
 
-    .stats{
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      margin-bottom: 48px;
-      animation: fadeIn 1s ease-out 0.4s both;
-      flex-wrap: wrap;
-    }
-
-    .stat{
+    .featured-section{
+      background: linear-gradient(135deg, rgba(138,125,255,.15), rgba(255,208,138,.15));
+      border: 1px solid rgba(138,125,255,.3);
+      border-radius: 24px;
+      padding: 32px;
       text-align: center;
-      padding: 16px;
-      background: rgba(12,16,28,.4);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 16px;
-      min-width: 120px;
+      animation: fadeIn 1s ease-out 0.4s both;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    
+    .featured-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
 
-    .stat-number{
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--accent);
-      display: block;
+    .featured-section h2{
+      margin: 0 0 16px;
+      font-size: clamp(24px, 4vw, 32px);
+      background: linear-gradient(90deg, #ffd08a, #8a7dff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      z-index: 1;
     }
 
-    .stat-label{
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .featured-section p{
+      color: var(--text);
+      font-size: 16px;
+      margin: 0 0 24px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
     }
 
-    .categories-grid{
+    .axolotes-gallery{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       margin-bottom: 48px;
     }
 
-    .category-card{
+    .axolote-card{
       background: rgba(12,16,28,.6);
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 20px;
-      padding: 24px;
+      padding: 0;
       transition: all 0.3s ease;
       animation: fadeIn 1s ease-out calc(0.6s + var(--delay)) both;
       position: relative;
       overflow: hidden;
-      cursor: pointer;
     }
     
-    .category-card:hover{
+    .axolote-card:hover{
       transform: translateY(-8px) scale(1.02);
-      border-color: var(--border-color);
-      box-shadow: 0 20px 40px var(--shadow-color);
+      border-color: rgba(255,138,155,.4);
+      box-shadow: 0 20px 40px rgba(255,138,155,.2);
     }
     
-    .category-card::before {
+    .axolote-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 3px;
-      background: var(--gradient);
+      background: linear-gradient(90deg, #ff8a9b, #ffd08a);
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
     
-    .category-card:hover::before {
+    .axolote-card:hover::before {
       transform: scaleX(1);
     }
 
-    .category-card.cosmic{
-      --gradient: linear-gradient(90deg, #8a7dff, #ff8a9b);
-      --border-color: rgba(138,125,255,.4);
-      --shadow-color: rgba(138,125,255,.2);
+    .axolote-image{
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 20px 20px 0 0;
     }
 
-    .category-card.mystic{
-      --gradient: linear-gradient(90deg, #ffd08a, #ff8a9b);
-      --border-color: rgba(255,208,138,.4);
-      --shadow-color: rgba(255,208,138,.2);
+    .axolote-content{
+      padding: 20px;
     }
 
-    .category-card.kawaii{
-      --gradient: linear-gradient(90deg, #ff8a9b, #8a7dff);
-      --border-color: rgba(255,138,155,.4);
-      --shadow-color: rgba(255,138,155,.2);
-    }
-
-    .category-card.astro{
-      --gradient: linear-gradient(90deg, #00ffff, #8a7dff);
-      --border-color: rgba(0,255,255,.4);
-      --shadow-color: rgba(0,255,255,.2);
-    }
-
-    .category-icon{
-      font-size: 32px;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .category-card h3{
-      margin: 0 0 12px;
-      font-size: 20px;
+    .axolote-card h3{
+      margin: 0 0 8px;
+      font-size: 18px;
       color: var(--text);
       font-weight: 700;
     }
 
-    .category-card p{
+    .axolote-card p{
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 0 0 16px;
-    }
-
-    .category-meta{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .works-count{
-      background: rgba(255,255,255,.1);
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.4;
+      margin: 0;
     }
 
     .commission-section{
@@ -263,11 +244,6 @@
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
       animation: shimmer 3s ease-in-out infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { left: -100%; }
-      100% { left: 100%; }
     }
 
     .commission-section h2{
@@ -336,12 +312,8 @@
 
     /* Responsive design */
     @media (max-width: 768px) {
-      .categories-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .stats {
-        gap: 16px;
+      .axolotes-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       }
       
       .commission-section {
@@ -360,81 +332,127 @@
     <a href="index.html" class="back-link">← Voltar ao Início</a>
     
     <header class="header">
-      <span class="badge">🌌 Galeria Digital</span>
+      <span class="badge">🐾 Galeria de Personagens</span>
       <h1>Portfólio Artístico</h1>
       <p class="subtitle">
-        Uma jornada visual através de universos místicos, personagens kawaii e paisagens cósmicas. 
-        Cada obra é uma porta para dimensões onde magia e tecnologia coexistem.
+        Conhece os adoráveis axolotes e personagens kawaii que habitam o meu universo criativo. 
+        Cada personagem tem a sua própria personalidade e história única.
       </p>
     </header>
 
-    <!-- Stats Section -->
-    <section class="stats">
-      <div class="stat">
-        <span class="stat-number">140+</span>
-        <span class="stat-label">Obras Criadas</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number">4</span>
-        <span class="stat-label">Categorias</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number">2024</span>
-        <span class="stat-label">Ano Ativo</span>
-      </div>
+    <!-- Featured Section -->
+    <section class="featured-section">
+      <h2>🌟 Os Meus Axolotes</h2>
+      <p>
+        Uma família de axolotes adoráveis que conquistaram corações por todo o mundo. 
+        Desde versões Super Sayan até aquários mágicos, cada ilustração conta uma história especial 
+        cheia de fofura e personalidade única.
+      </p>
     </section>
 
-    <!-- Categories Grid -->
-    <section class="categories-grid">
-      <article class="category-card cosmic" style="--delay: 0s;">
-        <span class="category-icon">🌌</span>
-        <h3>Arte Cósmica</h3>
-        <p>
-          Paisagens galácticas, nebulosas coloridas e fenómenos cósmicos reimaginados 
-          através de uma lente artística única. Cada obra captura a majestade do universo.
-        </p>
-        <div class="category-meta">
-          <span>Estilo: Realismo Digital</span>
-          <span class="works-count">45 obras</span>
+    <!-- Axolotes Gallery -->
+    <section class="axolotes-gallery">
+      <article class="axolote-card" style="--delay: 0s;">
+        <img src="imagens/AxolSuperSayan.png" alt="Axol Super Sayan" class="axolote-image">
+        <div class="axolote-content">
+          <h3>⚡ Axol Super Sayan</h3>
+          <p>O nosso herói axolote com poderes especiais! Quando a situação fica difícil, Axol transforma-se e salva o dia com a sua energia dourada.</p>
         </div>
       </article>
 
-      <article class="category-card mystic" style="--delay: 0.1s;">
-        <span class="category-icon">🔮</span>
-        <h3>Símbolos Místicos</h3>
-        <p>
-          Símbolos sagrados e elementos esotéricos transformados em arte digital moderna. 
-          Uma fusão entre sabedoria ancestral e estética contemporânea.
-        </p>
-        <div class="category-meta">
-          <span>Estilo: Simbolismo Digital</span>
-          <span class="works-count">32 obras</span>
+      <article class="axolote-card" style="--delay: 0.1s;">
+        <img src="imagens/Axol&BisouSuperSayan.png" alt="Axol e Bisou Super Sayan" class="axolote-image">
+        <div class="axolote-content">
+          <h3>💫 Axol & Bisou Super Sayan</h3>
+          <p>A dupla dinâmica em modo Super Sayan! Quando Axol e Bisou unem forças, nada pode pará-los. Amizade e poder numa só imagem.</p>
         </div>
       </article>
 
-      <article class="category-card kawaii" style="--delay: 0.2s;">
-        <span class="category-icon">🌸</span>
-        <h3>Personagens Kawaii</h3>
-        <p>
-          Criaturas adoráveis e personagens encantadores que habitam mundos fantásticos. 
-          Fofura e magia combinadas em designs irresistíveis.
-        </p>
-        <div class="category-meta">
-          <span>Estilo: Kawaii Cósmico</span>
-          <span class="works-count">28 obras</span>
+      <article class="axolote-card" style="--delay: 0.2s;">
+        <img src="imagens/Axol,PepecaSuperSayan&Bisou.png" alt="Axol, Pepeca Super Sayan e Bisou" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🌟 Trio Super Sayan</h3>
+          <p>Axol, Pepeca e Bisou juntos em modo Super Sayan! O trio mais poderoso e fofo do universo axolote, prontos para qualquer aventura.</p>
         </div>
       </article>
 
-      <article class="category-card astro" style="--delay: 0.3s;">
-        <span class="category-icon">⭐</span>
-        <h3>Astrologia Digital</h3>
-        <p>
-          Mapas astrais, constelações e elementos zodiacais interpretados através 
-          de arte digital. O cosmos como fonte de inspiração e conhecimento.
-        </p>
-        <div class="category-meta">
-          <span>Estilo: Astrológico Moderno</span>
-          <span class="works-count">38 obras</span>
+      <article class="axolote-card" style="--delay: 0.3s;">
+        <img src="imagens/Pepeca&AxolAquarium.png" alt="Pepeca e Axol no Aquário" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🐠 Pepeca & Axol no Aquário</h3>
+          <p>Momentos tranquilos no aquário mágico. Pepeca e Axol nadam serenamente entre bolhas coloridas e plantas aquáticas encantadas.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 0.4s;">
+        <img src="imagens/bisou.png" alt="Bisou" class="axolote-image">
+        <div class="axolote-content">
+          <h3>😊 Bisou</h3>
+          <p>O axolote mais carinhoso da família! Bisou é conhecido pelo seu sorriso contagiante e pela sua natureza amorosa e brincalhona.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 0.5s;">
+        <img src="imagens/Pepeca.png" alt="Pepeca" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🌸 Pepeca</h3>
+          <p>A axolote mais elegante e graciosa! Pepeca adora flores e tem um estilo único que a torna especial em qualquer situação.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 0.6s;">
+        <img src="imagens/axo.png" alt="Axo" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🎨 Axo</h3>
+          <p>O artista da família! Axo adora criar e explorar novas formas de arte, sempre com um pincel na mão e ideias criativas na mente.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 0.7s;">
+        <img src="imagens/axo1.png" alt="Axo Variação" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🌈 Axo Colorido</h3>
+          <p>Uma versão mais colorida e vibrante do nosso querido Axo! Esta variação mostra toda a alegria e energia que ele traz para o grupo.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 0.8s;">
+        <img src="imagens/Pegasus.png" alt="Pegasus" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🦄 Pegasus</h3>
+          <p>O axolote mágico com asas! Pegasus pode voar pelos céus e traz um toque de magia e fantasia para todas as aventuras do grupo.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 0.9s;">
+        <img src="imagens/axolote_github_profile.png" alt="Axolote GitHub Profile" class="axolote-image">
+        <div class="axolote-content">
+          <h3>💻 Axolote Programador</h3>
+          <p>O axolote tech-savvy! Este pequeno génio da programação adora código e está sempre pronto para resolver qualquer bug com estilo.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 1s;">
+        <img src="imagens/ChatGPTImage20_08_2025,20_35_41.png" alt="Axolote Especial" class="axolote-image">
+        <div class="axolote-content">
+          <h3>✨ Axolote Místico</h3>
+          <p>Uma criação especial com poderes místicos! Este axolote tem uma conexão especial com energias cósmicas e dimensões alternativas.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 1.1s;">
+        <img src="imagens/1756495489575dga86cta.png" alt="Axolote Único" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🎭 Axolote Artístico</h3>
+          <p>Uma interpretação artística única! Este axolote representa a criatividade e a expressão artística em sua forma mais pura e original.</p>
+        </div>
+      </article>
+
+      <article class="axolote-card" style="--delay: 1.2s;">
+        <img src="imagens/1756495725883eg6omxdk.png" alt="Axolote Final" class="axolote-image">
+        <div class="axolote-content">
+          <h3>🌟 Axolote Especial</h3>
+          <p>O último mas não menos importante! Este axolote especial fecha a nossa galeria com chave de ouro, mostrando toda a diversidade da família.</p>
         </div>
       </article>
     </section>
@@ -443,19 +461,19 @@
     <section class="commission-section">
       <h2>✨ Comissões Personalizadas</h2>
       <p>
-        Transformo as tuas ideias em arte digital única. Desde retratos cósmicos a símbolos 
-        personalizados, cada comissão é uma colaboração criativa que resulta numa obra 
-        verdadeiramente especial e significativa.
+        Quer o seu próprio axolote personalizado? Ou talvez um personagem kawaii único? 
+        Transformo as suas ideias em arte digital adorável! Cada comissão é uma colaboração criativa 
+        que resulta num personagem verdadeiramente especial e significativo.
       </p>
       <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
         <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">🎨 Solicitar Comissão</a>
-        <a href="https://linktr.ee/fabiocruz" class="btn primary" target="_blank" rel="noopener">💬 Contactar</a>
+        <a href="https://linktr.ee/FabioCruzArteMisticaDigital" class="btn primary" target="_blank" rel="noopener">💬 Contactar</a>
       </div>
     </section>
 
     <footer style="text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.1); margin-top: 48px; animation: fadeIn 1s ease-out 1.4s both;">
       <p style="color: var(--muted); font-size: 14px; margin: 0 0 16px;">
-        Todas as obras são originais e criadas com amor • Licenças comerciais disponíveis
+        Todos os personagens são criações originais • Licenças comerciais disponíveis • Arte feita com amor
       </p>
       <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
         <a href="https://ko-fi.com/fabiocruz" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
@@ -472,4 +490,6 @@
   </div>
 </body>
 </html>
+
+
 
