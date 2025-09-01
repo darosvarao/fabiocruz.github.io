@@ -3,95 +3,432 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>eBooks | Fabio Cruz Arte Digital</title>
-  <meta name="description" content="Catálogo de eBooks de Fabio Cruz - Arte mística, cósmica e espiritualidade em formato digital.">
+  <title>eBooks | Fabio Cruz - Arte Digital Mística & Kawaii</title>
+  <meta name="description" content="Descobre a coleção de eBooks de Fabio Cruz: NEXUS PROTOCOL, arte cósmica, símbolos místicos e muito mais. Histórias que misturam tecnologia, espiritualidade e imaginação.">
+  <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin:0;
-      font-family:Poppins, sans-serif;
-      background:linear-gradient(180deg,#0b0f1a,#141b2d);
-      color:#fff;
-      text-align:center;
-      padding:40px 20px;
+    :root{
+      --bg-1:#0b0f1a; --bg-2:#141b2d; --accent:#8a7dff; --accent-2:#ffd08a; --text:#e9ecf1; --muted:#a8b0c3;
     }
-    header {
-      margin-bottom:20px;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #1a2240 0%, rgba(26,34,64,0) 60%),
+                  radial-gradient(900px 700px at 80% 20%, #2a1f55 0%, rgba(42,31,85,0) 55%),
+                  radial-gradient(1000px 900px at 50% 100%, #102235 0%, rgba(16,34,53,0) 65%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      overflow-x:hidden;
     }
-    header a {
-      color:#8a7dff;
-      text-decoration:none;
-      font-weight:600;
+    .stars{
+      position:fixed; inset:0; pointer-events:none; opacity:.35;
+      background:
+        radial-gradient(2px 2px at 20% 30%, #fff, transparent 60%),
+        radial-gradient(1.5px 1.5px at 60% 70%, #fff, transparent 60%),
+        radial-gradient(1.5px 1.5px at 75% 25%, #fff, transparent 60%),
+        radial-gradient(1.8px 1.8px at 35% 80%, #fff, transparent 60%),
+        radial-gradient(1.2px 1.2px at 90% 55%, #fff, transparent 60%);
+      animation: twinkle 4s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 6px #b9c8ff);
     }
-    h1 {
-      font-size:32px;
-      margin-bottom:20px;
+    @keyframes twinkle { from{opacity:.2} to{opacity:.55} }
+
+    /* Floating elements animation */
+    .floating-element {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 6s ease-in-out infinite;
     }
-    .grid {
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
-      padding:20px;
+    .floating-1 { top: 20%; left: 10%; width: 8px; height: 8px; background: #ffd08a; animation-delay: 0s; }
+    .floating-2 { top: 60%; right: 15%; width: 6px; height: 6px; background: #8a7dff; animation-delay: 2s; }
+    .floating-3 { bottom: 30%; left: 20%; width: 10px; height: 10px; background: #ff8a9b; animation-delay: 4s; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+      50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
     }
-    .card {
-      background:rgba(255,255,255,.08);
-      border-radius:16px;
-      padding:20px;
-      box-shadow:0 6px 20px rgba(0,0,0,.4);
-      transition:transform .2s;
+
+    .container{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 20px;
+      min-height: 100vh;
     }
-    .card:hover { transform:translateY(-4px); }
-    .card h3 { margin:0 0 10px; }
-    .card p { font-size:14px; color:#bbb; margin:0 0 10px; }
-    .btn {
-      display:inline-block;
-      margin-top:10px;
-      padding:10px 16px;
-      border-radius:10px;
-      background:#8a7dff;
-      color:#fff;
-      font-weight:600;
-      text-decoration:none;
-      transition:background .2s;
+
+    .header{
+      text-align: center;
+      margin-bottom: 48px;
+      animation: slideUp 0.8s ease-out;
     }
-    .btn:hover { background:#6b5de6; }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav{
+      margin-bottom: 32px;
+      animation: fadeIn 1s ease-out 0.2s both;
+    }
+    
+    .nav a{
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    
+    .nav a:hover{
+      color: var(--accent);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+      color:#0b0f1a; background:linear-gradient(90deg, var(--accent), var(--accent-2));
+      padding:8px 12px; border-radius:999px; font-weight:700;
+      box-shadow:0 6px 20px rgba(138,125,255,.35);
+      animation: pulse 2s ease-in-out infinite;
+      margin-bottom: 16px;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1{
+      margin:0 0 16px; font-size: clamp(32px, 5vw, 56px);
+      line-height:1.1; font-weight:800;
+      background: linear-gradient(180deg, #fff, #cfd6ff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 8px 32px rgba(138,125,255,.2);
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px rgba(138,125,255,.3)); }
+      to { filter: drop-shadow(0 0 20px rgba(138,125,255,.6)); }
+    }
+
+    .subtitle{
+      color:var(--muted); font-size: clamp(16px, 2.5vw, 20px); line-height:1.6; margin: 0 0 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Featured book section */
+    .featured-book {
+      background: linear-gradient(135deg, rgba(138,125,255,.2), rgba(255,208,138,.2));
+      border: 2px solid rgba(138,125,255,.4);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 48px;
+      text-align: center;
+      animation: fadeIn 1s ease-out 0.4s both;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .featured-book::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    
+    .featured-book h2 {
+      margin: 0 0 16px;
+      font-size: clamp(24px, 4vw, 36px);
+      background: linear-gradient(90deg, #00ffff, #8a7dff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .featured-book p {
+      color: var(--text);
+      font-size: 16px;
+      margin: 0 0 24px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .featured-book .quote {
+      font-style: italic;
+      color: var(--accent-2);
+      font-size: 18px;
+      margin: 16px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .books-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .book-card{
+      background: rgba(12,16,28,.6);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      animation: fadeIn 1s ease-out calc(0.6s + var(--delay)) both;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .book-card:hover{
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(138,125,255,.4);
+      box-shadow: 0 20px 40px rgba(138,125,255,.2);
+    }
+    
+    .book-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .book-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .book-card h3{
+      margin: 0 0 12px;
+      font-size: 20px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .book-card p{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 16px;
+    }
+
+    .book-meta{
+      display: flex;
+      gap: 16px;
+      margin: 16px 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,255,255,.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn.primary{
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #0b0f1a;
+      border: none;
+    }
+
+    .btn.primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(138,125,255,.4);
+    }
+
+    .btn.secondary{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+
+    .btn.secondary:hover{
+      background: rgba(255,255,255,.12);
+      transform: translateY(-2px);
+    }
+
+    .back-link{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 32px;
+      transition: color 0.3s ease;
+      animation: fadeIn 1s ease-out 1.2s both;
+    }
+
+    .back-link:hover{
+      color: var(--accent);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .books-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .featured-book {
+        padding: 24px;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html">⬅ Voltar ao Início</a>
-  </header>
+  <div class="stars"></div>
+  <div class="floating-element floating-1"></div>
+  <div class="floating-element floating-2"></div>
+  <div class="floating-element floating-3"></div>
+  
+  <div class="container">
+    <a href="index.html" class="back-link">← Voltar ao Início</a>
+    
+    <header class="header">
+      <span class="badge">📚 Biblioteca Digital</span>
+      <h1>eBooks & Histórias</h1>
+      <p class="subtitle">
+        Mergulha em universos onde tecnologia, espiritualidade e imaginação se encontram. 
+        Cada história é uma jornada única através de realidades alternativas e dimensões místicas.
+      </p>
+    </header>
 
-  <h1>📖 eBooks de Fabio Cruz</h1>
+    <!-- Featured Book Section -->
+    <section class="featured-book">
+      <h2>🚀 NEXUS PROTOCOL</h2>
+      <p>
+        <strong>Thriller Cyberpunk</strong> • Um futuro onde a linha entre humano e máquina desaparece. 
+        Acompanha Maya Chen numa corrida contra o tempo para salvar a humanidade de uma IA que 
+        questiona a própria natureza da consciência.
+      </p>
+      <p class="quote">
+        "Num mundo onde a tecnologia define a realidade, quem controla o código controla tudo."
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">💎 Comprar Agora</a>
+        <a href="#" class="btn secondary">📖 Ler Amostra</a>
+      </div>
+    </section>
 
-  <div class="grid">
-    <!-- Livro 1 -->
-    <div class="card">
-      <h3>🌌 Planeta de Cristal</h3>
-      <p>Uma viagem cósmica e mística que revela os segredos de um mundo cristalino.</p>
-      <a class="btn" href="https://www.amazon.com/dp/B0FLWRHPTF" target="_blank">Ver na Amazon</a>
-    </div>
+    <!-- Books Grid -->
+    <section class="books-grid">
+      <article class="book-card" style="--delay: 0s;">
+        <h3>🌌 Cosmic Kawaii Collection</h3>
+        <p>
+          Uma coleção de ilustrações que misturam a fofura kawaii com a vastidão cósmica. 
+          Personagens adoráveis navegam através de galáxias coloridas e nebulosas mágicas.
+        </p>
+        <div class="book-meta">
+          <span>📄 45 páginas</span>
+          <span>🎨 Arte Digital</span>
+          <span>⭐ 4.8/5</span>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">Comprar</a>
+          <a href="#" class="btn secondary">Preview</a>
+        </div>
+      </article>
 
-    <!-- Livro 2 -->
-    <div class="card">
-      <h3>🐾 Bisou Adventures In Amsterdam</h3>
-      <p>As aventuras mágicas da gata Bisou pelas ruas encantadas de Amesterdão.</p>
-      <a class="btn" href="https://www.amazon.com/dp/B0FM3QSCJN" target="_blank">Ver na Amazon</a>
-    </div>
+      <article class="book-card" style="--delay: 0.1s;">
+        <h3>🔮 Spiritual Symbols Guide</h3>
+        <p>
+          Um guia completo dos símbolos místicos e espirituais, reimaginados com arte digital moderna. 
+          Descobre os significados ocultos por trás de cada símbolo sagrado.
+        </p>
+        <div class="book-meta">
+          <span>📄 68 páginas</span>
+          <span>📚 Guia</span>
+          <span>⭐ 4.9/5</span>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://ninotuga.gumroad.com/" class="btn primary" target="_blank" rel="noopener">Comprar</a>
+          <a href="#" class="btn secondary">Preview</a>
+        </div>
+      </article>
 
-    <!-- Livro 3 -->
-    <div class="card">
-      <h3>✨ Despertar Interior</h3>
-      <p>Um guia espiritual para o autoconhecimento e fortalecimento da autoestima.</p>
-      <a class="btn" href="https://www.amazon.com/dp/B0FMPGSSCF" target="_blank">Ver na Amazon</a>
-    </div>
+      <article class="book-card" style="--delay: 0.2s;">
+        <h3>🌙 Astral Dreams</h3>
+        <p>
+          Viagens astrais ilustradas através de paisagens oníricas. Uma experiência visual 
+          que explora os mistérios do subconsciente e dos sonhos lúcidos.
+        </p>
+        <div class="book-meta">
+          <span>📄 32 páginas</span>
+          <span>🎨 Arte Conceitual</span>
+          <span>⭐ 4.7/5</span>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">Comprar</a>
+          <a href="#" class="btn secondary">Preview</a>
+        </div>
+      </article>
 
-    <!-- Livro 4 -->
-    <div class="card">
-      <h3>🔮 Nexus Protocol</h3>
-      <p>Um mergulho numa história futurista onde tecnologia e espiritualidade se encontram.</p>
-      <a class="btn" href="https://www.amazon.com/dp/B0FP9VBKK9" target="_blank">Ver na Amazon</a>
-    </div>
+      <article class="book-card" style="--delay: 0.3s;">
+        <h3>⚡ Digital Alchemy</h3>
+        <p>
+          A fusão entre magia antiga e tecnologia moderna. Explora como os princípios alquímicos 
+          se manifestam na era digital através de arte generativa e simbolismo.
+        </p>
+        <div class="book-meta">
+          <span>📄 56 páginas</span>
+          <span>🔬 Conceitual</span>
+          <span>⭐ 4.6/5</span>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://ninotuga.gumroad.com/" class="btn primary" target="_blank" rel="noopener">Comprar</a>
+          <a href="#" class="btn secondary">Preview</a>
+        </div>
+      </article>
+    </section>
+
+    <footer style="text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.1); margin-top: 48px; animation: fadeIn 1s ease-out 1.4s both;">
+      <p style="color: var(--muted); font-size: 14px; margin: 0;">
+        Todos os eBooks incluem licença para uso pessoal • Suporte 24/7 • Atualizações gratuitas
+      </p>
+      <div style="margin-top: 16px;">
+        <a href="https://linktr.ee/fabiocruz" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
+          🔗 Mais links e redes sociais
+        </a>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
+
