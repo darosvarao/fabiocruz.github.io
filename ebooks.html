@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>eBooks | Fabio Cruz - Arte Digital Mística & Kawaii</title>
-  <meta name="description" content="Descobre a coleção de eBooks de Fabio Cruz: NEXUS PROTOCOL, arte cósmica, símbolos místicos e muito mais. Histórias que misturam tecnologia, espiritualidade e imaginação.">
+  <meta name="description" content="Descobre a coleção de eBooks de Fabio Cruz: NEXUS PROTOCOL, BISOU Adventures, O Planeta de Cristal e Despertar Interior. Histórias que misturam tecnologia, espiritualidade e imaginação.">
   <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
@@ -70,22 +70,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .nav{
-      margin-bottom: 32px;
-      animation: fadeIn 1s ease-out 0.2s both;
-    }
-    
-    .nav a{
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.3s ease;
-    }
-    
-    .nav a:hover{
-      color: var(--accent);
-    }
-    
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -187,8 +171,8 @@
 
     .books-grid{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
       margin-bottom: 48px;
     }
 
@@ -196,7 +180,7 @@
       background: rgba(12,16,28,.6);
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 20px;
-      padding: 24px;
+      padding: 0;
       transition: all 0.3s ease;
       animation: fadeIn 1s ease-out calc(0.6s + var(--delay)) both;
       position: relative;
@@ -225,6 +209,17 @@
       transform: scaleX(1);
     }
 
+    .book-cover{
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .book-content{
+      padding: 24px;
+    }
+
     .book-card h3{
       margin: 0 0 12px;
       font-size: 20px;
@@ -245,6 +240,7 @@
       margin: 16px 0;
       font-size: 12px;
       color: var(--muted);
+      flex-wrap: wrap;
     }
 
     .btn{
@@ -300,6 +296,17 @@
       color: var(--accent);
     }
 
+    .amazon-note{
+      background: rgba(255,208,138,.1);
+      border: 1px solid rgba(255,208,138,.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: var(--accent-2);
+      text-align: center;
+    }
+
     /* Responsive design */
     @media (max-width: 768px) {
       .books-grid {
@@ -342,88 +349,85 @@
         "Num mundo onde a tecnologia define a realidade, quem controla o código controla tudo."
       </p>
       <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">💎 Comprar Agora</a>
-        <a href="#" class="btn secondary">📖 Ler Amostra</a>
+        <a href="[COLAR LINK AMAZON NEXUS PROTOCOL AQUI]" class="btn primary" target="_blank" rel="noopener">📖 Comprar na Amazon</a>
+        <a href="#" class="btn secondary">👁️ Ler Amostra</a>
       </div>
     </section>
+
+    <div class="amazon-note">
+      💡 <strong>Nota:</strong> Todos os links "Comprar na Amazon" precisam de ser atualizados com os seus links reais. 
+      Procure por <strong>[COLAR LINK AMAZON ... AQUI]</strong> e substitua pelos URLs corretos.
+    </div>
 
     <!-- Books Grid -->
     <section class="books-grid">
       <article class="book-card" style="--delay: 0s;">
-        <h3>🌌 Cosmic Kawaii Collection</h3>
-        <p>
-          Uma coleção de ilustrações que misturam a fofura kawaii com a vastidão cósmica. 
-          Personagens adoráveis navegam através de galáxias coloridas e nebulosas mágicas.
-        </p>
-        <div class="book-meta">
-          <span>📄 45 páginas</span>
-          <span>🎨 Arte Digital</span>
-          <span>⭐ 4.8/5</span>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">Comprar</a>
-          <a href="#" class="btn secondary">Preview</a>
+        <img src="imagens/BisouCover.png" alt="Capa do livro BISOU Adventures in Amsterdam" class="book-cover">
+        <div class="book-content">
+          <h3>🐱 BISOU: Adventures in Amsterdam</h3>
+          <p>
+            Acompanha as aventuras de Bisou, um gato adorável que explora as ruas encantadoras de Amesterdão. 
+            Uma história kawaii cheia de descobertas, amizades e momentos mágicos pelos canais da cidade.
+          </p>
+          <div class="book-meta">
+            <span>📖 História Infantil</span>
+            <span>🌟 Kawaii</span>
+            <span>🏙️ Amesterdão</span>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <a href="[COLAR LINK AMAZON BISOU AQUI]" class="btn primary" target="_blank" rel="noopener">📖 Amazon</a>
+            <a href="#" class="btn secondary">👁️ Preview</a>
+          </div>
         </div>
       </article>
 
       <article class="book-card" style="--delay: 0.1s;">
-        <h3>🔮 Spiritual Symbols Guide</h3>
-        <p>
-          Um guia completo dos símbolos místicos e espirituais, reimaginados com arte digital moderna. 
-          Descobre os significados ocultos por trás de cada símbolo sagrado.
-        </p>
-        <div class="book-meta">
-          <span>📄 68 páginas</span>
-          <span>📚 Guia</span>
-          <span>⭐ 4.9/5</span>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <a href="https://ninotuga.gumroad.com/" class="btn primary" target="_blank" rel="noopener">Comprar</a>
-          <a href="#" class="btn secondary">Preview</a>
+        <img src="imagens/Capaplanetadecristal1.png" alt="Capa do livro O Planeta de Cristal" class="book-cover">
+        <div class="book-content">
+          <h3>🌌 O Planeta de Cristal</h3>
+          <p>
+            Uma épica jornada de ficção científica através de um mundo cristalino misterioso. 
+            Aventura, descoberta e mistérios cósmicos aguardam neste planeta onde a realidade se fragmenta como cristal.
+          </p>
+          <div class="book-meta">
+            <span>🚀 Ficção Científica</span>
+            <span>🔮 Fantasia</span>
+            <span>⭐ Aventura</span>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <a href="[COLAR LINK AMAZON PLANETA CRISTAL AQUI]" class="btn primary" target="_blank" rel="noopener">📖 Amazon</a>
+            <a href="#" class="btn secondary">👁️ Preview</a>
+          </div>
         </div>
       </article>
 
       <article class="book-card" style="--delay: 0.2s;">
-        <h3>🌙 Astral Dreams</h3>
-        <p>
-          Viagens astrais ilustradas através de paisagens oníricas. Uma experiência visual 
-          que explora os mistérios do subconsciente e dos sonhos lúcidos.
-        </p>
-        <div class="book-meta">
-          <span>📄 32 páginas</span>
-          <span>🎨 Arte Conceitual</span>
-          <span>⭐ 4.7/5</span>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <a href="https://ko-fi.com/fabiocruz" class="btn primary" target="_blank" rel="noopener">Comprar</a>
-          <a href="#" class="btn secondary">Preview</a>
-        </div>
-      </article>
-
-      <article class="book-card" style="--delay: 0.3s;">
-        <h3>⚡ Digital Alchemy</h3>
-        <p>
-          A fusão entre magia antiga e tecnologia moderna. Explora como os princípios alquímicos 
-          se manifestam na era digital através de arte generativa e simbolismo.
-        </p>
-        <div class="book-meta">
-          <span>📄 56 páginas</span>
-          <span>🔬 Conceitual</span>
-          <span>⭐ 4.6/5</span>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <a href="https://ninotuga.gumroad.com/" class="btn primary" target="_blank" rel="noopener">Comprar</a>
-          <a href="#" class="btn secondary">Preview</a>
+        <img src="imagens/novodespertarinterior.png" alt="Capa do livro Despertar Interior" class="book-cover">
+        <div class="book-content">
+          <h3>🧘 Despertar Interior</h3>
+          <p>
+            <strong>Lições de Jung para a Tua Jornada</strong> • Um guia profundo de desenvolvimento pessoal 
+            baseado nos ensinamentos de Carl Jung. Descobre os segredos da psique e desperta o teu potencial interior.
+          </p>
+          <div class="book-meta">
+            <span>🧠 Psicologia</span>
+            <span>🌱 Desenvolvimento</span>
+            <span>📚 Jung</span>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <a href="[COLAR LINK AMAZON DESPERTAR INTERIOR AQUI]" class="btn primary" target="_blank" rel="noopener">📖 Amazon</a>
+            <a href="#" class="btn secondary">👁️ Preview</a>
+          </div>
         </div>
       </article>
     </section>
 
     <footer style="text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.1); margin-top: 48px; animation: fadeIn 1s ease-out 1.4s both;">
       <p style="color: var(--muted); font-size: 14px; margin: 0;">
-        Todos os eBooks incluem licença para uso pessoal • Suporte 24/7 • Atualizações gratuitas
+        Todos os eBooks disponíveis na Amazon • Formatos Kindle e físico • Envio mundial
       </p>
       <div style="margin-top: 16px;">
-        <a href="https://linktr.ee/fabiocruz" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
+        <a href="https://linktr.ee/FabioCruzArteMisticaDigital" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
           🔗 Mais links e redes sociais
         </a>
       </div>
