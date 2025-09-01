@@ -428,9 +428,66 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Botão Voltar ao Início */
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    animation: slideInLeft 1s ease-out;
+}
+
+.home-button a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    border-radius: 50%;
+    color: #000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.home-button a:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5);
+}
+
+.home-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+    .home-button {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .home-button a {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .home-button svg {
+        width: 20px;
+        height: 20px;
+    }
     </style>
 </head>
 <body>
+    <!-- Botão Voltar ao Início -->
+<div class="home-button">
+    <a href="index.html" title="Voltar ao Início">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z" fill="currentColor"/>
+        </svg>
+    </a>
+</div>
     <!-- Estrelas animadas -->
     <div class="stars"></div>
 
