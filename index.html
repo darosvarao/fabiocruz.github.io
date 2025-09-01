@@ -1,140 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fabio Cruz | Arte Digital Mística & Kawaii</title>
-  <meta name="description" content="Fabio Cruz | Arte digital mística, cósmica e kawaii ✨ Prints, eBooks e coleções cósmicas. Descobre o meu universo artístico e conecta-te comigo.">
-  <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg-1:#0b0f1a; --bg-2:#141b2d; --accent:#8a7dff; --accent-2:#ffd08a; --text:#e9ecf1; --muted:#a8b0c3;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0}
-    body{
-      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, #1a2240 0%, rgba(26,34,64,0) 60%),
-                  radial-gradient(900px 700px at 80% 20%, #2a1f55 0%, rgba(42,31,85,0) 55%),
-                  radial-gradient(1000px 900px at 50% 100%, #102235 0%, rgba(16,34,53,0) 65%),
-                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
-      overflow-x:hidden;
-    }
-    .stars{
-      position:fixed; inset:0; pointer-events:none; opacity:.35;
-      background:
-        radial-gradient(2px 2px at 20% 30%, #fff, transparent 60%),
-        radial-gradient(1.5px 1.5px at 60% 70%, #fff, transparent 60%),
-        radial-gradient(1.5px 1.5px at 75% 25%, #fff, transparent 60%),
-        radial-gradient(1.8px 1.8px at 35% 80%, #fff, transparent 60%),
-        radial-gradient(1.2px 1.2px at 90% 55%, #fff, transparent 60%);
-      animation: twinkle 4s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 6px #b9c8ff);
-    }
-    @keyframes twinkle { from{opacity:.2} to{opacity:.55} }
+  <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Fabio Cruz | Arte Digital Mística & Kawaii</title>
+    <meta name="description" content="Fabio Cruz | Arte digital mística, cósmica e kawaii ✨ Prints, eBooks e coleções cósmicas. Descobre o meu universo artístico e conecta-te comigo.">
+    <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+          :root{
+                  --bg-1:#0b0f1a; --bg-2:#141b2d; --accent:#8a7dff; --accent-2:#ffd08a; --text:#e9ecf1; --muted:#a8b0c3;
+          }
+          *{box-sizing:border-box}
+          html,body{height:100%;margin:0}
+          body{
+                  font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+                  color:var(--text);
+                  background: radial-gradient(1200px 800px at 20% 10%, #1a2240 0%, rgba(26,34,64,0) 60%),
+                                      radial-gradient(900px 700px at 80% 20%, #2a1f55 0%, rgba(42,31,85,0) 55%),
+                                      radial-gradient(1000px 900px at 50% 100%, #102235 0%, rgba(16,34,53,0) 65%),
+                                      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+                  overflow-x:hidden;
+          }
+          .stars{
+                  position:fixed; inset:0; pointer-events:none; opacity:.35;
+                  background:
+                            radial-gradient(2px 2px at 20% 30%, #fff, transparent 60%),
+                            radial-gradient(1.5px 1.5px at 60% 70%, #fff, transparent 60%),
+                            radial-gradient(1.5px 1.5px at 75% 25%, #fff, transparent 60%),
+                            radial-gradient(1.8px 1.8px at 35% 80%, #fff, transparent 60%),
+                            radial-gradient(1.2px 1.2px at 90% 55%, #fff, transparent 60%);
+                  animation: twinkle 4s ease-in-out infinite alternate;
+                  filter: drop-shadow(0 0 6px #b9c8ff);
+          }
+          @keyframes twinkle { from{opacity:.2} to{opacity:.55} }
 
-    .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:48px 20px}
-    .card{
-      width:min(900px, 92%);
-      background:rgba(12,16,28,.5);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:24px;
-      box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
-      backdrop-filter: blur(6px);
-      padding:36px 28px;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12px; letter-spacing:.4px; text-transform:uppercase;
-      color:#0b0f1a; background:linear-gradient(90deg, var(--accent), var(--accent-2));
-      padding:8px 12px; border-radius:999px; font-weight:700;
-      box-shadow:0 6px 20px rgba(138,125,255,.35);
-    }
-    h1{
-      margin:14px 0 8px; font-size: clamp(28px, 4.2vw, 48px);
-      line-height:1.08; font-weight:800;
-      background: linear-gradient(180deg, #fff, #cfd6ff);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow: 0 8px 32px rgba(138,125,255,.2);
-    }
-    .subtitle{
-      color:var(--muted); font-size: clamp(14px, 2.2vw, 18px); line-height:1.6; margin: 4px 0 18px;
-    }
-    .grid{
-      display:grid; grid-template-columns:1fr; gap:14px; margin-top:18px;
-    }
-    @media(min-width:720px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
-    .btn{
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      padding:14px 16px; border-radius:14px; text-decoration:none; font-weight:700;
-      color:#0b0f1a; background:#fff; transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .btn:hover{ transform: translateY(-2px); box-shadow:0 10px 24px rgba(255,255,255,.12) }
-    .btn.primary{
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      box-shadow:0 12px 28px rgba(138,125,255,.35);
-    }
-    .btn.ghost{
-      background: rgba(255,255,255,.06); color:var(--text);
-      border:1px solid rgba(255,255,255,.18);
-    }
-    .note{ margin-top:18px; color:var(--muted); font-size:13px }
-    .footer{
-      margin-top:26px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; color:var(--muted); font-size:13px
-    }
-    .dot{width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.3)}
-  </style>
-<!-- Pinterest Tag -->
-<script>
-!function(e){if(!window.pintrk){window.pintrk = function () {
-window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
-  n=window.pintrk;n.queue=[],n.version="3.0";var
-  t=document.createElement("script");t.async=!0,t.src=e;var
-  r=document.getElementsByTagName("script")[0];
-  r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
-pintrk('load', '2613653843481', {em: '<user_email_address>'});
-pintrk('page');
-</script>
-<noscript>
-<img height="1" width="1" style="display:none;" alt=""
-  src="https://ct.pinterest.com/v3/?event=init&tid=2613653843481&pd[em]=<hashed_email_address>&noscript=1" />
-</noscript>
-<!-- end Pinterest Tag -->
-</head>
-<body>
-  <div class="stars"></div>
-  <main class="wrap">
-    <section class="card">
-      <span class="badge">🌌 Fabio Cruz · Digital Artist</span>
-      <h1>Arte Digital <span style="white-space:nowrap">Mística & Kawaii</span></h1>
-      <p class="subtitle">
-        Ilustrações cósmicas, místicas e kawaii. Prints, eBooks e coleções digitais que misturam
-        espiritualidade, astrologia e imaginação. Explora, coleciona e conecta-te comigo ✨
-      </p>
+          /* Floating elements animation */
+          .floating-element {
+                  position: fixed;
+                  pointer-events: none;
+                  border-radius: 50%;
+                  opacity: 0.6;
+                  animation: float 6s ease-in-out infinite;
+          }
+          .floating-1 { top: 20%; left: 10%; width: 8px; height: 8px; background: #ffd08a; animation-delay: 0s; }
+          .floating-2 { top: 60%; right: 15%; width: 6px; height: 6px; background: #8a7dff; animation-delay: 2s; }
+          .floating-3 { bottom: 30%; left: 20%; width: 10px; height: 10px; background: #ff8a9b; animation-delay: 4s; }
 
-    <div class="grid">
-  <a class="btn primary" href="https://ko-fi.com/fabiocruz" target="_blank" rel="noopener">✨ Loja Ko-fi</a>
-  <a class="btn primary" href="https://ninotuga.gumroad.com/" target="_blank" rel="noopener">🛒 Loja Gumroad</a>
-  <a class="btn" href="portfolio.html">🌌 Ver Portfólio</a>
-  <a class="btn" href="ebooks.html">📖 eBooks</a>
-  <a class="btn ghost" href="https://linktr.ee/FabioCruzArteMisticaDigital" target="_blank" rel="noopener">🔗 Linktree</a>
-</div>
+          @keyframes float {
+                  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+                  50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+          }
 
+          .wrap{min-height:100%; display:flex; flex-direction: column; align-items:center; justify-content:center; padding:48px 20px}
+          .card{
+                  width:min(900px, 92%);
+                  background:rgba(12,16,28,.5);
+                  border:1px solid rgba(255,255,255,.08);
+                  border-radius:24px;
+                  box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+                  backdrop-filter: blur(6px);
+                  padding:36px 28px;
+                  animation: slideUp 0.8s ease-out;
+          }
 
+          @keyframes slideUp {
+                  from { opacity: 0; transform: translateY(30px); }
+                  to { opacity: 1; transform: translateY(0); }
+          }
 
+          .badge{
+                  display:inline-flex; align-items:center; gap:8px;
+                  font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+                  color:#0b0f1a; background:linear-gradient(90deg, var(--accent), var(--accent-2));
+                  padding:8px 12px; border-radius:999px; font-weight:700;
+                  box-shadow:0 6px 20px rgba(138,125,255,.35);
+                  animation: pulse 2s ease-in-out infinite;
+          }
 
-      <p class="note">Dica: segue-me no Pinterest, Instagram e TikTok para ver bastidores, WIPs e novas coleções.</p>
+          @keyframes pulse {
+                  0%, 100% { transform: scale(1); }
+                  50% { transform: scale(1.05); }
+          }
 
-      <div class="footer">
-        <span>© <script>document.write(new Date().getFullYear())</script> Fabio Cruz</span>
-        <span class="dot"></span>
-        <span>Feito com GitHub Pages</span>
-      </div>
-    </section>
-  </main>
-</body>
-</html>
+          h1{
+                  margin:14px 0 8px; font-size: clamp(28px, 4.2vw, 48px);
+                  line-height:1.08; font-weight:800;
+                  background: linear-gradient(180deg, #fff, #cfd6ff);
+                  -webkit-background-clip:text; background-clip:text; color:transparent;
+                  text-shadow: 0 8px 32px rgba(138,125,255,.2);
+                  animation: glow 3s ease-in-out infinite alternate;
+          }
 
+          @keyframes glow {
+                  from { filter: drop-shadow(0 0 10px rgba(138,125,255,.3)); }
+                  to { filter: drop-shadow(0 0 20px rgba(138,125,255,.6)); }
+          }
+
+          .subtitle{
+                  color:var(--muted); font-size: clamp(14px, 2.2vw, 18px); line-height:1.6; margin: 4px 0 18px;
+                  animation: fadeIn 1s ease-out 0.3s both;
+          }
+
+          @keyframes fadeIn {
+                  from { opacity: 0; }
+                  
+    </style></title>
+  </head>
