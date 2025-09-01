@@ -1,433 +1,477 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>eBooks | Fabio Cruz - Arte Digital Mística & Kawaii</title>
-  <meta name="description" content="Descobre a coleção de eBooks de Fabio Cruz: NEXUS PROTOCOL, BISOU Adventures, O Planeta de Cristal e Despertar Interior. Histórias que misturam tecnologia, espiritualidade e imaginação.">
-  <meta name="p:domain_verify" content="dfc4a8eb1b9564a469aaa573d3d04eeb"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg-1:#0b0f1a; --bg-2:#141b2d; --accent:#8a7dff; --accent-2:#ffd08a; --text:#e9ecf1; --muted:#a8b0c3;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0}
-    body{
-      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, #1a2240 0%, rgba(26,34,64,0) 60%),
-                  radial-gradient(900px 700px at 80% 20%, #2a1f55 0%, rgba(42,31,85,0) 55%),
-                  radial-gradient(1000px 900px at 50% 100%, #102235 0%, rgba(16,34,53,0) 65%),
-                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
-      overflow-x:hidden;
-    }
-    .stars{
-      position:fixed; inset:0; pointer-events:none; opacity:.35;
-      background:
-        radial-gradient(2px 2px at 20% 30%, #fff, transparent 60%),
-        radial-gradient(1.5px 1.5px at 60% 70%, #fff, transparent 60%),
-        radial-gradient(1.5px 1.5px at 75% 25%, #fff, transparent 60%),
-        radial-gradient(1.8px 1.8px at 35% 80%, #fff, transparent 60%),
-        radial-gradient(1.2px 1.2px at 90% 55%, #fff, transparent 60%);
-      animation: twinkle 4s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 6px #b9c8ff);
-    }
-    @keyframes twinkle { from{opacity:.2} to{opacity:.55} }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBooks - Fábio Cruz Arte Mística e Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Floating elements animation */
-    .floating-element {
-      position: fixed;
-      pointer-events: none;
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: float 6s ease-in-out infinite;
-    }
-    .floating-1 { top: 20%; left: 10%; width: 8px; height: 8px; background: #ffd08a; animation-delay: 0s; }
-    .floating-2 { top: 60%; right: 15%; width: 6px; height: 6px; background: #8a7dff; animation-delay: 2s; }
-    .floating-3 { bottom: 30%; left: 20%; width: 10px; height: 10px; background: #ff8a9b; animation-delay: 4s; }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
-      50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    .container{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 48px 20px;
-      min-height: 100vh;
-    }
+        /* Estrelas animadas */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-    .header{
-      text-align: center;
-      margin-bottom: 48px;
-      animation: slideUp 0.8s ease-out;
-    }
-    
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
 
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12px; letter-spacing:.4px; text-transform:uppercase;
-      color:#0b0f1a; background:linear-gradient(90deg, var(--accent), var(--accent-2));
-      padding:8px 12px; border-radius:999px; font-weight:700;
-      box-shadow:0 6px 20px rgba(138,125,255,.35);
-      animation: pulse 2s ease-in-out infinite;
-      margin-bottom: 16px;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
+        /* Elementos flutuantes */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
 
-    h1{
-      margin:0 0 16px; font-size: clamp(32px, 5vw, 56px);
-      line-height:1.1; font-weight:800;
-      background: linear-gradient(180deg, #fff, #cfd6ff);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow: 0 8px 32px rgba(138,125,255,.2);
-      animation: glow 3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 10px rgba(138,125,255,.3)); }
-      to { filter: drop-shadow(0 0 20px rgba(138,125,255,.6)); }
-    }
+        .floating-element {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
 
-    .subtitle{
-      color:var(--muted); font-size: clamp(16px, 2.5vw, 20px); line-height:1.6; margin: 0 0 48px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+        .floating-element:nth-child(1) {
+            background: rgba(0, 255, 255, 0.3);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
 
-    /* Featured book section */
-    .featured-book {
-      background: linear-gradient(135deg, rgba(138,125,255,.2), rgba(255,208,138,.2));
-      border: 2px solid rgba(138,125,255,.4);
-      border-radius: 24px;
-      padding: 32px;
-      margin-bottom: 48px;
-      text-align: center;
-      animation: fadeIn 1s ease-out 0.4s both;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .featured-book::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
-      animation: shimmer 3s ease-in-out infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
-    
-    .featured-book h2 {
-      margin: 0 0 16px;
-      font-size: clamp(24px, 4vw, 36px);
-      background: linear-gradient(90deg, #00ffff, #8a7dff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .featured-book p {
-      color: var(--text);
-      font-size: 16px;
-      margin: 0 0 24px;
-      line-height: 1.6;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .featured-book .quote {
-      font-style: italic;
-      color: var(--accent-2);
-      font-size: 18px;
-      margin: 16px 0;
-      position: relative;
-      z-index: 1;
-    }
+        .floating-element:nth-child(2) {
+            background: rgba(255, 0, 255, 0.3);
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
 
-    .books-grid{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 32px;
-      margin-bottom: 48px;
-    }
+        .floating-element:nth-child(3) {
+            background: rgba(255, 255, 0, 0.3);
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
 
-    .book-card{
-      background: rgba(12,16,28,.6);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 20px;
-      padding: 0;
-      transition: all 0.3s ease;
-      animation: fadeIn 1s ease-out calc(0.6s + var(--delay)) both;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .book-card:hover{
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(138,125,255,.4);
-      box-shadow: 0 20px 40px rgba(138,125,255,.2);
-    }
-    
-    .book-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-    
-    .book-card:hover::before {
-      transform: scaleX(1);
-    }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
 
-    .book-cover{
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      border-radius: 20px 20px 0 0;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
 
-    .book-content{
-      padding: 24px;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideInDown 1s ease-out;
+        }
 
-    .book-card h3{
-      margin: 0 0 12px;
-      font-size: 20px;
-      color: var(--text);
-      font-weight: 700;
-    }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
 
-    .book-card p{
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 0 0 16px;
-    }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
-    .book-meta{
-      display: flex;
-      gap: 16px;
-      margin: 16px 0;
-      font-size: 12px;
-      color: var(--muted);
-      flex-wrap: wrap;
-    }
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
 
-    .btn{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 14px;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255,255,255,.1);
-      position: relative;
-      overflow: hidden;
-    }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            to { text-shadow: 0 0 40px rgba(255, 0, 255, 0.8); }
+        }
 
-    .btn.primary{
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      color: #0b0f1a;
-      border: none;
-    }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 30px;
+        }
 
-    .btn.primary:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(138,125,255,.4);
-    }
+        /* Aviso para links da Amazon */
+        .amazon-notice {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: #000;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: bold;
+            animation: slideInUp 1s ease-out;
+        }
 
-    .btn.secondary{
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-    }
+        /* Secção NEXUS PROTOCOL em destaque */
+        .featured-book {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #00ffff, #ff00ff) 1;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 1s ease-out;
+        }
 
-    .btn.secondary:hover{
-      background: rgba(255,255,255,.12);
-      transform: translateY(-2px);
-    }
+        .featured-book::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
 
-    .back-link{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-      margin-bottom: 32px;
-      transition: color 0.3s ease;
-      animation: fadeIn 1s ease-out 1.2s both;
-    }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
 
-    .back-link:hover{
-      color: var(--accent);
-    }
+        .featured-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
 
-    .amazon-note{
-      background: rgba(255,208,138,.1);
-      border: 1px solid rgba(255,208,138,.3);
-      border-radius: 12px;
-      padding: 16px;
-      margin: 16px 0;
-      font-size: 13px;
-      color: var(--accent-2);
-      text-align: center;
-    }
+        .featured-cover {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
 
-    /* Responsive design */
-    @media (max-width: 768px) {
-      .books-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .featured-book {
-        padding: 24px;
-      }
-    }
-  </style>
+        .featured-cover:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        .featured-info h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .featured-badge {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .featured-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+
+        .featured-quote {
+            font-style: italic;
+            color: #00ffff;
+            border-left: 3px solid #00ffff;
+            padding-left: 15px;
+            margin: 20px 0;
+        }
+
+        .featured-button {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .featured-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Grid de outros livros */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .book-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .book-card:nth-child(1) { animation-delay: 0.2s; }
+        .book-card:nth-child(2) { animation-delay: 0.4s; }
+        .book-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        }
+
+        .book-cover {
+            width: 200px;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover .book-cover {
+            transform: scale(1.05);
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .book-genre {
+            color: #00ffff;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .book-description {
+            color: #cccccc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .book-button {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: #000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .book-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Animações de entrada */
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .featured-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="stars"></div>
-  <div class="floating-element floating-1"></div>
-  <div class="floating-element floating-2"></div>
-  <div class="floating-element floating-3"></div>
-  
-  <div class="container">
-    <a href="index.html" class="back-link">← Voltar ao Início</a>
-    
-    <header class="header">
-      <span class="badge">📚 Biblioteca Digital</span>
-      <h1>eBooks & Histórias</h1>
-      <p class="subtitle">
-        Mergulha em universos onde tecnologia, espiritualidade e imaginação se encontram. 
-        Cada história é uma jornada única através de realidades alternativas e dimensões místicas.
-      </p>
-    </header>
+    <!-- Estrelas animadas -->
+    <div class="stars"></div>
 
-    <!-- Featured Book Section -->
-    <section class="featured-book">
-      <h2>🚀 NEXUS PROTOCOL</h2>
-      <p>
-        <strong>Thriller Cyberpunk</strong> • Um futuro onde a linha entre humano e máquina desaparece. 
-        Acompanha Maya Chen numa corrida contra o tempo para salvar a humanidade de uma IA que 
-        questiona a própria natureza da consciência.
-      </p>
-      <p class="quote">
-        "Num mundo onde a tecnologia define a realidade, quem controla o código controla tudo."
-      </p>
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a href="https://www.amazon.nl/dp/B0FP9VBKK9" class="btn primary" target="_blank" rel="noopener">📖 Comprar na Amazon</a>
-        <a href="#" class="btn secondary">👁️ Ler Amostra</a>
-      </div>
-    </section>
+    <!-- Elementos flutuantes -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
 
-    <!-- Books Grid -->
-    <section class="books-grid">
-      <article class="book-card" style="--delay: 0s;">
-        <img src="imagens/BisouCover.png" alt="Capa do livro BISOU Adventures in Amsterdam" class="book-cover">
-        <div class="book-content">
-          <h3>🐱 BISOU: Adventures in Amsterdam</h3>
-          <p>
-            Acompanha as aventuras de Bisou, um gato adorável que explora as ruas encantadoras de Amesterdão. 
-            Uma história kawaii cheia de descobertas, amizades e momentos mágicos pelos canais da cidade.
-          </p>
-          <div class="book-meta">
-            <span>📖 História Infantil</span>
-            <span>🌟 Kawaii</span>
-            <span>🏙️ Amesterdão</span>
-          </div>
-          <div style="display: flex; gap: 12px;">
-            <a href="https://www.amazon.nl/dp/B0FM3QSCJN" class="btn primary" target="_blank" rel="noopener">📖 Amazon</a>
-            <a href="#" class="btn secondary">👁️ Preview</a>
-          </div>
+    <div class="container">
+        <div class="header">
+            <div class="badge">Fábio Cruz · Autor Digital</div>
+            <h1 class="main-title">eBooks</h1>
+            <p class="subtitle">Explore mundos de ficção científica, aventura e desenvolvimento pessoal</p>
         </div>
-      </article>
 
-      <article class="book-card" style="--delay: 0.1s;">
-        <img src="imagens/Capaplanetadecristal1.png" alt="Capa do livro O Planeta de Cristal" class="book-cover">
-        <div class="book-content">
-          <h3>🌌 O Planeta de Cristal</h3>
-          <p>
-            Uma épica jornada de ficção científica através de um mundo cristalino misterioso. 
-            Aventura, descoberta e mistérios cósmicos aguardam neste planeta onde a realidade se fragmenta como cristal.
-          </p>
-          <div class="book-meta">
-            <span>🚀 Ficção Científica</span>
-            <span>🔮 Fantasia</span>
-            <span>⭐ Aventura</span>
-          </div>
-          <div style="display: flex; gap: 12px;">
-            <a href="https://www.amazon.nl/dp/B0FLWRHPTF" class="btn primary" target="_blank" rel="noopener">📖 Amazon</a>
-            <a href="#" class="btn secondary">👁️ Preview</a>
-          </div>
+        <!-- NEXUS PROTOCOL em destaque -->
+        <div class="featured-book">
+            <div class="featured-content">
+                <div>
+                    <img src="imagens/capa_nexus_protocol.png" alt="NEXUS PROTOCOL" class="featured-cover">
+                </div>
+                <div class="featured-info">
+                    <div class="featured-badge">DESTAQUE</div>
+                    <h2>NEXUS PROTOCOL</h2>
+                    <p class="featured-description">
+                        Um thriller cyberpunk eletrizante que mergulha nas profundezas da tecnologia neural e conspiração corporativa. 
+                        Quando a realidade e o virtual se fundem, apenas os mais corajosos sobrevivem.
+                    </p>
+                    <div class="featured-quote">
+                        "Em 2087, a linha entre humano e máquina desapareceu... mas a humanidade ainda luta para sobreviver."
+                    </div>
+                    <a href="https://www.amazon.nl/dp/B0FP9VBKK9" class="featured-button">Comprar na Amazon</a>
+                </div>
+            </div>
         </div>
-      </article>
 
-      <article class="book-card" style="--delay: 0.2s;">
-        <img src="imagens/novodespertarinterior.png" alt="Capa do livro Despertar Interior" class="book-cover">
-        <div class="book-content">
-          <h3>🧘 Despertar Interior</h3>
-          <p>
-            <strong>Lições de Jung para a Tua Jornada</strong> • Um guia profundo de desenvolvimento pessoal 
-            baseado nos ensinamentos de Carl Jung. Descobre os segredos da psique e desperta o teu potencial interior.
-          </p>
-          <div class="book-meta">
-            <span>🧠 Psicologia</span>
-            <span>🌱 Desenvolvimento</span>
-            <span>📚 Jung</span>
-          </div>
-          <div style="display: flex; gap: 12px;">
-            <a href="https://www.amazon.nl/dp/B0FMPGSSCF" class="btn primary" target="_blank" rel="noopener">📖 Amazon</a>
-            <a href="#" class="btn secondary">👁️ Preview</a>
-          </div>
+        <!-- Grid de outros livros -->
+        <div class="books-grid">
+            <div class="book-card">
+                <img src="imagens/BisouCover.png" alt="BISOU: Adventures in Amsterdam" class="book-cover">
+                <h3 class="book-title">BISOU: Adventures in Amsterdam</h3>
+                <p class="book-genre">Aventura Kawaii</p>
+                <p class="book-description">
+                    Acompanhe as aventuras adoráveis de Bisou, um gato carinhoso, pelas ruas encantadoras de Amsterdam. 
+                    Uma história heartwarming sobre amizade e descoberta.
+                </p>
+                <a href="https://www.amazon.nl/dp/B0FM3QSCJN" class="book-button">Comprar na Amazon</a>
+            </div>
+
+            <div class="book-card">
+                <img src="imagens/Capaplanetadecristal1.png" alt="O Planeta de Cristal" class="book-cover">
+                <h3 class="book-title">O Planeta de Cristal</h3>
+                <p class="book-genre">Ficção Científica</p>
+                <p class="book-description">
+                    Uma épica jornada intergaláctica onde cristais místicos guardam o segredo da salvação universal. 
+                    Aventura, magia e tecnologia numa narrativa envolvente.
+                </p>
+                <a href="https://www.amazon.nl/dp/B0FLWRHPTF" class="book-button">Comprar na Amazon</a>
+            </div>
+
+            <div class="book-card">
+                <img src="imagens/novodespertarinterior.png" alt="Despertar Interior" class="book-cover">
+                <h3 class="book-title">Despertar Interior</h3>
+                <p class="book-genre">Desenvolvimento Pessoal</p>
+                <p class="book-description">
+                    Lições de Jung para a sua jornada de autoconhecimento. Um guia prático para despertar o seu potencial 
+                    interior e encontrar o equilíbrio na vida moderna.
+                </p>
+                <a href="https://www.amazon.nl/dp/B0FMPGSSCF" class="book-button">Comprar na Amazon</a>
+            </div>
         </div>
-      </article>
-    </section>
+    </div>
 
-    <footer style="text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.1); margin-top: 48px; animation: fadeIn 1s ease-out 1.4s both;">
-      <p style="color: var(--muted); font-size: 14px; margin: 0;">
-        Todos os eBooks disponíveis na Amazon • Formatos Kindle e físico • Envio mundial
-      </p>
-      <div style="margin-top: 16px;">
-        <a href="https://linktr.ee/FabioCruzArteMisticaDigital" style="color: var(--accent); text-decoration: none; font-size: 14px;" target="_blank" rel="noopener">
-          🔗 Mais links e redes sociais
-        </a>
-      </div>
-    </footer>
-  </div>
+    <script>
+        // Criar estrelas animadas
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const numberOfStars = 100;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', createStars);
+    </script>
 </body>
+</html>
+
+
 </html>
 
