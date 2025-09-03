@@ -1,39 +1,55 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 Gerador de Imagens AI - Fabio Cruz</title>
+    <title>Gerador de Imagens AI - Fábio Cruz</title>
     <style>
         /* Estilos para integração no portfólio cósmico */
         .generator-section {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 40px;
             margin: 40px 0;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .generator-title {
             text-align: center;
             font-size: 2.5rem;
-            font-weight: 800;
+            color: #ffffff;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #8a7dff, #ffd08a);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, #9f7aea 0%, #667eea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
         .generator-description {
             text-align: center;
-            color: #ffffff;
+            color: #cccccc;
             margin-bottom: 30px;
             font-size: 1.1rem;
             line-height: 1.6;
+        }
+
+        /* NOVO: Informações de uso premium */
+        .usage-info {
+            background: rgba(255, 208, 138, 0.1);
+            border: 1px solid rgba(255, 208, 138, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .usage-info.premium {
+            background: rgba(159, 122, 234, 0.1);
+            border-color: rgba(159, 122, 234, 0.3);
         }
 
         .generator-form {
@@ -42,161 +58,314 @@
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-label {
             display: block;
             color: #ffffff;
-            font-weight: 600;
             margin-bottom: 8px;
-            font-size: 1.1rem;
+            font-weight: bold;
+            font-size: 1rem;
         }
 
-        .form-input, .form-select {
+        .prompt-input {
             width: 100%;
             padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             color: #ffffff;
             font-size: 1rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
         }
 
-        .form-input:focus, .form-select:focus {
+        .prompt-input:focus {
             outline: none;
-            border-color: #8a7dff;
-            box-shadow: 0 0 20px rgba(138, 125, 255, 0.3);
+            border-color: rgba(159, 122, 234, 0.6);
+            box-shadow: 0 0 20px rgba(159, 122, 234, 0.3);
         }
 
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+        .prompt-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        .generate-btn {
+        .options-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .select-input:focus {
+            outline: none;
+            border-color: rgba(159, 122, 234, 0.6);
+            box-shadow: 0 0 20px rgba(159, 122, 234, 0.3);
+        }
+
+        .select-input option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .generate-button {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #8a7dff, #ffd08a);
-            color: #000000;
+            background: linear-gradient(135deg, #9f7aea 0%, #667eea 100%);
+            color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
         }
 
-        .generate-btn:hover {
+        .generate-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(138, 125, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(159, 122, 234, 0.4);
         }
 
-        .generate-btn:disabled {
-            opacity: 0.6;
+        .generate-button:active {
+            transform: translateY(0);
+        }
+
+        .generate-button:disabled {
+            opacity: 0.7;
             cursor: not-allowed;
             transform: none;
         }
 
-        .usage-info {
-            background: rgba(255, 208, 138, 0.1);
-            border: 1px solid rgba(255, 208, 138, 0.3);
-            border-radius: 12px;
+        .btn-text {
+            display: inline-block;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .image-result {
+            display: none;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             padding: 20px;
-            margin: 20px 0;
-            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .usage-info.premium {
-            background: rgba(138, 125, 255, 0.1);
-            border-color: rgba(138, 125, 255, 0.3);
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .paypal-btn {
-            background: #0070ba;
+        .result-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .download-button {
+            padding: 10px 20px;
+            background: #10b981;
             color: white;
             border: none;
-            padding: 12px 30px;
             border-radius: 8px;
-            font-weight: 600;
             cursor: pointer;
-            margin: 10px;
-            transition: all 0.3s ease;
+            font-weight: bold;
+            transition: background 0.3s ease;
         }
 
-        .paypal-btn:hover {
-            background: #005ea6;
-            transform: translateY(-1px);
+        .download-button:hover {
+            background: #059669;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 15px;
         }
 
         .generated-image {
             max-width: 100%;
             border-radius: 12px;
-            margin: 20px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .image-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .gallery-item {
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
             transition: transform 0.3s ease;
         }
 
-        .gallery-item:hover {
-            transform: scale(1.05);
+        .generated-image:hover {
+            transform: scale(1.02);
         }
 
-        .gallery-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+        .image-prompt {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            color: #cccccc;
+            font-style: italic;
+            margin: 0;
+            line-height: 1.4;
         }
 
-        .loading {
-            text-align: center;
+        .error-message {
+            display: none;
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .gallery-section {
+            margin-top: 40px;
+        }
+
+        .gallery-title {
             color: #ffffff;
-            font-size: 1.1rem;
-            margin: 20px 0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
         }
 
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .gallery-prompt {
+            color: #cccccc;
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        /* NOVO: Modal de pagamento */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .payment-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            margin: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .payment-title {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .payment-description {
+            color: #cccccc;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .paypal-button {
+            background: #0070ba;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .paypal-button:hover {
+            background: #005ea6;
+            transform: translateY(-1px);
+        }
+
+        .cancel-button {
+            background: transparent;
+            color: #cccccc;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Widget de tradução */
         .translate-widget {
             position: fixed;
             top: 20px;
@@ -204,21 +373,32 @@
             z-index: 1000;
         }
 
+        /* Responsividade */
         @media (max-width: 768px) {
             .generator-section {
                 padding: 20px;
-                margin: 20px 10px;
+                margin: 20px 0;
             }
-            
+
             .generator-title {
                 font-size: 2rem;
             }
-            
-            .image-actions {
-                flex-direction: column;
-                align-items: center;
+
+            .options-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
-            
+
+            .result-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
             .translate-widget {
                 position: relative;
                 top: auto;
@@ -226,452 +406,140 @@
                 margin: 20px 0;
                 text-align: center;
             }
+
+            .payment-content {
+                padding: 30px 20px;
+                margin: 10px;
+            }
         }
     </style>
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; font-family: 'Arial', sans-serif; margin: 0; padding: 20px;">
+
     <!-- Widget de Tradução Google -->
     <div class="translate-widget">
         <div id="google_translate_element"></div>
     </div>
 
+    <!-- Seção do Gerador de Imagens AI -->
     <div class="generator-section">
-        <h1 class="generator-title">🪄 Gerador de Imagens AI</h1>
-        <p class="generator-description">
-            Cria arte digital mística e kawaii com inteligência artificial! 
-            <br>✨ 1 criação grátis por dia • Imagens extras por apenas $1
-        </p>
+        <div class="generator-content">
+            <h2 class="generator-title">✨ Gerador de Imagens AI ✨</h2>
+            <p class="generator-description">
+                Crie imagens místicas e cósmicas com inteligência artificial! 
+                <br>✨ 1 criação grátis por dia • Imagens extras por apenas $1
+            </p>
+            
+            <!-- NOVO: Informações de uso -->
+            <div id="usageInfo" class="usage-info">
+                <p id="usageText">🎨 Tens 1 criação gratuita disponível hoje!</p>
+            </div>
+            
+            <div class="generator-form">
+                <div class="form-group">
+                    <label for="prompt" class="form-label">🎨 Descreve a tua visão mística:</label>
+                    <textarea 
+                        id="prompt" 
+                        class="prompt-input" 
+                        placeholder="Ex: Uma deusa cósmica flutuando entre estrelas douradas, estilo kawaii místico..."
+                        rows="3"
+                    ></textarea>
+                </div>
 
-        <!-- Informações de Uso -->
-        <div id="usageInfo" class="usage-info">
-            <p id="usageText">🎨 Tens 1 criação gratuita disponível hoje!</p>
+                <div class="options-row">
+                    <div class="form-group">
+                        <label for="style" class="form-label">🌟 Estilo Artístico:</label>
+                        <select id="style" class="select-input">
+                            <option value="">Automático</option>
+                            <option value="mystical">Místico</option>
+                            <option value="cosmic">Cósmico</option>
+                            <option value="kawaii">Kawaii</option>
+                            <option value="anime">Anime</option>
+                            <option value="watercolor">Aquarela</option>
+                            <option value="digital art">Arte Digital</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aspect" class="form-label">📐 Formato:</label>
+                        <select id="aspect" class="select-input">
+                            <option value="square">Quadrado (1:1)</option>
+                            <option value="landscape">Paisagem (16:9)</option>
+                            <option value="portrait">Retrato (9:16)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="generate-button">
+                    <span class="btn-text">🪄 Criar Magia Digital</span>
+                    <div class="loading-spinner"></div>
+                </button>
+            </div>
+
+            <div id="imageResult" class="image-result">
+                <div class="result-header">
+                    <h3>🎭 Tua Criação Mística</h3>
+                    <button id="downloadBtn" class="download-button">
+                        💾 Guardar Imagem
+                    </button>
+                </div>
+                <div class="image-container">
+                    <!-- NOVO: Canvas para marca d'água -->
+                    <canvas id="finalCanvas" class="generated-image"></canvas>
+                </div>
+                <div class="image-info">
+                    <p id="imagePrompt" class="image-prompt"></p>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message">
+                ⚠️ <span id="errorText"></span>
+            </div>
+
+            <div class="gallery-section">
+                <h3 class="gallery-title">🌌 Galeria de Criações Místicas</h3>
+                <div id="gallery" class="gallery-grid">
+                    <!-- Imagens geradas aparecerão aqui -->
+                </div>
+            </div>
         </div>
-
-        <!-- Formulário de Geração -->
-        <form class="generator-form" id="generatorForm">
-            <div class="form-group">
-                <label class="form-label" for="prompt">✨ Descreve a tua visão artística:</label>
-                <input 
-                    type="text" 
-                    id="prompt" 
-                    class="form-input" 
-                    placeholder="Ex: Uma deusa cósmica kawaii flutuando entre estrelas douradas..."
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="style">🎨 Estilo Artístico:</label>
-                <select id="style" class="form-select">
-                    <option value="mystic">🔮 Místico & Espiritual</option>
-                    <option value="kawaii">🌸 Kawaii & Fofo</option>
-                    <option value="cosmic">🌌 Cósmico & Celestial</option>
-                    <option value="anime">⭐ Anime & Manga</option>
-                    <option value="fantasy">🧚 Fantasy & Mágico</option>
-                    <option value="cyberpunk">🤖 Cyberpunk & Futurista</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="format">📐 Formato da Imagem:</label>
-                <select id="format" class="form-select">
-                    <option value="square">⬜ Quadrado (1:1)</option>
-                    <option value="landscape">🖼️ Paisagem (16:9)</option>
-                    <option value="portrait">📱 Retrato (9:16)</option>
-                </select>
-            </div>
-
-            <button type="submit" class="generate-btn" id="generateBtn">
-                🪄 Criar Magia Digital
-            </button>
-        </form>
-
-        <!-- Área de Loading -->
-        <div id="loading" class="loading" style="display: none;">
-            ✨ Criando a tua obra de arte... Aguarda alguns segundos! 🎨
-        </div>
-
-        <!-- Imagem Gerada -->
-        <div id="imageResult" style="display: none; text-align: center;">
-            <canvas id="finalCanvas" class="generated-image"></canvas>
-            <div class="image-actions">
-                <button class="action-btn" onclick="downloadImage()">💾 Download</button>
-                <button class="action-btn" onclick="shareImage()">📤 Partilhar</button>
-                <button class="action-btn" onclick="addToGallery()">🖼️ Adicionar à Galeria</button>
-            </div>
-        </div>
-
-        <!-- Galeria -->
-        <div id="gallery" class="gallery"></div>
     </div>
 
-    <!-- Scripts -->
+    <!-- NOVO: Modal de pagamento -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-content">
+            <h2 class="payment-title">🎨 Criar Mais Arte?</h2>
+            <p class="payment-description">
+                Já usaste a tua criação gratuita de hoje!<br>
+                <strong>Desbloqueia criações ilimitadas por apenas $1</strong>
+            </p>
+            <div id="paypal-button-container"></div>
+            <button id="cancelPayment" class="cancel-button">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Scripts PayPal e Google Translate -->
     <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
     <script>
-        // Configurações
+        // CONFIGURAÇÕES PREMIUM
         const PAYPAL_EMAIL = 'ninotuga@hotmail.com';
         const PRICE_PER_IMAGE = 1.00;
         const WATERMARK_TEXT = '🌟 FABIO CRUZ • DIGITAL ARTIST';
-        
-        // Estado da aplicação
-        let dailyUsage = getDailyUsage();
-        let isPremium = checkPremiumStatus();
-        let generatedImages = getStoredImages();
 
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', function() {
-            updateUsageInfo();
-            loadGallery();
-            setupForm();
-        });
-
-        // Configurar formulário
-        function setupForm() {
-            document.getElementById('generatorForm').addEventListener('submit', handleGenerate);
-        }
-
-        // Lidar com geração de imagem
-        async function handleGenerate(e) {
-            e.preventDefault();
-            
-            if (!canGenerate()) {
-                showPaymentModal();
-                return;
+        class ImageGenerator {
+            constructor() {
+                this.dailyUsage = this.getDailyUsage();
+                this.isPremium = this.checkPremiumStatus();
+                this.initializeElements();
+                this.bindEvents();
+                this.loadGallery();
+                this.updateUsageInfo();
             }
 
-            const prompt = document.getElementById('prompt').value;
-            const style = document.getElementById('style').value;
-            const format = document.getElementById('format').value;
-
-            await generateImage(prompt, style, format);
-        }
-
-        // Verificar se pode gerar
-        function canGenerate() {
-            return dailyUsage.count < 1 || isPremium;
-        }
-
-        // Gerar imagem
-        async function generateImage(prompt, style, format) {
-            showLoading(true);
-            
-            try {
-                // Construir prompt melhorado
-                const enhancedPrompt = buildEnhancedPrompt(prompt, style);
-                
-                // Chamar API de geração (Pollinations AI)
-                const imageUrl = await callImageAPI(enhancedPrompt, format);
-                
-                // Adicionar marca d'água
-                await addWatermarkAndDisplay(imageUrl);
-                
-                // Atualizar contadores
-                updateUsageCount();
-                updateUsageInfo();
-                
-            } catch (error) {
-                console.error('Erro ao gerar imagem:', error);
-                alert('Erro ao gerar imagem. Tenta novamente!');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Construir prompt melhorado
-        function buildEnhancedPrompt(prompt, style) {
-            const stylePrompts = {
-                mystic: 'mystical, spiritual, ethereal, magical aura, divine light',
-                kawaii: 'kawaii, cute, adorable, pastel colors, soft lighting',
-                cosmic: 'cosmic, celestial, stars, nebula, galaxy, space',
-                anime: 'anime style, manga art, detailed, vibrant colors',
-                fantasy: 'fantasy art, magical, enchanted, fairy tale',
-                cyberpunk: 'cyberpunk, futuristic, neon lights, digital art'
-            };
-            
-            return `${prompt}, ${stylePrompts[style]}, high quality, detailed, artistic, beautiful`;
-        }
-
-        // Chamar API de imagem
-        async function callImageAPI(prompt, format) {
-            const dimensions = {
-                square: '512x512',
-                landscape: '768x432',
-                portrait: '432x768'
-            };
-            
-            const size = dimensions[format] || '512x512';
-            const apiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}`;
-            
-            return apiUrl;
-        }
-
-        // Adicionar marca d'água e exibir
-        async function addWatermarkAndDisplay(imageUrl) {
-            const canvas = document.getElementById('finalCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Carregar imagem
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            
-            return new Promise((resolve) => {
-                img.onload = function() {
-                    // Configurar canvas
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    
-                    // Desenhar imagem
-                    ctx.drawImage(img, 0, 0);
-                    
-                    // Adicionar marca d'água
-                    addWatermark(ctx, canvas.width, canvas.height);
-                    
-                    // Mostrar resultado
-                    document.getElementById('imageResult').style.display = 'block';
-                    resolve();
-                };
-                
-                img.src = imageUrl;
-            });
-        }
-
-        // Adicionar marca d'água
-        function addWatermark(ctx, width, height) {
-            // Configurar texto
-            const fontSize = Math.max(16, width * 0.03);
-            ctx.font = `bold ${fontSize}px Arial`;
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            ctx.lineWidth = 2;
-            
-            // Posicionar no canto inferior direito
-            const x = width - ctx.measureText(WATERMARK_TEXT).width - 20;
-            const y = height - 20;
-            
-            // Desenhar marca d'água
-            ctx.strokeText(WATERMARK_TEXT, x, y);
-            ctx.fillText(WATERMARK_TEXT, x, y);
-        }
-
-        // Mostrar modal de pagamento
-        function showPaymentModal() {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.8); display: flex; justify-content: center;
-                align-items: center; z-index: 10000;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: #1a1a2e; padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; margin: 20px;">
-                    <h2 style="color: #8a7dff; margin-bottom: 20px;">🎨 Criar Mais Arte?</h2>
-                    <p style="color: white; margin-bottom: 30px;">
-                        Já usaste a tua criação gratuita de hoje!<br>
-                        <strong>Desbloqueia criações ilimitadas por apenas $1</strong>
-                    </p>
-                    <div id="paypal-button-container"></div>
-                    <button onclick="this.parentElement.parentElement.remove()" 
-                            style="background: transparent; color: #888; border: 1px solid #444; 
-                                   padding: 10px 20px; border-radius: 8px; margin-top: 20px; cursor: pointer;">
-                        Cancelar
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Configurar botão PayPal
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: PRICE_PER_IMAGE.toFixed(2)
-                            },
-                            description: 'Gerador de Imagens AI - Acesso Premium 24h'
-                        }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        // Ativar premium
-                        activatePremium();
-                        modal.remove();
-                        alert('🎉 Premium ativado! Agora podes criar imagens ilimitadas por 24h!');
-                        updateUsageInfo();
-                    });
-                }
-            }).render('#paypal-button-container');
-        }
-
-        // Ativar premium
-        function activatePremium() {
-            const premiumUntil = new Date();
-            premiumUntil.setHours(premiumUntil.getHours() + 24);
-            localStorage.setItem('premiumUntil', premiumUntil.toISOString());
-            isPremium = true;
-        }
-
-        // Verificar status premium
-        function checkPremiumStatus() {
-            const premiumUntil = localStorage.getItem('premiumUntil');
-            if (!premiumUntil) return false;
-            
-            const expiry = new Date(premiumUntil);
-            const now = new Date();
-            
-            if (now > expiry) {
-                localStorage.removeItem('premiumUntil');
-                return false;
-            }
-            
-            return true;
-        }
-
-        // Obter uso diário
-        function getDailyUsage() {
-            const today = new Date().toDateString();
-            const stored = localStorage.getItem('dailyUsage');
-            
-            if (!stored) {
-                return { date: today, count: 0 };
-            }
-            
-            const usage = JSON.parse(stored);
-            if (usage.date !== today) {
-                return { date: today, count: 0 };
-            }
-            
-            return usage;
-        }
-
-        // Atualizar contador de uso
-        function updateUsageCount() {
-            if (!isPremium) {
-                dailyUsage.count++;
-                localStorage.setItem('dailyUsage', JSON.stringify(dailyUsage));
-            }
-        }
-
-        // Atualizar informações de uso
-        function updateUsageInfo() {
-            const infoDiv = document.getElementById('usageInfo');
-            const textEl = document.getElementById('usageText');
-            
-            if (isPremium) {
-                infoDiv.className = 'usage-info premium';
-                textEl.textContent = '👑 Premium Ativo - Criações Ilimitadas!';
-            } else if (dailyUsage.count >= 1) {
-                infoDiv.className = 'usage-info';
-                textEl.textContent = '⏰ Limite diário atingido. Próxima criação grátis amanhã ou paga $1 agora!';
-            } else {
-                infoDiv.className = 'usage-info';
-                textEl.textContent = '🎨 Tens 1 criação gratuita disponível hoje!';
-            }
-        }
-
-        // Mostrar loading
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-            document.getElementById('generateBtn').disabled = show;
-        }
-
-        // Download da imagem
-        function downloadImage() {
-            const canvas = document.getElementById('finalCanvas');
-            const link = document.createElement('a');
-            link.download = `fabio-cruz-ai-art-${Date.now()}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-        }
-
-        // Partilhar imagem
-        function shareImage() {
-            const canvas = document.getElementById('finalCanvas');
-            canvas.toBlob(function(blob) {
-                if (navigator.share) {
-                    const file = new File([blob], 'ai-art.png', { type: 'image/png' });
-                    navigator.share({
-                        title: 'Arte AI criada por Fabio Cruz',
-                        text: 'Vê esta arte incrível que criei!',
-                        files: [file]
-                    });
-                } else {
-                    // Fallback para browsers sem suporte
-                    const url = URL.createObjectURL(blob);
-                    window.open(`https://twitter.com/intent/tweet?text=Arte AI incrível criada em fabiocruz.github.io!&url=${encodeURIComponent(url)}`);
-                }
-            });
-        }
-
-        // Adicionar à galeria
-        function addToGallery() {
-            const canvas = document.getElementById('finalCanvas');
-            const imageData = canvas.toDataURL();
-            
-            generatedImages.unshift({
-                id: Date.now(),
-                data: imageData,
-                timestamp: new Date().toISOString()
-            });
-            
-            // Manter apenas últimas 20 imagens
-            if (generatedImages.length > 20) {
-                generatedImages = generatedImages.slice(0, 20);
-            }
-            
-            localStorage.setItem('generatedImages', JSON.stringify(generatedImages));
-            loadGallery();
-        }
-
-        // Carregar galeria
-        function loadGallery() {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '';
-            
-            generatedImages.forEach(img => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `<img src="${img.data}" alt="AI Art">`;
-                item.onclick = () => showImageModal(img.data);
-                gallery.appendChild(item);
-            });
-        }
-
-        // Mostrar modal da imagem
-        function showImageModal(imageSrc) {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.9); display: flex; justify-content: center;
-                align-items: center; z-index: 10000; cursor: pointer;
-            `;
-            modal.innerHTML = `<img src="${imageSrc}" style="max-width: 90%; max-height: 90%; border-radius: 12px;">`;
-            modal.onclick = () => modal.remove();
-            document.body.appendChild(modal);
-        }
-
-        // Obter imagens armazenadas
-        function getStoredImages() {
-            const stored = localStorage.getItem('generatedImages');
-            return stored ? JSON.parse(stored) : [];
-        }
-    </script>
-
-    <!-- Google Translate -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pt',
-                includedLanguages: 'en,es,fr,de,it,ja,ko,zh',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>
+            initializeElements() {
+                this.promptInput = document.getElementById('prompt');
+                this.styleSelect = document.getElementB
+(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
 
 
 
