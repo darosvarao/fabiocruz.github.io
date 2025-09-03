@@ -1,36 +1,36 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Imagens AI - Fábio Cruz</title>
+    <title>🎨 Gerador de Imagens AI - Fabio Cruz</title>
     <style>
         /* Estilos para integração no portfólio cósmico */
         .generator-section {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 40px;
             margin: 40px 0;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .generator-title {
             text-align: center;
             font-size: 2.5rem;
-            color: #ffffff;
+            font-weight: 800;
             margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            background: linear-gradient(135deg, #9f7aea 0%, #667eea 100%);
+            background: linear-gradient(135deg, #8a7dff, #ffd08a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
         .generator-description {
             text-align: center;
-            color: #cccccc;
+            color: #ffffff;
             margin-bottom: 30px;
             font-size: 1.1rem;
             line-height: 1.6;
@@ -42,578 +42,636 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-label {
             display: block;
             color: #ffffff;
+            font-weight: 600;
             margin-bottom: 8px;
-            font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
-        .prompt-input {
+        .form-input, .form-select {
             width: 100%;
             padding: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
             font-size: 1rem;
-            resize: vertical;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        .prompt-input:focus {
+        .form-input:focus, .form-select:focus {
             outline: none;
-            border-color: rgba(159, 122, 234, 0.6);
-            box-shadow: 0 0 20px rgba(159, 122, 234, 0.3);
+            border-color: #8a7dff;
+            box-shadow: 0 0 20px rgba(138, 125, 255, 0.3);
         }
 
-        .prompt-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
-        .options-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .select-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #ffffff;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .select-input:focus {
-            outline: none;
-            border-color: rgba(159, 122, 234, 0.6);
-            box-shadow: 0 0 20px rgba(159, 122, 234, 0.3);
-        }
-
-        .select-input option {
-            background: #1a1a1a;
-            color: #ffffff;
-        }
-
-        .generate-button {
+        .generate-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #9f7aea 0%, #667eea 100%);
-            color: white;
+            background: linear-gradient(135deg, #8a7dff, #ffd08a);
+            color: #000000;
             border: none;
             border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
         }
 
-        .generate-button:hover {
+        .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(159, 122, 234, 0.4);
+            box-shadow: 0 15px 30px rgba(138, 125, 255, 0.4);
         }
 
-        .generate-button:active {
-            transform: translateY(0);
-        }
-
-        .generate-button:disabled {
-            opacity: 0.7;
+        .generate-btn:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .btn-text {
-            display: inline-block;
-            transition: opacity 0.3s ease;
-        }
-
-        .loading-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .image-result {
-            display: none;
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+        .usage-info {
+            background: rgba(255, 208, 138, 0.1);
+            border: 1px solid rgba(255, 208, 138, 0.3);
+            border-radius: 12px;
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+            text-align: center;
         }
 
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+        .usage-info.premium {
+            background: rgba(138, 125, 255, 0.1);
+            border-color: rgba(138, 125, 255, 0.3);
         }
 
-        .result-header h3 {
-            color: #ffffff;
-            margin: 0;
-            font-size: 1.3rem;
-        }
-
-        .download-button {
-            padding: 10px 20px;
-            background: #10b981;
+        .paypal-btn {
+            background: #0070ba;
             color: white;
             border: none;
+            padding: 12px 30px;
             border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            margin: 10px;
+            transition: all 0.3s ease;
         }
 
-        .download-button:hover {
-            background: #059669;
-        }
-
-        .image-container {
-            text-align: center;
-            margin-bottom: 15px;
+        .paypal-btn:hover {
+            background: #005ea6;
+            transform: translateY(-1px);
         }
 
         .generated-image {
             max-width: 100%;
             border-radius: 12px;
+            margin: 20px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
         }
 
-        .generated-image:hover {
-            transform: scale(1.02);
+        .image-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
 
-        .image-prompt {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 8px;
-            color: #cccccc;
-            font-style: italic;
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        .error-message {
-            display: none;
-            background: rgba(220, 38, 38, 0.2);
-            border: 1px solid rgba(220, 38, 38, 0.5);
-            color: #ff6b6b;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-
-        .gallery-section {
-            margin-top: 40px;
-        }
-
-        .gallery-title {
+        .action-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .gallery-grid {
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
+            margin: 30px 0;
         }
 
         .gallery-item {
-            background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 10px;
-            transition: transform 0.3s ease;
+            overflow: hidden;
             cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
         .gallery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
         }
 
-        .gallery-image {
+        .gallery-item img {
             width: 100%;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            height: 200px;
+            object-fit: cover;
         }
 
-        .gallery-prompt {
-            color: #cccccc;
-            font-size: 0.8rem;
-            line-height: 1.3;
+        .loading {
+            text-align: center;
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin: 20px 0;
         }
 
-        .hidden {
-            display: none !important;
+        .translate-widget {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
             .generator-section {
                 padding: 20px;
-                margin: 20px 0;
+                margin: 20px 10px;
             }
-
+            
             .generator-title {
                 font-size: 2rem;
             }
-
-            .options-row {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .result-header {
+            
+            .image-actions {
                 flex-direction: column;
-                align-items: stretch;
+                align-items: center;
             }
-
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
+            
+            .translate-widget {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 20px 0;
+                text-align: center;
             }
         }
     </style>
 </head>
-<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; font-family: 'Arial', sans-serif; margin: 0; padding: 20px;">
-
-    <!-- Seção do Gerador de Imagens AI -->
-    <div class="generator-section">
-        <div class="generator-content">
-            <h2 class="generator-title">✨ Gerador de Imagens AI ✨</h2>
-            <p class="generator-description">
-                Crie imagens místicas e cósmicas com inteligência artificial! 
-                Descreva a tua visão e vê-la ganhar vida através da magia digital.
-            </p>
-            
-            <div class="generator-form">
-                <div class="form-group">
-                    <label for="prompt" class="form-label">🎨 Descreve a tua visão mística:</label>
-                    <textarea 
-                        id="prompt" 
-                        class="prompt-input" 
-                        placeholder="Ex: Uma deusa cósmica flutuando entre estrelas douradas, estilo kawaii místico..."
-                        rows="3"
-                    ></textarea>
-                </div>
-
-                <div class="options-row">
-                    <div class="form-group">
-                        <label for="style" class="form-label">🌟 Estilo Artístico:</label>
-                        <select id="style" class="select-input">
-                            <option value="">Automático</option>
-                            <option value="mystical">Místico</option>
-                            <option value="cosmic">Cósmico</option>
-                            <option value="kawaii">Kawaii</option>
-                            <option value="anime">Anime</option>
-                            <option value="watercolor">Aquarela</option>
-                            <option value="digital art">Arte Digital</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="aspect" class="form-label">📐 Formato:</label>
-                        <select id="aspect" class="select-input">
-                            <option value="square">Quadrado (1:1)</option>
-                            <option value="landscape">Paisagem (16:9)</option>
-                            <option value="portrait">Retrato (9:16)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button id="generateBtn" class="generate-button">
-                    <span class="btn-text">🪄 Criar Magia Digital</span>
-                    <div class="loading-spinner"></div>
-                </button>
-            </div>
-
-            <div id="imageResult" class="image-result">
-                <div class="result-header">
-                    <h3>🎭 Tua Criação Mística</h3>
-                    <button id="downloadBtn" class="download-button">
-                        💾 Guardar Imagem
-                    </button>
-                </div>
-                <div class="image-container">
-                    <img id="generatedImage" alt="Imagem gerada" class="generated-image">
-                </div>
-                <div class="image-info">
-                    <p id="imagePrompt" class="image-prompt"></p>
-                </div>
-            </div>
-
-            <div id="errorMessage" class="error-message">
-                ⚠️ <span id="errorText"></span>
-            </div>
-
-            <div class="gallery-section">
-                <h3 class="gallery-title">🌌 Galeria de Criações Místicas</h3>
-                <div id="gallery" class="gallery-grid">
-                    <!-- Imagens geradas aparecerão aqui -->
-                </div>
-            </div>
-        </div>
+<body>
+    <!-- Widget de Tradução Google -->
+    <div class="translate-widget">
+        <div id="google_translate_element"></div>
     </div>
 
+    <div class="generator-section">
+        <h1 class="generator-title">🪄 Gerador de Imagens AI</h1>
+        <p class="generator-description">
+            Cria arte digital mística e kawaii com inteligência artificial! 
+            <br>✨ 1 criação grátis por dia • Imagens extras por apenas $1
+        </p>
+
+        <!-- Informações de Uso -->
+        <div id="usageInfo" class="usage-info">
+            <p id="usageText">🎨 Tens 1 criação gratuita disponível hoje!</p>
+        </div>
+
+        <!-- Formulário de Geração -->
+        <form class="generator-form" id="generatorForm">
+            <div class="form-group">
+                <label class="form-label" for="prompt">✨ Descreve a tua visão artística:</label>
+                <input 
+                    type="text" 
+                    id="prompt" 
+                    class="form-input" 
+                    placeholder="Ex: Uma deusa cósmica kawaii flutuando entre estrelas douradas..."
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="style">🎨 Estilo Artístico:</label>
+                <select id="style" class="form-select">
+                    <option value="mystic">🔮 Místico & Espiritual</option>
+                    <option value="kawaii">🌸 Kawaii & Fofo</option>
+                    <option value="cosmic">🌌 Cósmico & Celestial</option>
+                    <option value="anime">⭐ Anime & Manga</option>
+                    <option value="fantasy">🧚 Fantasy & Mágico</option>
+                    <option value="cyberpunk">🤖 Cyberpunk & Futurista</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="format">📐 Formato da Imagem:</label>
+                <select id="format" class="form-select">
+                    <option value="square">⬜ Quadrado (1:1)</option>
+                    <option value="landscape">🖼️ Paisagem (16:9)</option>
+                    <option value="portrait">📱 Retrato (9:16)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="generate-btn" id="generateBtn">
+                🪄 Criar Magia Digital
+            </button>
+        </form>
+
+        <!-- Área de Loading -->
+        <div id="loading" class="loading" style="display: none;">
+            ✨ Criando a tua obra de arte... Aguarda alguns segundos! 🎨
+        </div>
+
+        <!-- Imagem Gerada -->
+        <div id="imageResult" style="display: none; text-align: center;">
+            <canvas id="finalCanvas" class="generated-image"></canvas>
+            <div class="image-actions">
+                <button class="action-btn" onclick="downloadImage()">💾 Download</button>
+                <button class="action-btn" onclick="shareImage()">📤 Partilhar</button>
+                <button class="action-btn" onclick="addToGallery()">🖼️ Adicionar à Galeria</button>
+            </div>
+        </div>
+
+        <!-- Galeria -->
+        <div id="gallery" class="gallery"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
     <script>
-        class ImageGenerator {
-            constructor() {
-                this.initializeElements();
-                this.bindEvents();
-                this.loadGallery();
-            }
+        // Configurações
+        const PAYPAL_EMAIL = 'ninotuga@hotmail.com';
+        const PRICE_PER_IMAGE = 1.00;
+        const WATERMARK_TEXT = '🌟 FABIO CRUZ • DIGITAL ARTIST';
+        
+        // Estado da aplicação
+        let dailyUsage = getDailyUsage();
+        let isPremium = checkPremiumStatus();
+        let generatedImages = getStoredImages();
 
-            initializeElements() {
-                this.promptInput = document.getElementById('prompt');
-                this.styleSelect = document.getElementById('style');
-                this.aspectSelect = document.getElementById('aspect');
-                this.generateBtn = document.getElementById('generateBtn');
-                this.btnText = this.generateBtn.querySelector('.btn-text');
-                this.loadingSpinner = this.generateBtn.querySelector('.loading-spinner');
-                this.imageResult = document.getElementById('imageResult');
-                this.generatedImage = document.getElementById('generatedImage');
-                this.imagePrompt = document.getElementById('imagePrompt');
-                this.downloadBtn = document.getElementById('downloadBtn');
-                this.errorMessage = document.getElementById('errorMessage');
-                this.errorText = document.getElementById('errorText');
-                this.gallery = document.getElementById('gallery');
-            }
-
-            bindEvents() {
-                this.generateBtn.addEventListener('click', () => this.generateImage());
-                this.downloadBtn.addEventListener('click', () => this.downloadImage());
-                
-                // Enter key no textarea
-                this.promptInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && e.ctrlKey) {
-                        this.generateImage();
-                    }
-                });
-            }
-
-            async generateImage() {
-                const prompt = this.promptInput.value.trim();
-                if (!prompt) {
-                    this.showError('Por favor, descreve a tua visão mística!');
-                    return;
-                }
-
-                this.setLoading(true);
-                this.hideError();
-
-                try {
-                    // Construir prompt completo com estilo
-                    let fullPrompt = prompt;
-                    const style = this.styleSelect.value;
-                    if (style) {
-                        fullPrompt += `, ${style} style`;
-                    }
-
-                    // Simular geração de imagem (substitua pela API real)
-                    const imageUrl = await this.callImageAPI(fullPrompt);
-                    
-                    this.displayImage(imageUrl, fullPrompt);
-                    this.addToGallery(imageUrl, prompt);
-                    
-                } catch (error) {
-                    console.error('Erro ao gerar imagem:', error);
-                    this.showError('Erro ao gerar imagem. Tenta novamente!');
-                } finally {
-                    this.setLoading(false);
-                }
-            }
-
-            async callImageAPI(prompt) {
-                // API de exemplo usando Pollinations (gratuita)
-                const aspect = this.aspectSelect.value;
-                let dimensions = '512x512';
-                
-                if (aspect === 'landscape') dimensions = '768x432';
-                else if (aspect === 'portrait') dimensions = '432x768';
-
-                const encodedPrompt = encodeURIComponent(prompt);
-                const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${dimensions.split('x')[0]}&height=${dimensions.split('x')[1]}&seed=${Math.floor(Math.random() * 1000000)}`;
-                
-                // Simular delay de geração
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                return apiUrl;
-            }
-
-            displayImage(imageUrl, prompt) {
-                this.generatedImage.src = imageUrl;
-                this.imagePrompt.textContent = prompt;
-                this.imageResult.style.display = 'block';
-                
-                // Scroll suave para a imagem
-                setTimeout(() => {
-                    this.imageResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-            }
-
-            addToGallery(imageUrl, prompt) {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'gallery-item';
-                galleryItem.innerHTML = `
-                    <img src="${imageUrl}" alt="Imagem gerada" class="gallery-image">
-                    <p class="gallery-prompt">${prompt}</p>
-                `;
-                
-                galleryItem.addEventListener('click', () => {
-                    this.displayImage(imageUrl, prompt);
-                });
-                
-                this.gallery.insertBefore(galleryItem, this.gallery.firstChild);
-                
-                // Salvar no localStorage
-                this.saveToLocalStorage(imageUrl, prompt);
-            }
-
-            saveToLocalStorage(imageUrl, prompt) {
-                let gallery = JSON.parse(localStorage.getItem('mysticGallery') || '[]');
-                gallery.unshift({ imageUrl, prompt, timestamp: Date.now() });
-                
-                // Manter apenas as últimas 20 imagens
-                gallery = gallery.slice(0, 20);
-                
-                localStorage.setItem('mysticGallery', JSON.stringify(gallery));
-            }
-
-            loadGallery() {
-                const gallery = JSON.parse(localStorage.getItem('mysticGallery') || '[]');
-                gallery.forEach(item => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery-item';
-                    galleryItem.innerHTML = `
-                        <img src="${item.imageUrl}" alt="Imagem gerada" class="gallery-image">
-                        <p class="gallery-prompt">${item.prompt}</p>
-                    `;
-                    
-                    galleryItem.addEventListener('click', () => {
-                        this.displayImage(item.imageUrl, item.prompt);
-                    });
-                    
-                    this.gallery.appendChild(galleryItem);
-                });
-            }
-
-            downloadImage() {
-                const imageUrl = this.generatedImage.src;
-                if (!imageUrl) return;
-
-                const link = document.createElement('a');
-                link.href = imageUrl;
-                link.download = `mystic-creation-${Date.now()}.png`;
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-
-            setLoading(loading) {
-                this.generateBtn.disabled = loading;
-                if (loading) {
-                    this.btnText.style.opacity = '0';
-                    this.loadingSpinner.style.display = 'block';
-                } else {
-                    this.btnText.style.opacity = '1';
-                    this.loadingSpinner.style.display = 'none';
-                }
-            }
-
-            showError(message) {
-                this.errorText.textContent = message;
-                this.errorMessage.style.display = 'block';
-                setTimeout(() => this.hideError(), 5000);
-            }
-
-            hideError() {
-                this.errorMessage.style.display = 'none';
-            }
-        }
-
-        // Inicializar quando a página carregar
-        document.addEventListener('DOMContentLoaded', () => {
-            new ImageGenerator();
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUsageInfo();
+            loadGallery();
+            setupForm();
         });
 
-        // Adicionar efeitos de partículas cósmicas (opcional)
-        function createStars() {
-            const starsContainer = document.createElement('div');
-            starsContainer.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: -1;
-            `;
-            
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.style.cssText = `
-                    position: absolute;
-                    width: 2px;
-                    height: 2px;
-                    background: white;
-                    border-radius: 50%;
-                    top: ${Math.random() * 100}%;
-                    left: ${Math.random() * 100}%;
-                    animation: twinkle ${2 + Math.random() * 3}s infinite;
-                `;
-                starsContainer.appendChild(star);
-            }
-            
-            document.body.appendChild(starsContainer);
+        // Configurar formulário
+        function setupForm() {
+            document.getElementById('generatorForm').addEventListener('submit', handleGenerate);
         }
 
-        // Adicionar CSS para animação das estrelas
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes twinkle {
-                0%, 100% { opacity: 0.3; }
-                50% { opacity: 1; }
+        // Lidar com geração de imagem
+        async function handleGenerate(e) {
+            e.preventDefault();
+            
+            if (!canGenerate()) {
+                showPaymentModal();
+                return;
             }
-        `;
-        document.head.appendChild(style);
 
-        // Criar estrelas quando a página carregar
-        document.addEventListener('DOMContentLoaded', createStars);
+            const prompt = document.getElementById('prompt').value;
+            const style = document.getElementById('style').value;
+            const format = document.getElementById('format').value;
+
+            await generateImage(prompt, style, format);
+        }
+
+        // Verificar se pode gerar
+        function canGenerate() {
+            return dailyUsage.count < 1 || isPremium;
+        }
+
+        // Gerar imagem
+        async function generateImage(prompt, style, format) {
+            showLoading(true);
+            
+            try {
+                // Construir prompt melhorado
+                const enhancedPrompt = buildEnhancedPrompt(prompt, style);
+                
+                // Chamar API de geração (Pollinations AI)
+                const imageUrl = await callImageAPI(enhancedPrompt, format);
+                
+                // Adicionar marca d'água
+                await addWatermarkAndDisplay(imageUrl);
+                
+                // Atualizar contadores
+                updateUsageCount();
+                updateUsageInfo();
+                
+            } catch (error) {
+                console.error('Erro ao gerar imagem:', error);
+                alert('Erro ao gerar imagem. Tenta novamente!');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Construir prompt melhorado
+        function buildEnhancedPrompt(prompt, style) {
+            const stylePrompts = {
+                mystic: 'mystical, spiritual, ethereal, magical aura, divine light',
+                kawaii: 'kawaii, cute, adorable, pastel colors, soft lighting',
+                cosmic: 'cosmic, celestial, stars, nebula, galaxy, space',
+                anime: 'anime style, manga art, detailed, vibrant colors',
+                fantasy: 'fantasy art, magical, enchanted, fairy tale',
+                cyberpunk: 'cyberpunk, futuristic, neon lights, digital art'
+            };
+            
+            return `${prompt}, ${stylePrompts[style]}, high quality, detailed, artistic, beautiful`;
+        }
+
+        // Chamar API de imagem
+        async function callImageAPI(prompt, format) {
+            const dimensions = {
+                square: '512x512',
+                landscape: '768x432',
+                portrait: '432x768'
+            };
+            
+            const size = dimensions[format] || '512x512';
+            const apiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${size.split('x')[0]}&height=${size.split('x')[1]}`;
+            
+            return apiUrl;
+        }
+
+        // Adicionar marca d'água e exibir
+        async function addWatermarkAndDisplay(imageUrl) {
+            const canvas = document.getElementById('finalCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Carregar imagem
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            
+            return new Promise((resolve) => {
+                img.onload = function() {
+                    // Configurar canvas
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    // Desenhar imagem
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Adicionar marca d'água
+                    addWatermark(ctx, canvas.width, canvas.height);
+                    
+                    // Mostrar resultado
+                    document.getElementById('imageResult').style.display = 'block';
+                    resolve();
+                };
+                
+                img.src = imageUrl;
+            });
+        }
+
+        // Adicionar marca d'água
+        function addWatermark(ctx, width, height) {
+            // Configurar texto
+            const fontSize = Math.max(16, width * 0.03);
+            ctx.font = `bold ${fontSize}px Arial`;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.lineWidth = 2;
+            
+            // Posicionar no canto inferior direito
+            const x = width - ctx.measureText(WATERMARK_TEXT).width - 20;
+            const y = height - 20;
+            
+            // Desenhar marca d'água
+            ctx.strokeText(WATERMARK_TEXT, x, y);
+            ctx.fillText(WATERMARK_TEXT, x, y);
+        }
+
+        // Mostrar modal de pagamento
+        function showPaymentModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.8); display: flex; justify-content: center;
+                align-items: center; z-index: 10000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: #1a1a2e; padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; margin: 20px;">
+                    <h2 style="color: #8a7dff; margin-bottom: 20px;">🎨 Criar Mais Arte?</h2>
+                    <p style="color: white; margin-bottom: 30px;">
+                        Já usaste a tua criação gratuita de hoje!<br>
+                        <strong>Desbloqueia criações ilimitadas por apenas $1</strong>
+                    </p>
+                    <div id="paypal-button-container"></div>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: transparent; color: #888; border: 1px solid #444; 
+                                   padding: 10px 20px; border-radius: 8px; margin-top: 20px; cursor: pointer;">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Configurar botão PayPal
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: PRICE_PER_IMAGE.toFixed(2)
+                            },
+                            description: 'Gerador de Imagens AI - Acesso Premium 24h'
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        // Ativar premium
+                        activatePremium();
+                        modal.remove();
+                        alert('🎉 Premium ativado! Agora podes criar imagens ilimitadas por 24h!');
+                        updateUsageInfo();
+                    });
+                }
+            }).render('#paypal-button-container');
+        }
+
+        // Ativar premium
+        function activatePremium() {
+            const premiumUntil = new Date();
+            premiumUntil.setHours(premiumUntil.getHours() + 24);
+            localStorage.setItem('premiumUntil', premiumUntil.toISOString());
+            isPremium = true;
+        }
+
+        // Verificar status premium
+        function checkPremiumStatus() {
+            const premiumUntil = localStorage.getItem('premiumUntil');
+            if (!premiumUntil) return false;
+            
+            const expiry = new Date(premiumUntil);
+            const now = new Date();
+            
+            if (now > expiry) {
+                localStorage.removeItem('premiumUntil');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Obter uso diário
+        function getDailyUsage() {
+            const today = new Date().toDateString();
+            const stored = localStorage.getItem('dailyUsage');
+            
+            if (!stored) {
+                return { date: today, count: 0 };
+            }
+            
+            const usage = JSON.parse(stored);
+            if (usage.date !== today) {
+                return { date: today, count: 0 };
+            }
+            
+            return usage;
+        }
+
+        // Atualizar contador de uso
+        function updateUsageCount() {
+            if (!isPremium) {
+                dailyUsage.count++;
+                localStorage.setItem('dailyUsage', JSON.stringify(dailyUsage));
+            }
+        }
+
+        // Atualizar informações de uso
+        function updateUsageInfo() {
+            const infoDiv = document.getElementById('usageInfo');
+            const textEl = document.getElementById('usageText');
+            
+            if (isPremium) {
+                infoDiv.className = 'usage-info premium';
+                textEl.textContent = '👑 Premium Ativo - Criações Ilimitadas!';
+            } else if (dailyUsage.count >= 1) {
+                infoDiv.className = 'usage-info';
+                textEl.textContent = '⏰ Limite diário atingido. Próxima criação grátis amanhã ou paga $1 agora!';
+            } else {
+                infoDiv.className = 'usage-info';
+                textEl.textContent = '🎨 Tens 1 criação gratuita disponível hoje!';
+            }
+        }
+
+        // Mostrar loading
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('generateBtn').disabled = show;
+        }
+
+        // Download da imagem
+        function downloadImage() {
+            const canvas = document.getElementById('finalCanvas');
+            const link = document.createElement('a');
+            link.download = `fabio-cruz-ai-art-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Partilhar imagem
+        function shareImage() {
+            const canvas = document.getElementById('finalCanvas');
+            canvas.toBlob(function(blob) {
+                if (navigator.share) {
+                    const file = new File([blob], 'ai-art.png', { type: 'image/png' });
+                    navigator.share({
+                        title: 'Arte AI criada por Fabio Cruz',
+                        text: 'Vê esta arte incrível que criei!',
+                        files: [file]
+                    });
+                } else {
+                    // Fallback para browsers sem suporte
+                    const url = URL.createObjectURL(blob);
+                    window.open(`https://twitter.com/intent/tweet?text=Arte AI incrível criada em fabiocruz.github.io!&url=${encodeURIComponent(url)}`);
+                }
+            });
+        }
+
+        // Adicionar à galeria
+        function addToGallery() {
+            const canvas = document.getElementById('finalCanvas');
+            const imageData = canvas.toDataURL();
+            
+            generatedImages.unshift({
+                id: Date.now(),
+                data: imageData,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Manter apenas últimas 20 imagens
+            if (generatedImages.length > 20) {
+                generatedImages = generatedImages.slice(0, 20);
+            }
+            
+            localStorage.setItem('generatedImages', JSON.stringify(generatedImages));
+            loadGallery();
+        }
+
+        // Carregar galeria
+        function loadGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            
+            generatedImages.forEach(img => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `<img src="${img.data}" alt="AI Art">`;
+                item.onclick = () => showImageModal(img.data);
+                gallery.appendChild(item);
+            });
+        }
+
+        // Mostrar modal da imagem
+        function showImageModal(imageSrc) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.9); display: flex; justify-content: center;
+                align-items: center; z-index: 10000; cursor: pointer;
+            `;
+            modal.innerHTML = `<img src="${imageSrc}" style="max-width: 90%; max-height: 90%; border-radius: 12px;">`;
+            modal.onclick = () => modal.remove();
+            document.body.appendChild(modal);
+        }
+
+        // Obter imagens armazenadas
+        function getStoredImages() {
+            const stored = localStorage.getItem('generatedImages');
+            return stored ? JSON.parse(stored) : [];
+        }
     </script>
+
+    <!-- Google Translate -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pt',
+                includedLanguages: 'en,es,fr,de,it,ja,ko,zh',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
+
+
 
