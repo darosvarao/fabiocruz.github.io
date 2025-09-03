@@ -538,8 +538,421 @@
 
             initializeElements() {
                 this.promptInput = document.getElementById('prompt');
-                this.styleSelect = document.getElementB
-(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
+                this.styleSelect = document.getElementById('style');
+                this.aspectSelect = document.getElementById('aspect');
+                this.generateBtn = document.getElementById('generateBtn');
+                this.btnText = this.generateBtn.querySelector('.btn-text');
+                this.loadingSpinner = this.generateBtn.querySelector('.loading-spinner');
+                this.imageResult = document.getElementById('imageResult');
+                this.finalCanvas = document.getElementById('finalCanvas');
+                this.imagePrompt = document.getElementById('imagePrompt');
+                this.downloadBtn = document.getElementById('downloadBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.errorText = document.getElementById('errorText');
+                this.gallery = document.getElementById('gallery');
+                this.usageInfo = document.getElementById('usageInfo');
+                this.usageText = document.getElementById('usageText');
+                this.paymentModal = document.getElementById('paymentModal');
+                this.cancelPayment = document.getElementById('cancelPayment');
+            }
+
+            bindEvents() {
+                this.generateBtn.addEventListener('click', () => this.generateImage());
+                this.downloadBtn.addEventListener('click', () => this.downloadImage());
+                this.cancelPayment.addEventListener('click', () => this.hidePaymentModal());
+                
+                // Enter key no textarea
+                this.promptInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        this.generateImage();
+                    }
+                });
+            }
+
+            async generateImage() {
+                const prompt = this.promptInput.value.trim();
+                if (!prompt) {
+                    this.showError('Por favor, descreve a tua visão mística!');
+                    return;
+                }
+
+                // NOVO: Verificar se pode gerar
+                if (!this.canGenerate()) {
+                    this.showPaymentModal();
+                    return;
+                }
+
+                this.setLoading(true);
+                this.hideError();
+
+                try {
+                    // Construir prompt completo com estilo
+                    let fullPrompt = prompt;
+                    const style = this.styleSelect.value;
+                    if (style) {
+                        fullPrompt += `, ${style} style`;
+                    }
+
+                    // Gerar imagem
+                    const imageUrl = await this.callImageAPI(fullPrompt);
+                    
+                    // NOVO: Adicionar marca d'água e exibir
+                    await this.addWatermarkAndDisplay(imageUrl, fullPrompt);
+                    
+                    // NOVO: Atualizar contadores
+                    this.updateUsageCount();
+                    this.updateUsageInfo();
+                    
+                    this.addToGallery(imageUrl, prompt);
+                    
+                } catch (error) {
+                    console.error('Erro ao gerar imagem:', error);
+                    this.showError('Erro ao gerar imagem. Tenta novamente!');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            // NOVO: Verificar se pode gerar
+            canGenerate() {
+                return this.dailyUsage.count < 1 || this.isPremium;
+            }
+
+            // NOVO: Adicionar marca d'água
+            async addWatermarkAndDisplay(imageUrl, prompt) {
+                const canvas = this.finalCanvas;
+                const ctx = canvas.getContext('2d');
+                
+                // Carregar imagem
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                
+                return new Promise((resolve) => {
+                    img.onload = () => {
+                        // Configurar canvas
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        
+                        // Desenhar imagem
+                        ctx.drawImage(img, 0, 0);
+                        
+                        // Adicionar marca d'água
+                        this.addWatermark(ctx, canvas.width, canvas.height);
+                        
+                        // Mostrar resultado
+                        this.imagePrompt.textContent = prompt;
+                        this.imageResult.style.display = 'block';
+                        
+                        // Scroll suave para a imagem
+                        setTimeout(() => {
+                            this.imageResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                        
+                        resolve();
+                    };
+                    
+                    img.src = imageUrl;
+                });
+            }
+
+            // NOVO: Adicionar marca d'água ao canvas
+            addWatermark(ctx, width, height) {
+                // Configurar texto
+                const fontSize = Math.max(16, width * 0.03);
+                ctx.font = `bold ${fontSize}px Arial`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.lineWidth = 2;
+                
+                // Posicionar no canto inferior direito
+                const x = width - ctx.measureText(WATERMARK_TEXT).width - 20;
+                const y = height - 20;
+                
+                // Desenhar marca d'água
+                ctx.strokeText(WATERMARK_TEXT, x, y);
+                ctx.fillText(WATERMARK_TEXT, x, y);
+            }
+
+            // NOVO: Mostrar modal de pagamento
+            showPaymentModal() {
+                this.paymentModal.style.display = 'flex';
+                this.setupPayPalButton();
+            }
+
+            // NOVO: Esconder modal de pagamento
+            hidePaymentModal() {
+                this.paymentModal.style.display = 'none';
+            }
+
+            // NOVO: Configurar botão PayPal
+            setupPayPalButton() {
+                // Limpar container anterior
+                document.getElementById('paypal-button-container').innerHTML = '';
+                
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: PRICE_PER_IMAGE.toFixed(2)
+                                },
+                                description: 'Gerador de Imagens AI - Acesso Premium 24h'
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then((details) => {
+                            // Ativar premium
+                            this.activatePremium();
+                            this.hidePaymentModal();
+                            alert('🎉 Premium ativado! Agora podes criar imagens ilimitadas por 24h!');
+                            this.updateUsageInfo();
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
+
+            // NOVO: Ativar premium
+            activatePremium() {
+                const premiumUntil = new Date();
+                premiumUntil.setHours(premiumUntil.getHours() + 24);
+                localStorage.setItem('premiumUntil', premiumUntil.toISOString());
+                this.isPremium = true;
+            }
+
+            // NOVO: Verificar status premium
+            checkPremiumStatus() {
+                const premiumUntil = localStorage.getItem('premiumUntil');
+                if (!premiumUntil) return false;
+                
+                const expiry = new Date(premiumUntil);
+                const now = new Date();
+                
+                if (now > expiry) {
+                    localStorage.removeItem('premiumUntil');
+                    return false;
+                }
+                
+                return true;
+            }
+
+            // NOVO: Obter uso diário
+            getDailyUsage() {
+                const today = new Date().toDateString();
+                const stored = localStorage.getItem('dailyUsage');
+                
+                if (!stored) {
+                    return { date: today, count: 0 };
+                }
+                
+                const usage = JSON.parse(stored);
+                if (usage.date !== today) {
+                    return { date: today, count: 0 };
+                }
+                
+                return usage;
+            }
+
+            // NOVO: Atualizar contador de uso
+            updateUsageCount() {
+                if (!this.isPremium) {
+                    this.dailyUsage.count++;
+                    localStorage.setItem('dailyUsage', JSON.stringify(this.dailyUsage));
+                }
+            }
+
+            // NOVO: Atualizar informações de uso
+            updateUsageInfo() {
+                if (this.isPremium) {
+                    this.usageInfo.className = 'usage-info premium';
+                    this.usageText.textContent = '👑 Premium Ativo - Criações Ilimitadas!';
+                } else if (this.dailyUsage.count >= 1) {
+                    this.usageInfo.className = 'usage-info';
+                    this.usageText.textContent = '⏰ Limite diário atingido. Próxima criação grátis amanhã ou paga $1 agora!';
+                } else {
+                    this.usageInfo.className = 'usage-info';
+                    this.usageText.textContent = '🎨 Tens 1 criação gratuita disponível hoje!';
+                }
+            }
+
+            async callImageAPI(prompt) {
+                // API de exemplo usando Pollinations (gratuita)
+                const aspect = this.aspectSelect.value;
+                let dimensions = '512x512';
+                
+                if (aspect === 'landscape') dimensions = '768x432';
+                else if (aspect === 'portrait') dimensions = '432x768';
+
+                const encodedPrompt = encodeURIComponent(prompt);
+                const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${dimensions.split('x')[0]}&height=${dimensions.split('x')[1]}&seed=${Math.floor(Math.random() * 1000000)}`;
+                
+                // Simular delay de geração
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                return apiUrl;
+            }
+
+            addToGallery(imageUrl, prompt) {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${this.finalCanvas.toDataURL()}" alt="Imagem gerada" class="gallery-image">
+                    <p class="gallery-prompt">${prompt}</p>
+                `;
+                
+                galleryItem.addEventListener('click', () => {
+                    this.displayStoredImage(this.finalCanvas.toDataURL(), prompt);
+                });
+                
+                this.gallery.insertBefore(galleryItem, this.gallery.firstChild);
+                
+                // Salvar no localStorage
+                this.saveToLocalStorage(this.finalCanvas.toDataURL(), prompt);
+            }
+
+            displayStoredImage(imageData, prompt) {
+                const img = new Image();
+                img.onload = () => {
+                    this.finalCanvas.width = img.width;
+                    this.finalCanvas.height = img.height;
+                    const ctx = this.finalCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    this.imagePrompt.textContent = prompt;
+                    this.imageResult.style.display = 'block';
+                    this.imageResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                };
+                img.src = imageData;
+            }
+
+            saveToLocalStorage(imageData, prompt) {
+                let gallery = JSON.parse(localStorage.getItem('mysticGallery') || '[]');
+                gallery.unshift({ imageData, prompt, timestamp: Date.now() });
+                
+                // Manter apenas as últimas 20 imagens
+                gallery = gallery.slice(0, 20);
+                
+                localStorage.setItem('mysticGallery', JSON.stringify(gallery));
+            }
+
+            loadGallery() {
+                const gallery = JSON.parse(localStorage.getItem('mysticGallery') || '[]');
+                gallery.forEach(item => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.innerHTML = `
+                        <img src="${item.imageData}" alt="Imagem gerada" class="gallery-image">
+                        <p class="gallery-prompt">${item.prompt}</p>
+                    `;
+                    
+                    galleryItem.addEventListener('click', () => {
+                        this.displayStoredImage(item.imageData, item.prompt);
+                    });
+                    
+                    this.gallery.appendChild(galleryItem);
+                });
+            }
+
+            downloadImage() {
+                const canvas = this.finalCanvas;
+                if (!canvas.width) return;
+
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL();
+                link.download = `fabio-cruz-ai-art-${Date.now()}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            setLoading(loading) {
+                this.generateBtn.disabled = loading;
+                if (loading) {
+                    this.btnText.style.opacity = '0';
+                    this.loadingSpinner.style.display = 'block';
+                } else {
+                    this.btnText.style.opacity = '1';
+                    this.loadingSpinner.style.display = 'none';
+                }
+            }
+
+            showError(message) {
+                this.errorText.textContent = message;
+                this.errorMessage.style.display = 'block';
+                setTimeout(() => this.hideError(), 5000);
+            }
+
+            hideError() {
+                this.errorMessage.style.display = 'none';
+            }
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            new ImageGenerator();
+        });
+
+        // Adicionar efeitos de partículas cósmicas
+        function createStars() {
+            const starsContainer = document.createElement('div');
+            starsContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+            `;
+            
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: white;
+                    border-radius: 50%;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    animation: twinkle ${2 + Math.random() * 3}s infinite;
+                `;
+                starsContainer.appendChild(star);
+            }
+            
+            document.body.appendChild(starsContainer);
+        }
+
+        // Adicionar CSS para animação das estrelas
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes twinkle {
+                0%, 100% { opacity: 0.3; }
+                50% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Criar estrelas quando a página carregar
+        document.addEventListener('DOMContentLoaded', createStars);
+    </script>
+
+    <!-- Google Translate -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pt',
+                includedLanguages: 'en,es,fr,de,it,ja,ko,zh',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
+
+
 
 
 
