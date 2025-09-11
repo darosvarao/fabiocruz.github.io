@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bomberman Axol - Jogo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- Menu Principal -->
+        <div id="mainMenu" class="screen">
+            <div class="menu-content">
+                <h1 class="game-title">BOMBERMAN AXOL</h1>
+                <div class="character-preview">
+                    <img src="assets/sprites/characters/axol_down.png" alt="Axol" class="character-img">
+                    <img src="assets/sprites/characters/bisou_down.png" alt="Bisou" class="character-img">
+                    <img src="assets/sprites/characters/pepeca_down.png" alt="Pepeca" class="character-img">
+                </div>
+                <div class="menu-buttons">
+                    <button id="startGame" class="menu-btn">JOGAR</button>
+                    <button id="selectCharacter" class="menu-btn">ESCOLHER PERSONAGEM</button>
+                    <button id="instructions" class="menu-btn">INSTRUÇÕES</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seleção de Personagem -->
+        <div id="characterSelect" class="screen hidden">
+            <div class="menu-content">
+                <h2>Escolha seu Personagem</h2>
+                <div class="character-grid">
+                    <div class="character-option" data-character="axol">
+                        <img src="assets/sprites/characters/axol_down.png" alt="Axol">
+                        <h3>AXOL</h3>
+                        <p>O axolote corajoso</p>
+                    </div>
+                    <div class="character-option" data-character="bisou">
+                        <img src="assets/sprites/characters/bisou_down.png" alt="Bisou">
+                        <h3>BISOU</h3>
+                        <p>O gato ágil</p>
+                    </div>
+                    <div class="character-option" data-character="pepeca">
+                        <img src="assets/sprites/characters/pepeca_down.png" alt="Pepeca">
+                        <h3>PEPECA</h3>
+                        <p>O guerreiro forte</p>
+                    </div>
+                </div>
+                <button id="backToMenu" class="menu-btn">VOLTAR</button>
+            </div>
+        </div>
+
+        <!-- Instruções -->
+        <div id="instructionsScreen" class="screen hidden">
+            <div class="menu-content">
+                <h2>Como Jogar</h2>
+                <div class="instructions">
+                    <div class="instruction-item">
+                        <strong>Movimento:</strong> Use as setas do teclado ou toque na tela
+                    </div>
+                    <div class="instruction-item">
+                        <strong>Bombas:</strong> Pressione ESPAÇO ou toque no botão de bomba
+                    </div>
+                    <div class="instruction-item">
+                        <strong>Objetivo:</strong> Destrua todas as paredes e elimine os inimigos
+                    </div>
+                    <div class="instruction-item">
+                        <strong>Power-ups:</strong> Colete itens para melhorar suas habilidades
+                    </div>
+                </div>
+                <button id="backToMenuFromInstructions" class="menu-btn">VOLTAR</button>
+            </div>
+        </div>
+
+        <!-- Jogo -->
+        <div id="gameScreen" class="screen hidden">
+            <div id="gameUI">
+                <div class="ui-top">
+                    <div class="score">Pontos: <span id="score">0</span></div>
+                    <div class="level">Nível: <span id="level">1</span></div>
+                    <div class="lives">Vidas: <span id="lives">3</span></div>
+                </div>
+            </div>
+            
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <!-- Controles Touch para Mobile -->
+            <div id="touchControls" class="touch-controls">
+                <div class="dpad">
+                    <button class="dpad-btn" id="upBtn">↑</button>
+                    <button class="dpad-btn" id="leftBtn">←</button>
+                    <button class="dpad-btn" id="downBtn">↓</button>
+                    <button class="dpad-btn" id="rightBtn">→</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="bombBtn">💣</button>
+                    <button class="action-btn" id="pauseBtn">⏸</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div id="gameOverScreen" class="screen hidden">
+            <div class="menu-content">
+                <h2 id="gameOverTitle">GAME OVER</h2>
+                <div id="finalScore">Pontuação Final: <span id="finalScoreValue">0</span></div>
+                <div class="menu-buttons">
+                    <button id="playAgain" class="menu-btn">JOGAR NOVAMENTE</button>
+                    <button id="backToMenuFromGameOver" class="menu-btn">MENU PRINCIPAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause -->
+        <div id="pauseScreen" class="screen hidden">
+            <div class="menu-content">
+                <h2>JOGO PAUSADO</h2>
+                <div class="menu-buttons">
+                    <button id="resumeGame" class="menu-btn">CONTINUAR</button>
+                    <button id="backToMenuFromPause" class="menu-btn">MENU PRINCIPAL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/bomb.js"></script>
+    <script src="js/explosion.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/powerup.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
 
