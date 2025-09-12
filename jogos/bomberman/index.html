@@ -1,148 +1,266 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bomberman Axol - Jogo</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Bomberman Neon - Cyberpunk Edition</title>
+    <link rel="stylesheet" href="css/neon-style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2196F3">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <!-- Meta tags para PWA -->
+    <meta name="description" content="Bomberman Neon - Edição Cyberpunk com Axol, Bisou e Pepeca">
+    <meta name="keywords" content="bomberman, neon, cyberpunk, jogo, axol, bisou, pepeca">
+    
+    <!-- Preload dos sprites principais -->
+    <link rel="preload" href="assets/sprites/characters/axol_neon.png" as="image">
+    <link rel="preload" href="assets/sprites/characters/bisou_neon.png" as="image">
+    <link rel="preload" href="assets/sprites/characters/pepeca_neon.png" as="image">
 </head>
 <body>
-    <div id="gameContainer">
-        <!-- Menu Principal -->
-        <div id="mainMenu" class="screen">
-            <div class="menu-content">
-                <h1 class="game-title">BOMBERMAN AXOL</h1>
-                <div class="character-preview">
-                    <img src="assets/sprites/characters/axol_down.png" alt="Axol" class="character-img">
-                    <img src="assets/sprites/characters/bisou_down.png" alt="Bisou" class="character-img">
-                    <img src="assets/sprites/characters/pepeca_down.png" alt="Pepeca" class="character-img">
-                </div>
-                <div class="menu-buttons">
-                    <button id="startGame" class="menu-btn">JOGAR</button>
-                    <button id="selectCharacter" class="menu-btn">ESCOLHER PERSONAGEM</button>
-                    <button id="instructions" class="menu-btn">INSTRUÇÕES</button>
+    <!-- Efeito de partículas de fundo -->
+    <div id="particles-bg"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading" class="screen">
+        <div class="loading-container">
+            <div class="neon-logo">
+                <h1>BOMBERMAN</h1>
+                <h2>NEON EDITION</h2>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Carregando matriz cyberpunk...</p>
+        </div>
+    </div>
+
+    <!-- Menu Principal -->
+    <div id="mainMenu" class="screen hidden">
+        <div class="menu-container">
+            <div class="neon-title">
+                <h1 class="glitch" data-text="BOMBERMAN NEON">BOMBERMAN NEON</h1>
+                <p class="subtitle">CYBERPUNK EDITION</p>
+            </div>
+            
+            <div class="character-preview">
+                <div class="character-showcase">
+                    <img src="assets/sprites/characters/axol_neon.png" alt="Axol Neon" class="character-img active">
+                    <img src="assets/sprites/characters/bisou_neon.png" alt="Bisou Neon" class="character-img">
+                    <img src="assets/sprites/characters/pepeca_neon.png" alt="Pepeca Neon" class="character-img">
                 </div>
             </div>
+            
+            <div class="menu-buttons">
+                <button id="startGame" class="neon-btn primary">
+                    <span class="btn-text">INICIAR MISSÃO</span>
+                    <span class="btn-glow"></span>
+                </button>
+                <button id="selectCharacter" class="neon-btn secondary">
+                    <span class="btn-text">SELECIONAR AGENTE</span>
+                    <span class="btn-glow"></span>
+                </button>
+                <button id="instructions" class="neon-btn tertiary">
+                    <span class="btn-text">PROTOCOLO</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
         </div>
+    </div>
 
-        <!-- Seleção de Personagem -->
-        <div id="characterSelect" class="screen hidden">
-            <div class="menu-content">
-                <h2>Escolha seu Personagem</h2>
-                <div class="character-grid">
-                    <div class="character-option" data-character="axol">
-                        <img src="assets/sprites/characters/axol_down.png" alt="Axol">
+    <!-- Seleção de Personagem -->
+    <div id="characterSelect" class="screen hidden">
+        <div class="character-select-container">
+            <h2 class="section-title">SELECIONAR AGENTE</h2>
+            <div class="characters-grid">
+                <div class="character-option" data-character="axol">
+                    <div class="character-card">
+                        <img src="assets/sprites/characters/axol_neon.png" alt="Axol">
                         <h3>AXOL</h3>
-                        <p>O axolote corajoso</p>
+                        <p>Agente Aquático</p>
+                        <div class="stats">
+                            <div class="stat">
+                                <span>Velocidade:</span>
+                                <div class="stat-bar"><div class="stat-fill" style="width: 80%"></div></div>
+                            </div>
+                            <div class="stat">
+                                <span>Resistência:</span>
+                                <div class="stat-bar"><div class="stat-fill" style="width: 90%"></div></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="character-option" data-character="bisou">
-                        <img src="assets/sprites/characters/bisou_down.png" alt="Bisou">
+                </div>
+                
+                <div class="character-option" data-character="bisou">
+                    <div class="character-card">
+                        <img src="assets/sprites/characters/bisou_neon.png" alt="Bisou">
                         <h3>BISOU</h3>
-                        <p>O gato ágil</p>
+                        <p>Agente Furtivo</p>
+                        <div class="stats">
+                            <div class="stat">
+                                <span>Velocidade:</span>
+                                <div class="stat-bar"><div class="stat-fill" style="width: 95%"></div></div>
+                            </div>
+                            <div class="stat">
+                                <span>Agilidade:</span>
+                                <div class="stat-bar"><div class="stat-fill" style="width: 100%"></div></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="character-option" data-character="pepeca">
-                        <img src="assets/sprites/characters/pepeca_down.png" alt="Pepeca">
+                </div>
+                
+                <div class="character-option" data-character="pepeca">
+                    <div class="character-card">
+                        <img src="assets/sprites/characters/pepeca_neon.png" alt="Pepeca">
                         <h3>PEPECA</h3>
-                        <p>O guerreiro forte</p>
+                        <p>Agente Pesado</p>
+                        <div class="stats">
+                            <div class="stat">
+                                <span>Força:</span>
+                                <div class="stat-bar"><div class="stat-fill" style="width: 100%"></div></div>
+                            </div>
+                            <div class="stat">
+                                <span>Resistência:</span>
+                                <div class="stat-bar"><div class="stat-fill" style="width: 85%"></div></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button id="backToMenu" class="menu-btn">VOLTAR</button>
             </div>
+            <button id="backToMenu" class="neon-btn secondary">VOLTAR</button>
         </div>
+    </div>
 
-        <!-- Instruções -->
-        <div id="instructionsScreen" class="screen hidden">
-            <div class="menu-content">
-                <h2>Como Jogar</h2>
-                <div class="instructions">
-                    <div class="instruction-item">
-                        <strong>Movimento:</strong> Use as setas do teclado ou toque na tela
-                    </div>
-                    <div class="instruction-item">
-                        <strong>Bombas:</strong> Pressione ESPAÇO ou toque no botão de bomba
-                    </div>
-                    <div class="instruction-item">
-                        <strong>Objetivo:</strong> Destrua todas as paredes e elimine os inimigos
-                    </div>
-                    <div class="instruction-item">
-                        <strong>Power-ups:</strong> Colete itens para melhorar suas habilidades
+    <!-- Instruções -->
+    <div id="instructionsScreen" class="screen hidden">
+        <div class="instructions-container">
+            <h2 class="section-title">PROTOCOLO DE MISSÃO</h2>
+            <div class="instructions-content">
+                <div class="instruction-block">
+                    <h3>CONTROLES</h3>
+                    <div class="controls-grid">
+                        <div class="control-item">
+                            <span class="key">↑↓←→</span>
+                            <span>Movimento</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">ESPAÇO</span>
+                            <span>Bomba EMP</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">ESC</span>
+                            <span>Pausar</span>
+                        </div>
                     </div>
                 </div>
-                <button id="backToMenuFromInstructions" class="menu-btn">VOLTAR</button>
+                
+                <div class="instruction-block">
+                    <h3>OBJETIVO</h3>
+                    <p>Destrua todas as estruturas da matriz e elimine ameaças usando bombas EMP.</p>
+                </div>
+                
+                <div class="instruction-block">
+                    <h3>POWER-UPS</h3>
+                    <div class="powerups-grid">
+                        <div class="powerup-item">
+                            <span class="powerup-icon speed">⚡</span>
+                            <span>Boost de Velocidade</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-icon bomb">💣</span>
+                            <span>Bombas Extras</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-icon range">🔥</span>
+                            <span>Alcance Ampliado</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <button id="backToMenuFromInstructions" class="neon-btn secondary">VOLTAR</button>
         </div>
+    </div>
 
-        <!-- Jogo -->
-        <div id="gameScreen" class="screen hidden">
-            <div id="gameUI">
-                <div class="ui-top">
-                    <div class="score">Pontos: <span id="score">0</span></div>
-                    <div class="level">Nível: <span id="level">1</span></div>
-                    <div class="lives">Vidas: <span id="lives">3</span></div>
+    <!-- Tela do Jogo -->
+    <div id="gameScreen" class="screen hidden">
+        <div class="game-container">
+            <div class="game-hud">
+                <div class="hud-left">
+                    <div class="stat-display">
+                        <span class="stat-label">PONTOS:</span>
+                        <span id="score" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-display">
+                        <span class="stat-label">NÍVEL:</span>
+                        <span id="level" class="stat-value">1</span>
+                    </div>
+                </div>
+                <div class="hud-center">
+                    <button id="pauseBtn" class="hud-btn">⏸</button>
+                </div>
+                <div class="hud-right">
+                    <div class="stat-display">
+                        <span class="stat-label">VIDAS:</span>
+                        <span id="lives" class="stat-value">3</span>
+                    </div>
                 </div>
             </div>
             
-            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div class="game-area">
+                <canvas id="gameCanvas" width="800" height="600"></canvas>
+            </div>
             
-            <!-- Controles Touch para Mobile -->
+            <!-- Controles Touch -->
             <div id="touchControls" class="touch-controls">
                 <div class="dpad">
-                    <button class="dpad-btn" id="upBtn">↑</button>
-                    <button class="dpad-btn" id="leftBtn">←</button>
-                    <button class="dpad-btn" id="downBtn">↓</button>
-                    <button class="dpad-btn" id="rightBtn">→</button>
+                    <button class="dpad-btn up" data-direction="up">↑</button>
+                    <button class="dpad-btn left" data-direction="left">←</button>
+                    <button class="dpad-btn center"></button>
+                    <button class="dpad-btn right" data-direction="right">→</button>
+                    <button class="dpad-btn down" data-direction="down">↓</button>
                 </div>
                 <div class="action-buttons">
-                    <button class="action-btn" id="bombBtn">💣</button>
-                    <button class="action-btn" id="pauseBtn">⏸</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Game Over -->
-        <div id="gameOverScreen" class="screen hidden">
-            <div class="menu-content">
-                <h2 id="gameOverTitle">GAME OVER</h2>
-                <div id="finalScore">Pontuação Final: <span id="finalScoreValue">0</span></div>
-                <div class="menu-buttons">
-                    <button id="playAgain" class="menu-btn">JOGAR NOVAMENTE</button>
-                    <button id="backToMenuFromGameOver" class="menu-btn">MENU PRINCIPAL</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pause -->
-        <div id="pauseScreen" class="screen hidden">
-            <div class="menu-content">
-                <h2>JOGO PAUSADO</h2>
-                <div class="menu-buttons">
-                    <button id="resumeGame" class="menu-btn">CONTINUAR</button>
-                    <button id="backToMenuFromPause" class="menu-btn">MENU PRINCIPAL</button>
+                    <button id="bombBtn" class="action-btn">💣</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Loading -->
-    <div id="loading" class="loading">
-        <div class="loading-content">
-            <div class="spinner"></div>
-            <p>Carregando...</p>
+    <!-- Game Over -->
+    <div id="gameOverScreen" class="screen hidden">
+        <div class="gameover-container">
+            <h2 class="gameover-title glitch" data-text="MISSÃO FALHOU">MISSÃO FALHOU</h2>
+            <div class="final-stats">
+                <p>Pontuação Final: <span id="finalScore">0</span></p>
+                <p>Nível Alcançado: <span id="finalLevel">1</span></p>
+            </div>
+            <div class="gameover-buttons">
+                <button id="playAgain" class="neon-btn primary">NOVA MISSÃO</button>
+                <button id="backToMenuFromGameOver" class="neon-btn secondary">MENU PRINCIPAL</button>
+            </div>
         </div>
     </div>
 
-    <script src="js/game.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/bomb.js"></script>
-    <script src="js/explosion.js"></script>
-    <script src="js/map.js"></script>
-    <script src="js/powerup.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Pause -->
+    <div id="pauseScreen" class="screen hidden">
+        <div class="pause-container">
+            <h2 class="pause-title">MISSÃO PAUSADA</h2>
+            <div class="pause-buttons">
+                <button id="resumeGame" class="neon-btn primary">CONTINUAR</button>
+                <button id="backToMenuFromPause" class="neon-btn secondary">MENU PRINCIPAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/neon-game.js"></script>
+    <script src="js/neon-player.js"></script>
+    <script src="js/neon-bomb.js"></script>
+    <script src="js/neon-explosion.js"></script>
+    <script src="js/neon-map.js"></script>
+    <script src="js/neon-powerup.js"></script>
+    <script src="js/neon-ui.js"></script>
+    <script src="js/neon-main.js"></script>
 </body>
 </html>
 

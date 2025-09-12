@@ -1,61 +1,20 @@
 {
-  "name": "Bomberman Axol",
-  "short_name": "Bomberman",
-  "description": "Jogo clássico Bomberman com personagens Axol, Bisou e Pepeca",
-  "version": "1.0.0",
-  "start_url": "./index.html",
+  "name": "Bomberman Neon - Cyberpunk Edition",
+  "short_name": "Bomberman Neon",
+  "description": "Jogo Bomberman com visual cyberpunk neon featuring Axol, Bisou e Pepeca",
+  "start_url": "/",
   "display": "standalone",
-  "orientation": "landscape",
-  "theme_color": "#2196F3",
-  "background_color": "#667eea",
-  "categories": ["games", "entertainment"],
-  "lang": "pt-BR",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00ffff",
+  "orientation": "landscape-primary",
   "icons": [
     {
-      "src": "assets/sprites/characters/axol_down.png",
-      "sizes": "32x32",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/sprites/characters/axol_down.png",
+      "src": "assets/sprites/characters/axol_neon.png",
       "sizes": "64x64",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/sprites/characters/axol_down.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/sprites/characters/axol_down.png",
-      "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/sprites/characters/axol_down.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ],
-  "screenshots": [
-    {
-      "src": "assets/sprites/characters/axol_down.png",
-      "sizes": "800x600",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
-  "features": [
-    "Cross Platform",
-    "Fast",
-    "Simple"
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  "categories": ["games", "entertainment"],
+  "lang": "pt-BR"
 }
 
