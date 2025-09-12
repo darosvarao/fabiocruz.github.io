@@ -1,0 +1,20 @@
+{
+  "name": "Bomberman Neon - Cyberpunk Edition",
+  "short_name": "Bomberman Neon",
+  "description": "Jogo Bomberman com visual cyberpunk neon featuring Axol, Bisou e Pepeca",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00ffff",
+  "orientation": "landscape-primary",
+  "icons": [
+    {
+      "src": "assets/sprites/characters/axol_neon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "lang": "pt-BR"
+}
+
