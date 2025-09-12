@@ -253,14 +253,245 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/neon-game.js"></script>
+    <script src="js/neon-map.js"></script>
     <script src="js/neon-player.js"></script>
     <script src="js/neon-bomb.js"></script>
     <script src="js/neon-explosion.js"></script>
-    <script src="js/neon-map.js"></script>
     <script src="js/neon-powerup.js"></script>
+    <script src="js/neon-game.js"></script>
     <script src="js/neon-ui.js"></script>
-    <script src="js/neon-main.js"></script>
+    <script>
+        // INICIALIZAÇÃO PRINCIPAL DO JOGO
+        class BombermanNeonApp {
+            constructor() {
+                this.currentScreen = 'loading';
+                this.selectedCharacter = 'axol';
+                this.game = null;
+                this.ui = null;
+                
+                this.init();
+            }
+            
+            init() {
+                console.log('Inicializando Bomberman Neon...');
+                this.setupEventListeners();
+                this.showLoadingScreen();
+                
+                // Simular carregamento
+                setTimeout(() => {
+                    this.showMainMenu();
+                }, 3000);
+            }
+            
+            setupEventListeners() {
+                // Menu buttons
+                document.getElementById('startGame').addEventListener('click', () => this.startGame());
+                document.getElementById('selectCharacter').addEventListener('click', () => this.showCharacterSelect());
+                document.getElementById('instructions').addEventListener('click', () => this.showInstructions());
+                
+                // Character selection
+                document.querySelectorAll('.character-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        document.querySelectorAll('.character-option').forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        this.selectedCharacter = option.dataset.character;
+                        console.log('Personagem selecionado:', this.selectedCharacter);
+                    });
+                });
+                
+                // Back buttons
+                document.getElementById('backToMenu').addEventListener('click', () => this.showMainMenu());
+                document.getElementById('backToMenuFromInstructions').addEventListener('click', () => this.showMainMenu());
+                document.getElementById('backToMenuFromGameOver').addEventListener('click', () => this.showMainMenu());
+                document.getElementById('backToMenuFromPause').addEventListener('click', () => this.showMainMenu());
+                
+                // Game controls
+                document.getElementById('pauseBtn').addEventListener('click', () => this.pauseGame());
+                document.getElementById('resumeGame').addEventListener('click', () => this.resumeGame());
+                document.getElementById('playAgain').addEventListener('click', () => this.startGame());
+                
+                // Touch controls
+                document.querySelectorAll('.dpad-btn').forEach(btn => {
+                    if (btn.dataset.direction) {
+                        btn.addEventListener('touchstart', (e) => {
+                            e.preventDefault();
+                            if (this.game) {
+                                this.game.handleInput(btn.dataset.direction, true);
+                            }
+                        });
+                        btn.addEventListener('touchend', (e) => {
+                            e.preventDefault();
+                            if (this.game) {
+                                this.game.handleInput(btn.dataset.direction, false);
+                            }
+                        });
+                        btn.addEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            if (this.game) {
+                                this.game.handleInput(btn.dataset.direction, true);
+                            }
+                        });
+                        btn.addEventListener('mouseup', (e) => {
+                            e.preventDefault();
+                            if (this.game) {
+                                this.game.handleInput(btn.dataset.direction, false);
+                            }
+                        });
+                    }
+                });
+                
+                document.getElementById('bombBtn').addEventListener('click', () => {
+                    if (this.game) {
+                        this.game.placeBomb();
+                    }
+                });
+                
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                document.addEventListener('keyup', (e) => this.handleKeyUp(e));
+                
+                console.log('Event listeners configurados');
+            }
+            
+            handleKeyDown(e) {
+                if (this.currentScreen === 'gameScreen' && this.game) {
+                    switch(e.code) {
+                        case 'ArrowUp':
+                        case 'KeyW':
+                            e.preventDefault();
+                            this.game.handleInput('up', true);
+                            console.log('Tecla UP pressionada');
+                            break;
+                        case 'ArrowDown':
+                        case 'KeyS':
+                            e.preventDefault();
+                            this.game.handleInput('down', true);
+                            console.log('Tecla DOWN pressionada');
+                            break;
+                        case 'ArrowLeft':
+                        case 'KeyA':
+                            e.preventDefault();
+                            this.game.handleInput('left', true);
+                            console.log('Tecla LEFT pressionada');
+                            break;
+                        case 'ArrowRight':
+                        case 'KeyD':
+                            e.preventDefault();
+                            this.game.handleInput('right', true);
+                            console.log('Tecla RIGHT pressionada');
+                            break;
+                        case 'Space':
+                            e.preventDefault();
+                            this.game.placeBomb();
+                            console.log('BOMBA colocada');
+                            break;
+                        case 'Escape':
+                            e.preventDefault();
+                            this.pauseGame();
+                            break;
+                    }
+                }
+            }
+            
+            handleKeyUp(e) {
+                if (this.currentScreen === 'gameScreen' && this.game) {
+                    switch(e.code) {
+                        case 'ArrowUp':
+                        case 'KeyW':
+                            this.game.handleInput('up', false);
+                            break;
+                        case 'ArrowDown':
+                        case 'KeyS':
+                            this.game.handleInput('down', false);
+                            break;
+                        case 'ArrowLeft':
+                        case 'KeyA':
+                            this.game.handleInput('left', false);
+                            break;
+                        case 'ArrowRight':
+                        case 'KeyD':
+                            this.game.handleInput('right', false);
+                            break;
+                    }
+                }
+            }
+            
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.add('hidden');
+                });
+                document.getElementById(screenId).classList.remove('hidden');
+                this.currentScreen = screenId;
+                console.log('Tela atual:', screenId);
+            }
+            
+            showLoadingScreen() {
+                this.showScreen('loading');
+            }
+            
+            showMainMenu() {
+                this.showScreen('mainMenu');
+                if (this.game) {
+                    this.game.destroy();
+                    this.game = null;
+                }
+            }
+            
+            showCharacterSelect() {
+                this.showScreen('characterSelect');
+            }
+            
+            showInstructions() {
+                this.showScreen('instructionsScreen');
+            }
+            
+            startGame() {
+                console.log('Iniciando jogo com personagem:', this.selectedCharacter);
+                this.showScreen('gameScreen');
+                
+                const canvas = document.getElementById('gameCanvas');
+                this.game = new NeonGame(canvas, this.selectedCharacter);
+                this.ui = new NeonUI();
+                
+                this.game.onGameOver = (score, level) => {
+                    this.showGameOver(score, level);
+                };
+                
+                this.game.onScoreUpdate = (score, level, lives) => {
+                    this.ui.updateHUD(score, level, lives);
+                };
+                
+                this.game.start();
+                console.log('Jogo iniciado!');
+            }
+            
+            pauseGame() {
+                if (this.game) {
+                    this.game.pause();
+                    this.showScreen('pauseScreen');
+                }
+            }
+            
+            resumeGame() {
+                if (this.game) {
+                    this.game.resume();
+                    this.showScreen('gameScreen');
+                }
+            }
+            
+            showGameOver(score, level) {
+                document.getElementById('finalScore').textContent = score;
+                document.getElementById('finalLevel').textContent = level;
+                this.showScreen('gameOverScreen');
+            }
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM carregado, inicializando app...');
+            window.bombermanApp = new BombermanNeonApp();
+        });
+    </script>
 </body>
 </html>
 
