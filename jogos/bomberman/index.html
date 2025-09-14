@@ -4,29 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bomberman Neon - Cyberpunk Edition</title>
-    <link rel="stylesheet" href="css/neon-style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0a0a">
-    
-    <!-- Meta tags para PWA -->
-    <meta name="description" content="Bomberman Neon - Edição Cyberpunk com Axol, Bisou e Pepeca">
-    <meta name="keywords" content="bomberman, neon, cyberpunk, jogo, axol, bisou, pepeca">
-    
-    <!-- Preload dos sprites principais -->
-    <link rel="preload" href="assets/sprites/characters/axol_neon.png" as="image">
-    <link rel="preload" href="assets/sprites/characters/bisou_neon.png" as="image">
-    <link rel="preload" href="assets/sprites/characters/pepeca_neon.png" as="image">
+    <meta name="theme-color" content="#00ffff">
 </head>
 <body>
-    <!-- Efeito de partículas de fundo -->
-    <div id="particles-bg"></div>
-    
     <!-- Loading Screen -->
     <div id="loading" class="screen">
         <div class="loading-container">
             <div class="neon-logo">
-                <h1>BOMBERMAN</h1>
-                <h2>NEON EDITION</h2>
+                <h1 class="glitch" data-text="BOMBERMAN NEON">BOMBERMAN NEON</h1>
+                <h2>CYBERPUNK EDITION</h2>
             </div>
             <div class="loading-bar">
                 <div class="loading-progress"></div>
@@ -35,7 +23,7 @@
         </div>
     </div>
 
-    <!-- Menu Principal -->
+    <!-- Main Menu -->
     <div id="mainMenu" class="screen hidden">
         <div class="menu-container">
             <div class="neon-title">
@@ -44,34 +32,28 @@
             </div>
             
             <div class="character-preview">
-                <div class="character-showcase">
-                    <img src="assets/sprites/characters/axol_neon.png" alt="Axol Neon" class="character-img active">
-                    <img src="assets/sprites/characters/bisou_neon.png" alt="Bisou Neon" class="character-img">
-                    <img src="assets/sprites/characters/pepeca_neon.png" alt="Pepeca Neon" class="character-img">
-                </div>
+                <img src="assets/sprites/characters/axol_neon.png" alt="Axol" class="character-showcase">
             </div>
             
             <div class="menu-buttons">
                 <button id="startGame" class="neon-btn primary">
                     <span class="btn-text">INICIAR MISSÃO</span>
-                    <span class="btn-glow"></span>
                 </button>
                 <button id="selectCharacter" class="neon-btn secondary">
                     <span class="btn-text">SELECIONAR AGENTE</span>
-                    <span class="btn-glow"></span>
                 </button>
                 <button id="instructions" class="neon-btn tertiary">
                     <span class="btn-text">PROTOCOLO</span>
-                    <span class="btn-glow"></span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Seleção de Personagem -->
+    <!-- Character Selection -->
     <div id="characterSelect" class="screen hidden">
         <div class="character-select-container">
             <h2 class="section-title">SELECIONAR AGENTE</h2>
+            
             <div class="characters-grid">
                 <div class="character-option selected" data-character="axol">
                     <div class="character-card">
@@ -79,14 +61,8 @@
                         <h3>AXOL</h3>
                         <p>Agente Aquático</p>
                         <div class="stats">
-                            <div class="stat">
-                                <span>Velocidade:</span>
-                                <div class="stat-bar"><div class="stat-fill" style="width: 80%"></div></div>
-                            </div>
-                            <div class="stat">
-                                <span>Resistência:</span>
-                                <div class="stat-bar"><div class="stat-fill" style="width: 90%"></div></div>
-                            </div>
+                            <div class="stat">Velocidade: ⭐⭐⭐</div>
+                            <div class="stat">Resistência: ⭐⭐⭐⭐</div>
                         </div>
                     </div>
                 </div>
@@ -97,14 +73,8 @@
                         <h3>BISOU</h3>
                         <p>Agente Furtivo</p>
                         <div class="stats">
-                            <div class="stat">
-                                <span>Velocidade:</span>
-                                <div class="stat-bar"><div class="stat-fill" style="width: 95%"></div></div>
-                            </div>
-                            <div class="stat">
-                                <span>Agilidade:</span>
-                                <div class="stat-bar"><div class="stat-fill" style="width: 100%"></div></div>
-                            </div>
+                            <div class="stat">Velocidade: ⭐⭐⭐⭐</div>
+                            <div class="stat">Agilidade: ⭐⭐⭐⭐⭐</div>
                         </div>
                     </div>
                 </div>
@@ -115,29 +85,25 @@
                         <h3>PEPECA</h3>
                         <p>Agente Pesado</p>
                         <div class="stats">
-                            <div class="stat">
-                                <span>Força:</span>
-                                <div class="stat-bar"><div class="stat-fill" style="width: 100%"></div></div>
-                            </div>
-                            <div class="stat">
-                                <span>Resistência:</span>
-                                <div class="stat-bar"><div class="stat-fill" style="width: 85%"></div></div>
-                            </div>
+                            <div class="stat">Força: ⭐⭐⭐⭐⭐</div>
+                            <div class="stat">Resistência: ⭐⭐⭐⭐</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="character-select-buttons">
+            
+            <div class="character-buttons">
                 <button id="backToMenu" class="neon-btn secondary">VOLTAR</button>
                 <button id="confirmCharacter" class="neon-btn primary">CONFIRMAR</button>
             </div>
         </div>
     </div>
 
-    <!-- Instruções -->
+    <!-- Instructions -->
     <div id="instructionsScreen" class="screen hidden">
         <div class="instructions-container">
             <h2 class="section-title">PROTOCOLO DE MISSÃO</h2>
+            
             <div class="instructions-content">
                 <div class="instruction-block">
                     <h3>CONTROLES</h3>
@@ -166,25 +132,26 @@
                     <h3>POWER-UPS</h3>
                     <div class="powerups-grid">
                         <div class="powerup-item">
-                            <span class="powerup-icon speed">⚡</span>
+                            <span class="powerup-icon">⚡</span>
                             <span>Boost de Velocidade</span>
                         </div>
                         <div class="powerup-item">
-                            <span class="powerup-icon bomb">💣</span>
+                            <span class="powerup-icon">💣</span>
                             <span>Bombas Extras</span>
                         </div>
                         <div class="powerup-item">
-                            <span class="powerup-icon range">🔥</span>
+                            <span class="powerup-icon">🔥</span>
                             <span>Alcance Ampliado</span>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <button id="backToMenuFromInstructions" class="neon-btn secondary">VOLTAR</button>
         </div>
     </div>
 
-    <!-- Tela do Jogo -->
+    <!-- Game Screen -->
     <div id="gameScreen" class="screen hidden">
         <div class="game-container">
             <div class="game-hud">
@@ -213,7 +180,7 @@
                 <canvas id="gameCanvas" width="800" height="600"></canvas>
             </div>
             
-            <!-- Controles Touch -->
+            <!-- Touch Controls -->
             <div id="touchControls" class="touch-controls">
                 <div class="dpad">
                     <button class="dpad-btn up" data-direction="up">↑</button>
@@ -229,10 +196,21 @@
         </div>
     </div>
 
+    <!-- Pause Screen -->
+    <div id="pauseScreen" class="screen hidden">
+        <div class="pause-container">
+            <h2 class="pause-title">MISSÃO PAUSADA</h2>
+            <div class="pause-buttons">
+                <button id="resumeGame" class="neon-btn primary">CONTINUAR</button>
+                <button id="backToMenuFromPause" class="neon-btn secondary">MENU PRINCIPAL</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Game Over -->
     <div id="gameOverScreen" class="screen hidden">
         <div class="gameover-container">
-            <h2 class="gameover-title glitch" data-text="MISSÃO FALHOU">MISSÃO FALHOU</h2>
+            <h2 class="gameover-title">MISSÃO FINALIZADA</h2>
             <div class="final-stats">
                 <p>Pontuação Final: <span id="finalScore">0</span></p>
                 <p>Nível Alcançado: <span id="finalLevel">1</span></p>
@@ -244,77 +222,93 @@
         </div>
     </div>
 
-    <!-- Pause -->
-    <div id="pauseScreen" class="screen hidden">
-        <div class="pause-container">
-            <h2 class="pause-title">MISSÃO PAUSADA</h2>
-            <div class="pause-buttons">
-                <button id="resumeGame" class="neon-btn primary">CONTINUAR</button>
-                <button id="backToMenuFromPause" class="neon-btn secondary">MENU PRINCIPAL</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Scripts -->
-    <script src="js/neon-map.js"></script>
-    <script src="js/neon-player.js"></script>
-    <script src="js/neon-bomb.js"></script>
-    <script src="js/neon-explosion.js"></script>
-    <script src="js/neon-powerup.js"></script>
-    <script src="js/neon-game.js"></script>
-    <script src="js/neon-ui.js"></script>
+    <script src="js/game.js"></script>
     <script>
-        // INICIALIZAÇÃO PRINCIPAL DO JOGO
-        class BombermanNeonApp {
+        // MAIN APPLICATION CLASS
+        class BombermanApp {
             constructor() {
                 this.currentScreen = 'loading';
                 this.selectedCharacter = 'axol';
                 this.game = null;
-                this.ui = null;
                 
                 this.init();
             }
             
             init() {
-                console.log('Inicializando Bomberman Neon...');
+                console.log('🚀 Inicializando Bomberman Neon...');
                 this.setupEventListeners();
                 this.showLoadingScreen();
                 
-                // Simular carregamento
+                // Simulate loading
                 setTimeout(() => {
                     this.showMainMenu();
-                }, 3000);
+                }, 2000);
             }
             
             setupEventListeners() {
+                console.log('⚙️ Configurando event listeners...');
+                
                 // Menu buttons
-                document.getElementById('startGame').addEventListener('click', () => this.startGame());
-                document.getElementById('selectCharacter').addEventListener('click', () => this.showCharacterSelect());
-                document.getElementById('instructions').addEventListener('click', () => this.showInstructions());
+                this.addClickListener('startGame', () => this.startGame());
+                this.addClickListener('selectCharacter', () => this.showCharacterSelect());
+                this.addClickListener('instructions', () => this.showInstructions());
                 
                 // Character selection
                 document.querySelectorAll('.character-option').forEach(option => {
-                    option.addEventListener('click', (e) => {
-                        document.querySelectorAll('.character-option').forEach(opt => opt.classList.remove('selected'));
+                    option.addEventListener('click', () => {
+                        // Remove selection from all
+                        document.querySelectorAll('.character-option').forEach(opt => 
+                            opt.classList.remove('selected'));
+                        
+                        // Add selection to clicked
                         option.classList.add('selected');
                         this.selectedCharacter = option.dataset.character;
-                        console.log('Personagem selecionado:', this.selectedCharacter);
+                        
+                        // Update preview
+                        const preview = document.querySelector('.character-showcase');
+                        if (preview) {
+                            preview.src = `assets/sprites/characters/${this.selectedCharacter}_neon.png`;
+                        }
+                        
+                        console.log('✅ Personagem selecionado:', this.selectedCharacter);
                     });
                 });
                 
-                // Back buttons
-                document.getElementById('backToMenu').addEventListener('click', () => this.showMainMenu());
-                document.getElementById('confirmCharacter').addEventListener('click', () => this.showMainMenu());
-                document.getElementById('backToMenuFromInstructions').addEventListener('click', () => this.showMainMenu());
-                document.getElementById('backToMenuFromGameOver').addEventListener('click', () => this.showMainMenu());
-                document.getElementById('backToMenuFromPause').addEventListener('click', () => this.showMainMenu());
+                // Navigation buttons
+                this.addClickListener('backToMenu', () => this.showMainMenu());
+                this.addClickListener('confirmCharacter', () => this.showMainMenu());
+                this.addClickListener('backToMenuFromInstructions', () => this.showMainMenu());
+                this.addClickListener('backToMenuFromPause', () => this.showMainMenu());
+                this.addClickListener('backToMenuFromGameOver', () => this.showMainMenu());
                 
                 // Game controls
-                document.getElementById('pauseBtn').addEventListener('click', () => this.pauseGame());
-                document.getElementById('resumeGame').addEventListener('click', () => this.resumeGame());
-                document.getElementById('playAgain').addEventListener('click', () => this.startGame());
+                this.addClickListener('pauseBtn', () => this.pauseGame());
+                this.addClickListener('resumeGame', () => this.resumeGame());
+                this.addClickListener('playAgain', () => this.startGame());
                 
                 // Touch controls
+                this.setupTouchControls();
+                
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                document.addEventListener('keyup', (e) => this.handleKeyUp(e));
+                
+                console.log('✅ Event listeners configurados!');
+            }
+            
+            addClickListener(id, callback) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('click', callback);
+                    console.log(`✅ Listener adicionado para: ${id}`);
+                } else {
+                    console.warn(`⚠️ Elemento não encontrado: ${id}`);
+                }
+            }
+            
+            setupTouchControls() {
+                // D-pad controls
                 document.querySelectorAll('.dpad-btn').forEach(btn => {
                     if (btn.dataset.direction) {
                         btn.addEventListener('touchstart', (e) => {
@@ -329,32 +323,15 @@
                                 this.game.handleInput(btn.dataset.direction, false);
                             }
                         });
-                        btn.addEventListener('mousedown', (e) => {
-                            e.preventDefault();
-                            if (this.game) {
-                                this.game.handleInput(btn.dataset.direction, true);
-                            }
-                        });
-                        btn.addEventListener('mouseup', (e) => {
-                            e.preventDefault();
-                            if (this.game) {
-                                this.game.handleInput(btn.dataset.direction, false);
-                            }
-                        });
                     }
                 });
                 
-                document.getElementById('bombBtn').addEventListener('click', () => {
+                // Bomb button
+                this.addClickListener('bombBtn', () => {
                     if (this.game) {
                         this.game.placeBomb();
                     }
                 });
-                
-                // Keyboard controls
-                document.addEventListener('keydown', (e) => this.handleKeyDown(e));
-                document.addEventListener('keyup', (e) => this.handleKeyUp(e));
-                
-                console.log('Event listeners configurados');
             }
             
             handleKeyDown(e) {
@@ -364,30 +341,25 @@
                         case 'KeyW':
                             e.preventDefault();
                             this.game.handleInput('up', true);
-                            console.log('Tecla UP pressionada');
                             break;
                         case 'ArrowDown':
                         case 'KeyS':
                             e.preventDefault();
                             this.game.handleInput('down', true);
-                            console.log('Tecla DOWN pressionada');
                             break;
                         case 'ArrowLeft':
                         case 'KeyA':
                             e.preventDefault();
                             this.game.handleInput('left', true);
-                            console.log('Tecla LEFT pressionada');
                             break;
                         case 'ArrowRight':
                         case 'KeyD':
                             e.preventDefault();
                             this.game.handleInput('right', true);
-                            console.log('Tecla RIGHT pressionada');
                             break;
                         case 'Space':
                             e.preventDefault();
                             this.game.placeBomb();
-                            console.log('BOMBA colocada');
                             break;
                         case 'Escape':
                             e.preventDefault();
@@ -421,12 +393,22 @@
             }
             
             showScreen(screenId) {
+                console.log(`🔄 Mudando para tela: ${screenId}`);
+                
+                // Hide all screens
                 document.querySelectorAll('.screen').forEach(screen => {
                     screen.classList.add('hidden');
                 });
-                document.getElementById(screenId).classList.remove('hidden');
-                this.currentScreen = screenId;
-                console.log('Tela atual:', screenId);
+                
+                // Show target screen
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.remove('hidden');
+                    this.currentScreen = screenId;
+                    console.log(`✅ Tela ativa: ${screenId}`);
+                } else {
+                    console.error(`❌ Tela não encontrada: ${screenId}`);
+                }
             }
             
             showLoadingScreen() {
@@ -450,23 +432,26 @@
             }
             
             startGame() {
-                console.log('Iniciando jogo com personagem:', this.selectedCharacter);
+                console.log(`🎮 Iniciando jogo com personagem: ${this.selectedCharacter}`);
                 this.showScreen('gameScreen');
                 
                 const canvas = document.getElementById('gameCanvas');
-                this.game = new NeonGame(canvas, this.selectedCharacter);
-                this.ui = new NeonUI();
-                
-                this.game.onGameOver = (score, level) => {
-                    this.showGameOver(score, level);
-                };
-                
-                this.game.onScoreUpdate = (score, level, lives) => {
-                    this.ui.updateHUD(score, level, lives);
-                };
-                
-                this.game.start();
-                console.log('Jogo iniciado!');
+                if (canvas) {
+                    this.game = new BombermanGame(canvas, this.selectedCharacter);
+                    
+                    this.game.onGameOver = (score, level) => {
+                        this.showGameOver(score, level);
+                    };
+                    
+                    this.game.onScoreUpdate = (score, level, lives) => {
+                        this.updateHUD(score, level, lives);
+                    };
+                    
+                    this.game.start();
+                    console.log('✅ Jogo iniciado!');
+                } else {
+                    console.error('❌ Canvas não encontrado!');
+                }
             }
             
             pauseGame() {
@@ -488,12 +473,18 @@
                 document.getElementById('finalLevel').textContent = level;
                 this.showScreen('gameOverScreen');
             }
+            
+            updateHUD(score, level, lives) {
+                document.getElementById('score').textContent = score;
+                document.getElementById('level').textContent = level;
+                document.getElementById('lives').textContent = lives;
+            }
         }
 
-        // Inicializar quando a página carregar
+        // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM carregado, inicializando app...');
-            window.bombermanApp = new BombermanNeonApp();
+            console.log('🌟 DOM carregado, inicializando aplicação...');
+            window.bombermanApp = new BombermanApp();
         });
     </script>
 </body>

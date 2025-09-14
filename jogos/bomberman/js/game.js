@@ -1,405 +1,710 @@
-// Classe principal do jogo
-class Game {
-    constructor() {
-        this.canvas = document.getElementById('gameCanvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.width = 800;
-        this.height = 600;
-        this.gridSize = 32;
-        this.mapWidth = 25;
-        this.mapHeight = 19;
+// BOMBERMAN NEON - GAME ENGINE CORRIGIDO
+
+class BombermanGame {
+    constructor(canvas, selectedCharacter) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.selectedCharacter = selectedCharacter;
         
-        // Estados do jogo
-        this.gameState = 'menu'; // menu, playing, paused, gameOver
+        // Game state
+        this.isRunning = false;
+        this.isPaused = false;
         this.score = 0;
         this.level = 1;
         this.lives = 3;
-        this.selectedCharacter = 'axol';
         
-        // Objetos do jogo
+        // Game objects
         this.player = null;
+        this.map = null;
         this.bombs = [];
         this.explosions = [];
-        this.walls = [];
         this.powerups = [];
         this.enemies = [];
         
-        // Controles
+        // Input handling
         this.keys = {};
-        this.touchControls = {
-            up: false,
-            down: false,
-            left: false,
-            right: false,
-            bomb: false
+        
+        // Callbacks
+        this.onGameOver = null;
+        this.onScoreUpdate = null;
+        
+        // Game settings
+        this.tileSize = 40;
+        this.mapWidth = 19;
+        this.mapHeight = 15;
+        
+        // Initialize
+        this.init();
+    }
+    
+    init() {
+        console.log('🎮 Inicializando BombermanGame...');
+        
+        // Create map
+        this.map = new GameMap(this.mapWidth, this.mapHeight, this.tileSize);
+        
+        // Create player
+        this.player = new Player(1, 1, this.selectedCharacter, this.tileSize);
+        
+        // Load sprites
+        this.loadSprites();
+        
+        console.log('✅ BombermanGame inicializado!');
+    }
+    
+    loadSprites() {
+        this.sprites = {
+            player: new Image(),
+            bomb: new Image(),
+            explosion: new Image(),
+            wall: new Image(),
+            destructible: new Image(),
+            powerup_speed: new Image(),
+            powerup_bomb: new Image(),
+            powerup_range: new Image()
         };
         
-        // Assets
-        this.sprites = {};
-        this.assetsLoaded = false;
+        // Load player sprite
+        this.sprites.player.src = `assets/sprites/characters/${this.selectedCharacter}_neon.png`;
+        this.sprites.bomb.src = 'assets/sprites/items/bomb_neon.png';
+        this.sprites.explosion.src = 'assets/sprites/items/explosion_neon.png';
+        this.sprites.wall.src = 'assets/sprites/environment/wall_neon.png';
+        this.sprites.destructible.src = 'assets/sprites/environment/wall_neon.png';
         
-        // Configurar canvas
-        this.setupCanvas();
-        
-        // Carregar assets
-        this.loadAssets();
-        
-        // Configurar eventos
-        this.setupEvents();
-        
-        // Loop do jogo
-        this.lastTime = 0;
-        this.gameLoop = this.gameLoop.bind(this);
+        console.log('🖼️ Sprites carregados!');
     }
     
-    setupCanvas() {
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-        this.ctx.imageSmoothingEnabled = false;
+    start() {
+        console.log('🚀 Iniciando jogo...');
+        this.isRunning = true;
+        this.isPaused = false;
+        this.gameLoop();
     }
     
-    loadAssets() {
-        const assetPaths = {
-            // Personagens
-            'axol_down': 'assets/sprites/characters/axol_down.png',
-            'axol_up': 'assets/sprites/characters/axol_up.png',
-            'axol_left': 'assets/sprites/characters/axol_left.png',
-            'axol_right': 'assets/sprites/characters/axol_right.png',
-            'bisou_down': 'assets/sprites/characters/bisou_down.png',
-            'bisou_up': 'assets/sprites/characters/bisou_up.png',
-            'bisou_left': 'assets/sprites/characters/bisou_left.png',
-            'bisou_right': 'assets/sprites/characters/bisou_right.png',
-            'pepeca_down': 'assets/sprites/characters/pepeca_down.png',
-            'pepeca_up': 'assets/sprites/characters/pepeca_up.png',
-            'pepeca_left': 'assets/sprites/characters/pepeca_left.png',
-            'pepeca_right': 'assets/sprites/characters/pepeca_right.png',
+    pause() {
+        this.isPaused = true;
+        console.log('⏸️ Jogo pausado');
+    }
+    
+    resume() {
+        this.isPaused = false;
+        console.log('▶️ Jogo retomado');
+        this.gameLoop();
+    }
+    
+    destroy() {
+        this.isRunning = false;
+        this.isPaused = false;
+        console.log('🛑 Jogo destruído');
+    }
+    
+    gameLoop() {
+        if (!this.isRunning || this.isPaused) return;
+        
+        try {
+            this.update();
+            this.render();
             
-            // Itens
-            'bomb': 'assets/sprites/items/bomb.png',
-            'explosion_center': 'assets/sprites/items/explosion_center.png',
-            'explosion_horizontal': 'assets/sprites/items/explosion_horizontal.png',
-            'explosion_vertical': 'assets/sprites/items/explosion_vertical.png',
-            'powerup_speed': 'assets/sprites/items/powerup_speed.png',
-            'powerup_bomb': 'assets/sprites/items/powerup_bomb.png',
-            
-            // Ambiente
-            'wall_solid': 'assets/sprites/environment/wall_solid.png',
-            'wall_destructible': 'assets/sprites/environment/wall_destructible.png'
-        };
-        
-        let loadedCount = 0;
-        const totalAssets = Object.keys(assetPaths).length;
-        
-        for (const [key, path] of Object.entries(assetPaths)) {
-            const img = new Image();
-            img.onload = () => {
-                loadedCount++;
-                if (loadedCount === totalAssets) {
-                    this.assetsLoaded = true;
-                    this.hideLoading();
-                }
-            };
-            img.onerror = () => {
-                console.error(`Erro ao carregar: ${path}`);
-                loadedCount++;
-                if (loadedCount === totalAssets) {
-                    this.assetsLoaded = true;
-                    this.hideLoading();
-                }
-            };
-            img.src = path;
-            this.sprites[key] = img;
+            // Continue loop
+            requestAnimationFrame(() => this.gameLoop());
+        } catch (error) {
+            console.error('❌ Erro no game loop:', error);
+            this.handleGameError(error);
         }
     }
     
-    hideLoading() {
-        document.getElementById('loading').classList.add('hidden');
-    }
-    
-    setupEvents() {
-        // Eventos de teclado
-        document.addEventListener('keydown', (e) => {
-            this.keys[e.code] = true;
-            
-            if (this.gameState === 'playing') {
-                if (e.code === 'Space') {
-                    e.preventDefault();
-                    this.player.placeBomb();
-                }
-                if (e.code === 'Escape') {
-                    this.pauseGame();
-                }
-            }
-        });
-        
-        document.addEventListener('keyup', (e) => {
-            this.keys[e.code] = false;
-        });
-        
-        // Eventos touch
-        this.setupTouchControls();
-        
-        // Prevenir zoom no mobile
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-        
-        document.addEventListener('gesturestart', (e) => {
-            e.preventDefault();
-        });
-    }
-    
-    setupTouchControls() {
-        const touchButtons = {
-            'upBtn': 'up',
-            'downBtn': 'down',
-            'leftBtn': 'left',
-            'rightBtn': 'right',
-            'bombBtn': 'bomb'
-        };
-        
-        for (const [btnId, control] of Object.entries(touchButtons)) {
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                btn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    this.touchControls[control] = true;
-                    if (control === 'bomb' && this.gameState === 'playing') {
-                        this.player.placeBomb();
-                    }
-                });
-                
-                btn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    this.touchControls[control] = false;
-                });
-                
-                btn.addEventListener('touchcancel', (e) => {
-                    e.preventDefault();
-                    this.touchControls[control] = false;
-                });
-            }
-        }
-    }
-    
-    startGame() {
-        this.gameState = 'playing';
-        this.score = 0;
-        this.lives = 3;
-        this.level = 1;
-        
-        // Limpar objetos
-        this.bombs = [];
-        this.explosions = [];
-        this.walls = [];
-        this.powerups = [];
-        this.enemies = [];
-        
-        // Criar mapa
-        this.map = new GameMap(this);
-        this.map.generate();
-        
-        // Criar jogador
-        this.player = new Player(this, this.gridSize, this.gridSize, this.selectedCharacter);
-        
-        // Iniciar loop do jogo
-        requestAnimationFrame(this.gameLoop);
-        
-        // Atualizar UI
-        this.updateUI();
-    }
-    
-    pauseGame() {
-        if (this.gameState === 'playing') {
-            this.gameState = 'paused';
-            document.getElementById('pauseScreen').classList.remove('hidden');
-        }
-    }
-    
-    resumeGame() {
-        if (this.gameState === 'paused') {
-            this.gameState = 'playing';
-            document.getElementById('pauseScreen').classList.add('hidden');
-            requestAnimationFrame(this.gameLoop);
-        }
-    }
-    
-    gameOver(won = false) {
-        this.gameState = 'gameOver';
-        document.getElementById('gameOverTitle').textContent = won ? 'VITÓRIA!' : 'GAME OVER';
-        document.getElementById('finalScoreValue').textContent = this.score;
-        document.getElementById('gameOverScreen').classList.remove('hidden');
-    }
-    
-    nextLevel() {
-        this.level++;
-        this.startGame();
-    }
-    
-    addScore(points) {
-        this.score += points;
-        this.updateUI();
-    }
-    
-    loseLife() {
-        this.lives--;
-        this.updateUI();
-        
-        if (this.lives <= 0) {
-            this.gameOver(false);
-        } else {
-            // Respawn do jogador
-            this.player.respawn();
-        }
-    }
-    
-    updateUI() {
-        document.getElementById('score').textContent = this.score;
-        document.getElementById('level').textContent = this.level;
-        document.getElementById('lives').textContent = this.lives;
-    }
-    
-    update(deltaTime) {
-        if (this.gameState !== 'playing') return;
-        
-        // Atualizar jogador
+    update() {
+        // Update player
         if (this.player) {
-            this.player.update(deltaTime);
+            this.player.update(this.map);
         }
         
-        // Atualizar bombas
-        for (let i = this.bombs.length - 1; i >= 0; i--) {
-            this.bombs[i].update(deltaTime);
-            if (this.bombs[i].shouldRemove) {
-                this.bombs.splice(i, 1);
+        // Update bombs - SISTEMA CORRIGIDO
+        this.updateBombs();
+        
+        // Update explosions
+        this.updateExplosions();
+        
+        // Update powerups
+        this.updatePowerups();
+        
+        // Check collisions
+        this.checkCollisions();
+        
+        // Update HUD
+        if (this.onScoreUpdate) {
+            this.onScoreUpdate(this.score, this.level, this.lives);
+        }
+    }
+    
+    // SISTEMA DE BOMBAS CORRIGIDO
+    updateBombs() {
+        // Create a copy of bombs array to avoid modification during iteration
+        const bombsCopy = [...this.bombs];
+        
+        for (let i = bombsCopy.length - 1; i >= 0; i--) {
+            const bomb = bombsCopy[i];
+            
+            try {
+                // Update bomb timer
+                bomb.timer -= 16; // Assuming 60fps (16ms per frame)
+                
+                // Check if bomb should explode
+                if (bomb.timer <= 0) {
+                    console.log('💥 Bomba explodindo!');
+                    
+                    // Create explosion
+                    this.createExplosion(bomb.x, bomb.y, bomb.range);
+                    
+                    // Remove bomb from array safely
+                    const bombIndex = this.bombs.indexOf(bomb);
+                    if (bombIndex > -1) {
+                        this.bombs.splice(bombIndex, 1);
+                    }
+                    
+                    // Increase player bomb count
+                    if (this.player) {
+                        this.player.bombCount++;
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Erro ao atualizar bomba:', error);
+                // Remove problematic bomb
+                const bombIndex = this.bombs.indexOf(bomb);
+                if (bombIndex > -1) {
+                    this.bombs.splice(bombIndex, 1);
+                }
             }
         }
-        
-        // Atualizar explosões
+    }
+    
+    // SISTEMA DE EXPLOSÕES CORRIGIDO
+    createExplosion(centerX, centerY, range) {
+        try {
+            console.log(`💥 Criando explosão em (${centerX}, ${centerY}) com alcance ${range}`);
+            
+            // Center explosion
+            this.explosions.push(new Explosion(centerX, centerY, 500)); // 500ms duration
+            
+            // Horizontal explosions
+            for (let i = 1; i <= range; i++) {
+                // Right
+                if (centerX + i < this.mapWidth && !this.map.isWall(centerX + i, centerY)) {
+                    this.explosions.push(new Explosion(centerX + i, centerY, 500));
+                    if (this.map.isDestructible(centerX + i, centerY)) {
+                        this.destroyWall(centerX + i, centerY);
+                        break;
+                    }
+                }
+                
+                // Left
+                if (centerX - i >= 0 && !this.map.isWall(centerX - i, centerY)) {
+                    this.explosions.push(new Explosion(centerX - i, centerY, 500));
+                    if (this.map.isDestructible(centerX - i, centerY)) {
+                        this.destroyWall(centerX - i, centerY);
+                        break;
+                    }
+                }
+            }
+            
+            // Vertical explosions
+            for (let i = 1; i <= range; i++) {
+                // Down
+                if (centerY + i < this.mapHeight && !this.map.isWall(centerX, centerY + i)) {
+                    this.explosions.push(new Explosion(centerX, centerY + i, 500));
+                    if (this.map.isDestructible(centerX, centerY + i)) {
+                        this.destroyWall(centerX, centerY + i);
+                        break;
+                    }
+                }
+                
+                // Up
+                if (centerY - i >= 0 && !this.map.isWall(centerX, centerY - i)) {
+                    this.explosions.push(new Explosion(centerX, centerY - i, 500));
+                    if (this.map.isDestructible(centerX, centerY - i)) {
+                        this.destroyWall(centerX, centerY - i);
+                        break;
+                    }
+                }
+            }
+            
+            console.log(`✅ Explosão criada com ${this.explosions.length} partes`);
+        } catch (error) {
+            console.error('❌ Erro ao criar explosão:', error);
+        }
+    }
+    
+    updateExplosions() {
+        // Update explosions safely
         for (let i = this.explosions.length - 1; i >= 0; i--) {
-            this.explosions[i].update(deltaTime);
-            if (this.explosions[i].shouldRemove) {
+            const explosion = this.explosions[i];
+            
+            try {
+                explosion.timer -= 16;
+                
+                if (explosion.timer <= 0) {
+                    this.explosions.splice(i, 1);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao atualizar explosão:', error);
                 this.explosions.splice(i, 1);
             }
         }
+    }
+    
+    destroyWall(x, y) {
+        try {
+            this.map.destroyWall(x, y);
+            this.score += 10;
+            
+            // Chance to spawn powerup
+            if (Math.random() < 0.3) {
+                this.spawnPowerup(x, y);
+            }
+            
+            console.log(`🧱 Parede destruída em (${x}, ${y})`);
+        } catch (error) {
+            console.error('❌ Erro ao destruir parede:', error);
+        }
+    }
+    
+    spawnPowerup(x, y) {
+        const types = ['speed', 'bomb', 'range'];
+        const type = types[Math.floor(Math.random() * types.length)];
         
-        // Atualizar power-ups
+        this.powerups.push(new Powerup(x, y, type));
+        console.log(`⚡ Power-up ${type} criado em (${x}, ${y})`);
+    }
+    
+    updatePowerups() {
+        // Safe powerup update
         for (let i = this.powerups.length - 1; i >= 0; i--) {
-            this.powerups[i].update(deltaTime);
-            if (this.powerups[i].shouldRemove) {
+            const powerup = this.powerups[i];
+            
+            try {
+                // Check if player collected powerup
+                if (this.player && 
+                    Math.floor(this.player.x / this.tileSize) === powerup.x &&
+                    Math.floor(this.player.y / this.tileSize) === powerup.y) {
+                    
+                    this.collectPowerup(powerup);
+                    this.powerups.splice(i, 1);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao atualizar power-up:', error);
                 this.powerups.splice(i, 1);
             }
         }
-        
-        // Verificar condições de vitória
-        this.checkWinCondition();
     }
     
-    checkWinCondition() {
-        // Verificar se todas as paredes destrutíveis foram destruídas
-        const destructibleWalls = this.walls.filter(wall => wall.type === 'destructible');
-        if (destructibleWalls.length === 0 && this.enemies.length === 0) {
-            this.gameOver(true);
+    collectPowerup(powerup) {
+        try {
+            switch (powerup.type) {
+                case 'speed':
+                    this.player.speed += 1;
+                    console.log('⚡ Speed boost coletado!');
+                    break;
+                case 'bomb':
+                    this.player.maxBombs++;
+                    console.log('💣 Bomba extra coletada!');
+                    break;
+                case 'range':
+                    this.player.bombRange++;
+                    console.log('🔥 Alcance aumentado!');
+                    break;
+            }
+            
+            this.score += 50;
+        } catch (error) {
+            console.error('❌ Erro ao coletar power-up:', error);
+        }
+    }
+    
+    checkCollisions() {
+        try {
+            // Check player vs explosions
+            if (this.player) {
+                const playerTileX = Math.floor(this.player.x / this.tileSize);
+                const playerTileY = Math.floor(this.player.y / this.tileSize);
+                
+                for (const explosion of this.explosions) {
+                    if (explosion.x === playerTileX && explosion.y === playerTileY) {
+                        this.playerHit();
+                        break;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('❌ Erro ao verificar colisões:', error);
+        }
+    }
+    
+    playerHit() {
+        this.lives--;
+        console.log(`💔 Jogador atingido! Vidas restantes: ${this.lives}`);
+        
+        if (this.lives <= 0) {
+            this.gameOver();
+        } else {
+            // Reset player position
+            this.player.x = this.tileSize;
+            this.player.y = this.tileSize;
+        }
+    }
+    
+    gameOver() {
+        this.isRunning = false;
+        console.log('💀 Game Over!');
+        
+        if (this.onGameOver) {
+            this.onGameOver(this.score, this.level);
+        }
+    }
+    
+    // INPUT HANDLING CORRIGIDO
+    handleInput(direction, pressed) {
+        try {
+            this.keys[direction] = pressed;
+            
+            if (this.player) {
+                this.player.setDirection(direction, pressed);
+            }
+            
+            console.log(`🎮 Input: ${direction} = ${pressed}`);
+        } catch (error) {
+            console.error('❌ Erro ao processar input:', error);
+        }
+    }
+    
+    // COLOCAÇÃO DE BOMBAS CORRIGIDA
+    placeBomb() {
+        try {
+            if (!this.player || this.player.bombCount <= 0) {
+                console.log('⚠️ Não é possível colocar bomba');
+                return;
+            }
+            
+            const bombX = Math.floor(this.player.x / this.tileSize);
+            const bombY = Math.floor(this.player.y / this.tileSize);
+            
+            // Check if there's already a bomb at this position
+            const existingBomb = this.bombs.find(bomb => bomb.x === bombX && bomb.y === bombY);
+            if (existingBomb) {
+                console.log('⚠️ Já existe uma bomba nesta posição');
+                return;
+            }
+            
+            // Create new bomb
+            const bomb = new Bomb(bombX, bombY, this.player.bombRange, 3000); // 3 seconds
+            this.bombs.push(bomb);
+            this.player.bombCount--;
+            
+            console.log(`💣 Bomba colocada em (${bombX}, ${bombY})`);
+        } catch (error) {
+            console.error('❌ Erro ao colocar bomba:', error);
         }
     }
     
     render() {
-        if (this.gameState !== 'playing') return;
+        try {
+            // Clear canvas
+            this.ctx.fillStyle = '#0a0a0a';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            // Render map
+            if (this.map) {
+                this.map.render(this.ctx, this.sprites);
+            }
+            
+            // Render powerups
+            this.renderPowerups();
+            
+            // Render bombs
+            this.renderBombs();
+            
+            // Render explosions
+            this.renderExplosions();
+            
+            // Render player
+            if (this.player) {
+                this.player.render(this.ctx, this.sprites.player);
+            }
+            
+        } catch (error) {
+            console.error('❌ Erro ao renderizar:', error);
+        }
+    }
+    
+    renderBombs() {
+        for (const bomb of this.bombs) {
+            try {
+                const x = bomb.x * this.tileSize;
+                const y = bomb.y * this.tileSize;
+                
+                // Render bomb with pulsing effect
+                const pulse = Math.sin(Date.now() * 0.01) * 0.1 + 0.9;
+                this.ctx.save();
+                this.ctx.globalAlpha = pulse;
+                
+                if (this.sprites.bomb.complete) {
+                    this.ctx.drawImage(this.sprites.bomb, x, y, this.tileSize, this.tileSize);
+                } else {
+                    // Fallback rendering
+                    this.ctx.fillStyle = '#ff0080';
+                    this.ctx.fillRect(x + 5, y + 5, this.tileSize - 10, this.tileSize - 10);
+                }
+                
+                this.ctx.restore();
+            } catch (error) {
+                console.error('❌ Erro ao renderizar bomba:', error);
+            }
+        }
+    }
+    
+    renderExplosions() {
+        for (const explosion of this.explosions) {
+            try {
+                const x = explosion.x * this.tileSize;
+                const y = explosion.y * this.tileSize;
+                
+                // Render explosion with glow effect
+                this.ctx.save();
+                this.ctx.shadowColor = '#00ffff';
+                this.ctx.shadowBlur = 20;
+                
+                if (this.sprites.explosion.complete) {
+                    this.ctx.drawImage(this.sprites.explosion, x, y, this.tileSize, this.tileSize);
+                } else {
+                    // Fallback rendering
+                    this.ctx.fillStyle = '#00ffff';
+                    this.ctx.fillRect(x, y, this.tileSize, this.tileSize);
+                }
+                
+                this.ctx.restore();
+            } catch (error) {
+                console.error('❌ Erro ao renderizar explosão:', error);
+            }
+        }
+    }
+    
+    renderPowerups() {
+        for (const powerup of this.powerups) {
+            try {
+                const x = powerup.x * this.tileSize;
+                const y = powerup.y * this.tileSize;
+                
+                // Render powerup with floating effect
+                const float = Math.sin(Date.now() * 0.005) * 3;
+                
+                this.ctx.save();
+                this.ctx.shadowColor = '#ffff00';
+                this.ctx.shadowBlur = 10;
+                
+                // Simple colored square for powerups
+                switch (powerup.type) {
+                    case 'speed':
+                        this.ctx.fillStyle = '#00ff00';
+                        break;
+                    case 'bomb':
+                        this.ctx.fillStyle = '#ff8000';
+                        break;
+                    case 'range':
+                        this.ctx.fillStyle = '#ff0000';
+                        break;
+                }
+                
+                this.ctx.fillRect(x + 8, y + 8 + float, this.tileSize - 16, this.tileSize - 16);
+                this.ctx.restore();
+            } catch (error) {
+                console.error('❌ Erro ao renderizar power-up:', error);
+            }
+        }
+    }
+}
+
+// CLASSES AUXILIARES
+
+class Player {
+    constructor(x, y, character, tileSize) {
+        this.x = x * tileSize;
+        this.y = y * tileSize;
+        this.character = character;
+        this.tileSize = tileSize;
         
-        // Limpar canvas
-        this.ctx.fillStyle = '#27ae60';
-        this.ctx.fillRect(0, 0, this.width, this.height);
+        this.speed = 2;
+        this.direction = { x: 0, y: 0 };
         
-        // Renderizar paredes
-        this.walls.forEach(wall => wall.render(this.ctx));
+        this.bombCount = 1;
+        this.maxBombs = 1;
+        this.bombRange = 2;
+    }
+    
+    setDirection(dir, pressed) {
+        switch (dir) {
+            case 'up':
+                this.direction.y = pressed ? -1 : 0;
+                break;
+            case 'down':
+                this.direction.y = pressed ? 1 : 0;
+                break;
+            case 'left':
+                this.direction.x = pressed ? -1 : 0;
+                break;
+            case 'right':
+                this.direction.x = pressed ? 1 : 0;
+                break;
+        }
+    }
+    
+    update(map) {
+        const newX = this.x + this.direction.x * this.speed;
+        const newY = this.y + this.direction.y * this.speed;
         
-        // Renderizar power-ups
-        this.powerups.forEach(powerup => powerup.render(this.ctx));
-        
-        // Renderizar bombas
-        this.bombs.forEach(bomb => bomb.render(this.ctx));
-        
-        // Renderizar explosões
-        this.explosions.forEach(explosion => explosion.render(this.ctx));
-        
-        // Renderizar jogador
-        if (this.player) {
-            this.player.render(this.ctx);
+        // Check collision with walls
+        if (!this.checkWallCollision(newX, this.y, map)) {
+            this.x = newX;
+        }
+        if (!this.checkWallCollision(this.x, newY, map)) {
+            this.y = newY;
         }
         
-        // Renderizar inimigos
-        this.enemies.forEach(enemy => enemy.render(this.ctx));
+        // Keep player in bounds
+        this.x = Math.max(0, Math.min(this.x, (map.width - 1) * this.tileSize));
+        this.y = Math.max(0, Math.min(this.y, (map.height - 1) * this.tileSize));
     }
     
-    gameLoop(currentTime) {
-        if (this.gameState !== 'playing') return;
+    checkWallCollision(x, y, map) {
+        const tileX = Math.floor(x / this.tileSize);
+        const tileY = Math.floor(y / this.tileSize);
         
-        const deltaTime = currentTime - this.lastTime;
-        this.lastTime = currentTime;
-        
-        this.update(deltaTime);
-        this.render();
-        
-        requestAnimationFrame(this.gameLoop);
+        return map.isWall(tileX, tileY) || map.isDestructible(tileX, tileY);
     }
     
-    // Métodos utilitários
-    getGridPosition(x, y) {
-        return {
-            x: Math.floor(x / this.gridSize),
-            y: Math.floor(y / this.gridSize)
-        };
-    }
-    
-    getWorldPosition(gridX, gridY) {
-        return {
-            x: gridX * this.gridSize,
-            y: gridY * this.gridSize
-        };
-    }
-    
-    isValidPosition(x, y) {
-        const gridPos = this.getGridPosition(x, y);
-        
-        // Verificar limites do mapa
-        if (gridPos.x < 0 || gridPos.x >= this.mapWidth || 
-            gridPos.y < 0 || gridPos.y >= this.mapHeight) {
-            return false;
+    render(ctx, sprite) {
+        if (sprite && sprite.complete) {
+            ctx.drawImage(sprite, this.x, this.y, this.tileSize, this.tileSize);
+        } else {
+            // Fallback rendering
+            ctx.fillStyle = '#00ffff';
+            ctx.fillRect(this.x + 2, this.y + 2, this.tileSize - 4, this.tileSize - 4);
         }
+    }
+}
+
+class Bomb {
+    constructor(x, y, range, timer) {
+        this.x = x;
+        this.y = y;
+        this.range = range;
+        this.timer = timer;
+    }
+}
+
+class Explosion {
+    constructor(x, y, timer) {
+        this.x = x;
+        this.y = y;
+        this.timer = timer;
+    }
+}
+
+class Powerup {
+    constructor(x, y, type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+    }
+}
+
+class GameMap {
+    constructor(width, height, tileSize) {
+        this.width = width;
+        this.height = height;
+        this.tileSize = tileSize;
+        this.tiles = [];
         
-        // Verificar colisão com paredes
-        for (const wall of this.walls) {
-            const wallGrid = this.getGridPosition(wall.x, wall.y);
-            if (wallGrid.x === gridPos.x && wallGrid.y === gridPos.y) {
-                return false;
+        this.generateMap();
+    }
+    
+    generateMap() {
+        // Initialize empty map
+        for (let y = 0; y < this.height; y++) {
+            this.tiles[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                this.tiles[y][x] = 0; // Empty
             }
         }
         
-        return true;
-    }
-    
-    getWallAt(x, y) {
-        const gridPos = this.getGridPosition(x, y);
-        return this.walls.find(wall => {
-            const wallGrid = this.getGridPosition(wall.x, wall.y);
-            return wallGrid.x === gridPos.x && wallGrid.y === gridPos.y;
-        });
-    }
-    
-    removeWall(wall) {
-        const index = this.walls.indexOf(wall);
-        if (index > -1) {
-            this.walls.splice(index, 1);
-            
-            // Chance de criar power-up
-            if (wall.type === 'destructible' && Math.random() < 0.3) {
-                const powerupType = Math.random() < 0.5 ? 'speed' : 'bomb';
-                this.powerups.push(new PowerUp(this, wall.x, wall.y, powerupType));
+        // Add border walls
+        for (let x = 0; x < this.width; x++) {
+            this.tiles[0][x] = 1; // Top wall
+            this.tiles[this.height - 1][x] = 1; // Bottom wall
+        }
+        for (let y = 0; y < this.height; y++) {
+            this.tiles[y][0] = 1; // Left wall
+            this.tiles[y][this.width - 1] = 1; // Right wall
+        }
+        
+        // Add internal walls (every other tile)
+        for (let y = 2; y < this.height - 1; y += 2) {
+            for (let x = 2; x < this.width - 1; x += 2) {
+                this.tiles[y][x] = 1;
             }
-            
-            this.addScore(10);
+        }
+        
+        // Add destructible walls randomly
+        for (let y = 1; y < this.height - 1; y++) {
+            for (let x = 1; x < this.width - 1; x++) {
+                if (this.tiles[y][x] === 0 && Math.random() < 0.6) {
+                    // Don't place walls near player start position
+                    if (!(x <= 2 && y <= 2)) {
+                        this.tiles[y][x] = 2; // Destructible wall
+                    }
+                }
+            }
+        }
+        
+        console.log('🗺️ Mapa gerado!');
+    }
+    
+    isWall(x, y) {
+        if (x < 0 || x >= this.width || y < 0 || y >= this.height) return true;
+        return this.tiles[y][x] === 1;
+    }
+    
+    isDestructible(x, y) {
+        if (x < 0 || x >= this.width || y < 0 || y >= this.height) return false;
+        return this.tiles[y][x] === 2;
+    }
+    
+    destroyWall(x, y) {
+        if (this.isDestructible(x, y)) {
+            this.tiles[y][x] = 0;
+        }
+    }
+    
+    render(ctx, sprites) {
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const tileType = this.tiles[y][x];
+                const drawX = x * this.tileSize;
+                const drawY = y * this.tileSize;
+                
+                switch (tileType) {
+                    case 1: // Solid wall
+                        ctx.fillStyle = '#00ffff';
+                        ctx.fillRect(drawX, drawY, this.tileSize, this.tileSize);
+                        ctx.strokeStyle = '#0080ff';
+                        ctx.strokeRect(drawX, drawY, this.tileSize, this.tileSize);
+                        break;
+                    case 2: // Destructible wall
+                        ctx.fillStyle = '#ff00ff';
+                        ctx.fillRect(drawX, drawY, this.tileSize, this.tileSize);
+                        ctx.strokeStyle = '#ff0080';
+                        ctx.strokeRect(drawX, drawY, this.tileSize, this.tileSize);
+                        break;
+                }
+            }
         }
     }
 }
