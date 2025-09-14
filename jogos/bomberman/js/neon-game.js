@@ -103,38 +103,50 @@ class NeonGame {
     }
     
     update() {
-        // Update player
-        if (this.player) {
-            this.player.update(this.map);
-        }
+        if (!this.isRunning || this.isPaused) return;
         
-        // Update bombs
-        this.bombs = this.bombs.filter(bomb => {
-            bomb.update();
-            if (bomb.shouldExplode()) {
-                this.createExplosion(bomb.x, bomb.y, bomb.range);
-                return false;
+        try {
+            // Update player
+            if (this.player) {
+                this.player.update(this.map);
             }
-            return true;
-        });
-        
-        // Update explosions
-        this.explosions = this.explosions.filter(explosion => {
-            explosion.update();
-            return !explosion.isFinished();
-        });
-        
-        // Update powerups
-        this.powerups.forEach(powerup => {
-            powerup.update();
-            if (this.player && this.checkCollision(this.player, powerup)) {
-                this.collectPowerup(powerup);
+            
+            // Update bombs
+            for (let i = this.bombs.length - 1; i >= 0; i--) {
+                const bomb = this.bombs[i];
+                bomb.update();
+                if (bomb.shouldExplode()) {
+                    console.log('Bomba explodindo!');
+                    this.createExplosion(bomb.x, bomb.y, bomb.range);
+                    this.bombs.splice(i, 1);
+                }
             }
-        });
-        
-        // Check win condition
-        if (this.map && this.map.areAllDestructibleWallsDestroyed()) {
-            this.nextLevel();
+            
+            // Update explosions
+            for (let i = this.explosions.length - 1; i >= 0; i--) {
+                const explosion = this.explosions[i];
+                explosion.update();
+                if (explosion.isFinished()) {
+                    this.explosions.splice(i, 1);
+                }
+            }
+            
+            // Update powerups
+            for (let i = this.powerups.length - 1; i >= 0; i--) {
+                const powerup = this.powerups[i];
+                powerup.update();
+                if (this.player && this.checkCollision(this.player, powerup)) {
+                    this.collectPowerup(powerup);
+                    this.powerups.splice(i, 1);
+                }
+            }
+            
+            // Check win condition
+            if (this.map && this.map.areAllDestructibleWallsDestroyed()) {
+                this.nextLevel();
+            }
+        } catch (error) {
+            console.error('Erro no update:', error);
         }
     }
     
@@ -309,23 +321,28 @@ class NeonGame {
     }
     
     collectPowerup(powerup) {
-        switch (powerup.type) {
-            case 'speed':
-                this.player.speed += 1;
-                break;
-            case 'bomb':
-                this.player.maxBombs += 1;
-                break;
-            case 'range':
-                this.player.bombRange += 1;
-                break;
-        }
-        
-        this.powerups = this.powerups.filter(p => p !== powerup);
-        this.score += 50;
-        
-        if (this.onScoreUpdate) {
-            this.onScoreUpdate(this.score, this.level, this.lives);
+        try {
+            switch (powerup.type) {
+                case 'speed':
+                    this.player.speed += 1;
+                    break;
+                case 'bomb':
+                    this.player.maxBombs += 1;
+                    break;
+                case 'range':
+                    this.player.bombRange += 1;
+                    break;
+            }
+            
+            this.score += 50;
+            
+            if (this.onScoreUpdate) {
+                this.onScoreUpdate(this.score, this.level, this.lives);
+            }
+            
+            console.log('Power-up coletado:', powerup.type);
+        } catch (error) {
+            console.error('Erro ao coletar power-up:', error);
         }
     }
     

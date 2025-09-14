@@ -73,7 +73,7 @@
         <div class="character-select-container">
             <h2 class="section-title">SELECIONAR AGENTE</h2>
             <div class="characters-grid">
-                <div class="character-option" data-character="axol">
+                <div class="character-option selected" data-character="axol">
                     <div class="character-card">
                         <img src="assets/sprites/characters/axol_neon.png" alt="Axol">
                         <h3>AXOL</h3>
@@ -127,7 +127,10 @@
                     </div>
                 </div>
             </div>
-            <button id="backToMenu" class="neon-btn secondary">VOLTAR</button>
+            <div class="character-select-buttons">
+                <button id="backToMenu" class="neon-btn secondary">VOLTAR</button>
+                <button id="confirmCharacter" class="neon-btn primary">CONFIRMAR</button>
+            </div>
         </div>
     </div>
 
@@ -301,6 +304,7 @@
                 
                 // Back buttons
                 document.getElementById('backToMenu').addEventListener('click', () => this.showMainMenu());
+                document.getElementById('confirmCharacter').addEventListener('click', () => this.showMainMenu());
                 document.getElementById('backToMenuFromInstructions').addEventListener('click', () => this.showMainMenu());
                 document.getElementById('backToMenuFromGameOver').addEventListener('click', () => this.showMainMenu());
                 document.getElementById('backToMenuFromPause').addEventListener('click', () => this.showMainMenu());
