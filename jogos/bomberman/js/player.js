@@ -103,7 +103,96 @@ class Player {
             }
         }
     }
+    // CORREÇÃO ESPECÍFICA PARA COLISÕES COM PAREDES SÓLIDAS
+
+// SUBSTITUA APENAS A FUNÇÃO checkWallCollision na classe Player:
+
+checkWallCollision(x, y, map) {
+    // Verificar múltiplos pontos do jogador para colisão precisa
+    const margin = 8; // Margem maior para evitar atravessar paredes
     
+    // Pontos de verificação mais precisos
+    const points = [
+        { x: x + margin, y: y + margin },                           // Top-left
+        { x: x + this.tileSize - margin, y: y + margin },          // Top-right  
+        { x: x + margin, y: y + this.tileSize - margin },          // Bottom-left
+        { x: x + this.tileSize - margin, y: y + this.tileSize - margin }, // Bottom-right
+        { x: x + this.tileSize/2, y: y + margin },                 // Top-center
+        { x: x + this.tileSize/2, y: y + this.tileSize - margin }, // Bottom-center
+        { x: x + margin, y: y + this.tileSize/2 },                 // Left-center
+        { x: x + this.tileSize - margin, y: y + this.tileSize/2 }  // Right-center
+    ];
+    
+    for (const point of points) {
+        const tileX = Math.floor(point.x / this.tileSize);
+        const tileY = Math.floor(point.y / this.tileSize);
+        
+        // Verificar se está fora dos limites do mapa
+        if (tileX < 0 || tileX >= map.width || tileY < 0 || tileY >= map.height) {
+            return true; // Colisão com borda do mapa
+        }
+        
+        // Verificar colisão com paredes sólidas (tipo 1) E destrutíveis (tipo 2)
+        if (map.tiles[tileY] && map.tiles[tileY][tileX]) {
+            const tileType = map.tiles[tileY][tileX];
+            if (tileType === 1 || tileType === 2) { // Parede sólida OU destrutível
+                return true; // Colisão detectada
+            }
+        }
+    }
+    
+    return false; // Sem colisão
+}
+
+// TAMBÉM SUBSTITUA A FUNÇÃO update na classe Player:
+
+update(map) {
+    // Calcular nova posição
+    const newX = this.x + this.direction.x * this.speed;
+    const newY = this.y + this.direction.y * this.speed;
+    
+    // Verificar colisão horizontal (movimento X)
+    if (this.direction.x !== 0) {
+        if (!this.checkWallCollision(newX, this.y, map)) {
+            this.x = newX;
+        } else {
+            // Se colidiu, ajustar posição para não grudar na parede
+            if (this.direction.x > 0) {
+                // Movendo para direita - ajustar para esquerda da parede
+                const tileX = Math.floor((this.x + this.tileSize) / this.tileSize);
+                this.x = tileX * this.tileSize - this.tileSize;
+            } else {
+                // Movendo para esquerda - ajustar para direita da parede
+                const tileX = Math.ceil(this.x / this.tileSize);
+                this.x = tileX * this.tileSize;
+            }
+        }
+    }
+    
+    // Verificar colisão vertical (movimento Y)
+    if (this.direction.y !== 0) {
+        if (!this.checkWallCollision(this.x, newY, map)) {
+            this.y = newY;
+        } else {
+            // Se colidiu, ajustar posição para não grudar na parede
+            if (this.direction.y > 0) {
+                // Movendo para baixo - ajustar para cima da parede
+                const tileY = Math.floor((this.y + this.tileSize) / this.tileSize);
+                this.y = tileY * this.tileSize - this.tileSize;
+            } else {
+                // Movendo para cima - ajustar para baixo da parede
+                const tileY = Math.ceil(this.y / this.tileSize);
+                this.y = tileY * this.tileSize;
+            }
+        }
+    }
+    
+    // Manter jogador dentro dos limites do mapa
+    this.x = Math.max(this.tileSize, Math.min(this.x, (map.width - 2) * this.tileSize));
+    this.y = Math.max(this.tileSize, Math.min(this.y, (map.height - 2) * this.tileSize));
+}
+
+
     checkCollisions() {
         // Verificar colisão com explosões
         for (const explosion of this.game.explosions) {
