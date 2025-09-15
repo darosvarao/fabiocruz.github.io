@@ -29,7 +29,8 @@ class BombermanGame {
         this.onScoreUpdate = null;
         
         // Game settings
-        this.tileSize = 40;
+        this.tileSize = 32;
+        this.gridSize  = this.tileSize; // se ainda não existir
         this.mapWidth = 19;
         this.mapHeight = 15;
         
