@@ -1,60 +1,362 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bomberman Neon — Bisou • Pepeca • Axol</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogos Cyberpunk – Bomberman Neon</title>
+
   <style>
-    html,body{height:100%;margin:0;background:#0b0e13;color:#e5f6ff;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif}
-    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:16px}
-    #game{display:block;image-rendering:pixelated;border:2px solid #19d4ff;border-radius:10px;box-shadow:0 0 32px rgba(25,212,255,.25)}
-    .hud{display:flex;gap:12px;align-items:center;justify-content:center;color:#9fe7ff;font-size:14px;opacity:.9}
-    .btn{appearance:none;border:1px solid #19d4ff;background:transparent;color:#19d4ff;padding:8px 12px;border-radius:8px;cursor:pointer}
-    .btn:hover{background:rgba(25,212,255,.08)}
-    .note{font-size:12px;color:#7cc7ff80}
+  /* SEÇÃO DE JOGOS (BLOCO CURTO) */
+  #jogos {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+  }
+  #jogos .section-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+  }
+  .game-showcase { max-width: 600px; margin: 0 auto; text-align: center; }
+  .game-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    color: #333;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+  .game-card:hover { transform: translateY(-10px); }
+  .game-preview h3 { font-size: 1.8em; margin-bottom: 15px; color: #2c3e50; }
+  .game-preview p { color: #7f8c8d; margin-bottom: 20px; line-height: 1.6; }
+  .game-features { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+  .game-features span {
+    background: #ecf0f1; color: #2c3e50; padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 500;
+  }
+  .game-actions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+  .btn-game, .btn-game-full {
+    padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;
+    display: inline-block; min-width: 150px;
+  }
+  .btn-game { background: linear-gradient(45deg, #e74c3c, #c0392b); color: white; }
+  .btn-game:hover { background: linear-gradient(45deg, #c0392b, #a93226); transform: translateY(-2px); }
+  .btn-game-full { background: linear-gradient(45deg, #3498db, #2980b9); color: white; }
+  .btn-game-full:hover { background: linear-gradient(45deg, #2980b9, #1f618d); transform: translateY(-2px); }
+
+  /* RESPONSIVO — (FALTAVA FECHAR ESTA CHAVE) */
+  @media (max-width: 768px) {
+    .game-actions { flex-direction: column; align-items: center; }
+    .btn-game, .btn-game-full { width: 200px; }
+    .game-features { flex-direction: column; align-items: center; }
+  }
+  </style>
+
+  <!-- BLOCO GRANDE DE ESTILOS DA SECÇÃO CYBERPUNK -->
+  <style>
+  /* CYBERPUNK GAMES SECTION (COMPLETO) */
+  .cyberpunk-games-section {
+    position: relative;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(0,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255,0,255,0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a1a1a 100%);
+    padding: 100px 0; overflow: hidden; min-height: 100vh;
+  }
+  .cyber-particles { position:absolute; inset:0; background:
+      radial-gradient(2px 2px at 20px 30px,#00ffff,transparent),
+      radial-gradient(2px 2px at 40px 70px,#ff00ff,transparent),
+      radial-gradient(1px 1px at 90px 40px,#00ff00,transparent),
+      radial-gradient(1px 1px at 130px 80px,#ffff00,transparent),
+      radial-gradient(2px 2px at 160px 30px,#ff0080,transparent);
+    background-repeat: repeat; background-size: 200px 100px; animation: particles-drift 30s linear infinite; opacity:.3; z-index:1;
+  }
+  @keyframes particles-drift { 0%{transform:translate(0,0)} 100%{transform:translate(-200px,-100px)} }
+  .cyber-grid { position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px);
+    background-size: 50px 50px; animation: grid-pulse 4s ease-in-out infinite; z-index:1;
+  }
+  @keyframes grid-pulse { 0%,100%{opacity:.3} 50%{opacity:.6} }
+  .cyberpunk-games-section .container { position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:0 20px; }
+  .cyber-title-container { text-align:center; margin-bottom:60px; }
+  .cyber-title { font-size:4em; font-family:'Courier New', monospace; font-weight:bold; color:#00ffff;
+    text-shadow:0 0 10px #00ffff,0 0 20px #00ffff,0 0 40px #00ffff; margin-bottom:20px; position:relative; }
+  .glitch-effect{position:relative}
+  .glitch-effect::before,.glitch-effect::after{
+    content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+  }
+  .glitch-effect::before{animation:glitch-1 .5s infinite; color:#ff00ff; z-index:-1}
+  .glitch-effect::after{animation:glitch-2 .5s infinite; color:#00ff00; z-index:-2}
+  @keyframes glitch-1{0%,14%,15%,49%,50%,99%,100%{transform:translate(0)} 15%,49%{transform:translate(-2px,2px)}}
+  @keyframes glitch-2{0%,20%,21%,62%,63%,99%,100%{transform:translate(0)} 21%,62%{transform:translate(2px,-2px)}}
+  .title-underline{width:200px;height:3px;background:linear-gradient(90deg,#00ffff,#ff00ff,#00ffff);margin:0 auto;border-radius:2px;
+    box-shadow:0 0 10px #00ffff; animation: underline-glow 2s ease-in-out infinite alternate;}
+  @keyframes underline-glow{0%{box-shadow:0 0 10px #00ffff} 100%{box-shadow:0 0 20px #ff00ff}}
+  .games-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); gap:40px; margin-top:60px;}
+  .game-card{position:relative; background:rgba(0,0,0,0.8); border:2px solid #333; border-radius:20px; padding:0; overflow:hidden; transition:.4s; backdrop-filter:blur(10px);}
+  .game-card:hover{transform:translateY(-10px) scale(1.02); border-color:#00ffff; box-shadow:0 20px 40px rgba(0,255,255,0.3), 0 0 60px rgba(0,255,255,0.2)}
+  .neon-card:hover{border-color:#00ffff; box-shadow:0 20px 40px rgba(0,255,255,0.3),0 0 60px rgba(0,255,255,0.2)}
+  .coming-soon-card:hover{border-color:#ff00ff; box-shadow:0 20px 40px rgba(255,0,255,0.3),0 0 60px rgba(255,0,255,0.2)}
+  .card-header{display:flex; justify-content:space-between; align-items:center; padding:20px 25px;
+    background:linear-gradient(90deg,rgba(0,255,255,0.1),rgba(255,0,255,0.1)); border-bottom:1px solid #333;}
+  .game-status{display:flex; align-items:center; gap:8px;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:#00ff00;box-shadow:0 0 10px #00ff00;animation: status-pulse 2s ease-in-out infinite;}
+  .status-dot.coming-soon{background:#ffff00; box-shadow:0 0 10px #ffff00;}
+  @keyframes status-pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .status-text{color:#00ff00;font-family:'Courier New', monospace;font-size:.8em;font-weight:bold;}
+  .game-type{background:rgba(255,0,255,0.2); color:#ff00ff; padding:4px 12px; border-radius:12px; font-family:'Courier New', monospace; font-size:.7em; font-weight:bold; border:1px solid #ff00ff;}
+  .card-content{padding:25px;}
+  .game-preview{margin-bottom:25px;}
+  .preview-screen{position:relative;background:#000;border:2px solid #00ffff;border-radius:10px;height:150px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .screen-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,255,0.1) 2px,rgba(0,255,255,0.1) 4px);animation:scanlines 2s linear infinite;}
+  @keyframes scanlines{0%{transform:translateY(0)}100%{transform:translateY(4px)}}
+  .game-characters{display:flex;gap:15px;z-index:2;}
+  .char-sprite{width:40px;height:40px;image-rendering:pixelated;filter:drop-shadow(0 0 10px #00ffff);animation: char-float 3s ease-in-out infinite;}
+  .char-sprite:nth-child(1){animation-delay:0s}.char-sprite:nth-child(2){animation-delay:1s}.char-sprite:nth-child(3){animation-delay:2s}
+  @keyframes char-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .game-title{color:#00ffff;font-family:'Courier New', monospace;font-size:1.8em;font-weight:bold;margin-bottom:5px;text-shadow:0 0 10px #00ffff;}
+  .game-subtitle{color:#ff00ff;font-family:'Courier New', monospace;font-size:1em;margin-bottom:15px;text-shadow:0 0 5px #ff00ff;}
+  .game-description{color:#ccc;line-height:1.6;margin-bottom:20px;}
+  .game-features{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+  .feature-tag{display:flex;align-items:center;gap:8px;background:rgba(0,255,255,0.1);border:1px solid #00ffff;border-radius:15px;padding:8px 12px;font-size:.8em;color:#00ffff;transition:.3s;}
+  .feature-tag:hover{background:rgba(0,255,255,0.2);box-shadow:0 0 10px rgba(0,255,255,0.3);}
+  .feature-icon{font-size:1.2em;}
+  .game-stats{margin-bottom:20px;}
+  .stat{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .stat-label{color:#888;font-size:.9em;}
+  .stat-bar{width:100px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;}
+  .stat-fill{height:100%;background:linear-gradient(90deg,#00ffff,#ff00ff);border-radius:3px;box-shadow:0 0 10px #00ffff;animation: stat-glow 2s ease-in-out infinite alternate;}
+  @keyframes stat-glow{0%{box-shadow:0 0 5px #00ffff}100%{box-shadow:0 0 15px #ff00ff}}
+  .card-actions{padding:0 25px 25px; display:flex; gap:15px;}
+  .cyber-btn{position:relative; display:inline-flex; align-items:center; gap:10px; padding:15px 25px; background:transparent; border:2px solid; border-radius:8px; color:inherit; text-decoration:none; font-family:'Courier New', monospace; font-weight:bold; font-size:.9em; text-transform:uppercase; cursor:pointer; transition:.3s; overflow:hidden; flex:1; justify-content:center;}
+  .cyber-btn.primary{border-color:#00ffff;color:#00ffff;}
+  .cyber-btn.secondary{border-color:#ff00ff;color:#ff00ff;}
+  .cyber-btn.disabled{border-color:#666;color:#666;cursor:not-allowed;}
+  .cyber-btn:not(.disabled):hover{transform:translateY(-2px);}
+  .cyber-btn.primary:hover{box-shadow:0 10px 30px rgba(0,255,255,0.3);text-shadow:0 0 10px #00ffff;background:rgba(0,255,255,0.1);}
+  .cyber-btn.secondary:hover{box-shadow:0 10px 30px rgba(255,0,255,0.3);text-shadow:0 0 10px #ff00ff;background:rgba(255,0,255,0.1);}
+  .btn-icon{font-size:1.2em;}
+  .coming-soon-preview .preview-screen{border-color:#ff00ff;}
+  .coming-soon-text{text-align:center;color:#ff00ff;z-index:2;}
+  .coming-soon-text h3{font-family:'Courier New', monospace;font-size:1.5em;margin-bottom:10px;text-shadow:0 0 10px #ff00ff;}
+  .loading-dots{display:flex;gap:5px;justify-content:center;margin-top:15px;}
+  .loading-dots span{width:8px;height:8px;background:#ff00ff;border-radius:50%;animation:loading-bounce 1.4s ease-in-out infinite both;}
+  .loading-dots span:nth-child(1){animation-delay:-.32s}.loading-dots span:nth-child(2){animation-delay:-.16s}
+  @keyframes loading-bounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+  .card-glow{position:absolute;inset:0;background:linear-gradient(45deg,transparent,rgba(0,255,255,0.1),transparent);opacity:0;transition:.3s;pointer-events:none;}
+  .game-card:hover .card-glow{opacity:1}
+  .card-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(0,255,255,0.05) 2px,rgba(0,255,255,0.05) 4px);pointer-events:none;}
+  @media (max-width: 768px){
+    .cyber-title{font-size:2.5em}
+    .games-grid{grid-template-columns:1fr;gap:30px}
+    .game-features{grid-template-columns:1fr}
+    .card-actions{flex-direction:column}
+    .cyberpunk-nav{padding:10px 15px}
+    .nav-text{font-size:.8em}
+  }
+  @media (max-width: 480px){
+    .cyberpunk-games-section{padding:60px 0}
+    .cyber-title{font-size:2em}
+    .card-content{padding:20px}
+    .char-sprite{width:30px;height:30px}
+  }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <canvas id="game" width="416" height="352" aria-label="Jogo Bomberman Neon"></canvas>
-    <div class="hud">
-      <button class="btn" id="btnRestart" type="button">Reiniciar</button>
-      <span class="note">Dicas: Setas movem • Espaço coloca bomba</span>
-    </div>
+  <!-- Botão Voltar ao Início -->
+  <div class="home-button">
+    <a href="index.html" title="Voltar ao Início" aria-label="Voltar ao Início">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img">
+        <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"/>
+      </svg>
+    </a>
   </div>
 
-  <!-- Config simples (podes mover para main.js se quiseres) -->
-  <script>
-    window.CONFIG = {
-      GRID_SIZE: 32,
-      WIDTH: 416,   // 13 x 32
-      HEIGHT: 352,  // 11 x 32
-      DEBUG: false
-    };
-  </script>
+  <!-- Estrelas animadas (opcional) -->
+  <div class="stars"></div>
 
-  <!-- APENAS estes dois ficheiros na Rota 1 -->
-  <script src="main.js"></script>
-  <script src="game.js"></script>
+  <!-- Elementos flutuantes (opcional) -->
+  <div class="floating-elements">
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
 
+  <!-- SECÇÃO DE JOGOS -->
+  <section id="jogos" class="cyberpunk-games-section">
+    <div class="cyber-particles"></div>
+    <div class="cyber-grid"></div>
+
+    <div class="container">
+      <div class="cyber-title-container">
+        <h2 class="cyber-title glitch-effect" data-text="JOGOS CYBERPUNK">JOGOS CYBERPUNK</h2>
+        <div class="title-underline"></div>
+      </div>
+
+      <div class="games-grid">
+        <!-- Card do Bomberman Neon -->
+        <div class="game-card neon-card">
+          <div class="card-header">
+            <div class="game-status">
+              <span class="status-dot"></span>
+              <span class="status-text">ONLINE</span>
+            </div>
+            <div class="game-type">ACTION</div>
+          </div>
+
+          <div class="card-content">
+            <div class="game-preview">
+              <div class="preview-screen">
+                <div class="screen-scanlines"></div>
+                <div class="game-characters">
+                  <img src="jogos/bomberman/assets/sprites/characters/axol_neon.png" alt="Axol" class="char-sprite">
+                  <img src="jogos/bomberman/assets/sprites/characters/bisou_neon.png" alt="Bisou" class="char-sprite">
+                  <img src="jogos/bomberman/assets/sprites/characters/pepeca_neon.png" alt="Pepeca" class="char-sprite">
+                </div>
+                <div class="preview-effects">
+                  <div class="explosion-effect"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="game-info">
+              <h3 class="game-title">BOMBERMAN NEON</h3>
+              <p class="game-subtitle">Cyberpunk Edition</p>
+              <div class="game-description">
+                <p>Destrua a matriz cyberpunk com Axol, Bisou e Pepeca. Bombas EMP, efeitos neon e ação futurista!</p>
+              </div>
+
+              <div class="game-features">
+                <div class="feature-tag"><span class="feature-icon">⚡</span><span>Efeitos Neon</span></div>
+                <div class="feature-tag"><span class="feature-icon">🤖</span><span>3 Agentes</span></div>
+                <div class="feature-tag"><span class="feature-icon">📱</span><span>Mobile Ready</span></div>
+                <div class="feature-tag"><span class="feature-icon">💥</span><span>Explosões Épicas</span></div>
+              </div>
+
+              <div class="game-stats">
+                <div class="stat">
+                  <span class="stat-label">Dificuldade:</span>
+                  <div class="stat-bar"><div class="stat-fill" style="width:70%"></div></div>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">Diversão:</span>
+                  <div class="stat-bar"><div class="stat-fill" style="width:95%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <a href="jogos/bomberman/" class="cyber-btn primary" target="_blank" rel="noopener">
+              <span class="btn-icon">🚀</span>
+              <span class="btn-text">INICIAR MISSÃO</span>
+              <div class="btn-particles"></div>
+            </a>
+            <a href="jogos/bomberman/" class="cyber-btn secondary" target="_blank" rel="noopener">
+              <span class="btn-icon">🖥️</span>
+              <span class="btn-text">TELA CHEIA</span>
+            </a>
+          </div>
+
+          <div class="card-glow"></div>
+          <div class="card-scanlines"></div>
+        </div>
+
+        <!-- Card “Em breve” -->
+        <div class="game-card coming-soon-card">
+          <div class="card-header">
+            <div class="game-status">
+              <span class="status-dot coming-soon"></span>
+              <span class="status-text">EM BREVE</span>
+            </div>
+            <div class="game-type">MYSTERY</div>
+          </div>
+
+          <div class="card-content">
+            <div class="coming-soon-preview">
+              <div class="preview-screen">
+                <div class="screen-scanlines"></div>
+                <div class="coming-soon-text">
+                  <h3>PRÓXIMO JOGO</h3>
+                  <p>Em desenvolvimento...</p>
+                  <div class="loading-dots"><span></span><span></span><span></span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="game-info">
+              <h3 class="game-title">PROJETO SECRETO</h3>
+              <p class="game-subtitle">Classificado</p>
+              <div class="game-description">
+                <p>Um novo projeto está sendo desenvolvido nos laboratórios cyberpunk...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="cyber-btn disabled" type="button">
+              <span class="btn-icon">🔒</span>
+              <span class="btn-text">AGUARDAR</span>
+            </button>
+          </div>
+
+          <div class="card-glow"></div>
+          <div class="card-scanlines"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JS para efeitos de entrada/scroll -->
   <script>
-    // Arranque seguro (Rota 1)
-    (function () {
-      const canvas = document.getElementById('game');
-      const start = () => {
-        if (typeof window.Game === 'function') {
-          window.__game && window.__game.stop && window.__game.stop();
-          window.__game = new window.Game(canvas, window.CONFIG);
-          if (window.__game.start) window.__game.start();
-        } else if (typeof window.initGame === 'function') {
-          window.initGame(canvas, window.CONFIG);
-        } else {
-          console.error('Game/initGame não encontrado em game.js');
+  document.addEventListener('DOMContentLoaded', function () {
+    // Smooth scroll para a seção de jogos (se existir um link âncora para #jogos)
+    const jogosLink = document.querySelector('a[href="#jogos"]');
+    if (jogosLink) {
+      jogosLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('jogos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
+    // Efeito hover nos cards (placeholder)
+    const gameCards = document.querySelectorAll('.game-card');
+    gameCards.forEach(card => {
+      card.addEventListener('mouseenter', function () {
+        // playHoverSound(); // se quiseres
+      });
+    });
+
+    // Animação de entrada
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
         }
-      };
-      window.addEventListener('load', start);
-      document.getElementById('btnRestart').addEventListener('click', start);
-    })();
+      });
+    });
+
+    gameCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(50px)';
+      card.style.transition = 'all 0.8s ease';
+      observer.observe(card);
+    });
+
+    // Partículas interativas
+    const particlesContainer = document.querySelector('.cyber-particles');
+    if (particlesContainer) {
+      particlesContainer.addEventListener('mousemove', function (e) {
+        const rect = this.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        this.style.backgroundPosition = `${x}% ${y}%`;
+      });
+    }
+  });
   </script>
 </body>
 </html>
