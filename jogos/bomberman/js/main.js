@@ -1,337 +1,140 @@
-// Arquivo principal - inicialização do jogo
+// Arquivo principal - inicialização do jogo (Rota 1)
 let game;
 let ui;
 
 // Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', () => {
     console.log('BombermanGame - Iniciando...');
-    
-    // Criar instância do jogo
-    game = new Game();
-    
-    // Criar sistema de UI
-    ui = new UI(game);
-    
-    // Configurar PWA
-    ui.setupPWA();
-    
-    // Aguardar carregamento dos assets
-    const checkAssetsLoaded = () => {
-        if (game.assetsLoaded) {
-            console.log('Assets carregados com sucesso!');
-            ui.hideLoading();
-            
-            // Mostrar menu principal
-            ui.showScreen('mainMenu');
-            
-            // Configurar personagem padrão
-            game.selectedCharacter = 'axol';
-            ui.updateCharacterPreview();
-            
-        } else {
-            // Verificar novamente em 100ms
-            setTimeout(checkAssetsLoaded, 100);
+
+    try {
+        if (typeof Game !== 'function') {
+            console.warn('Classe Game ainda não está disponível. Garante que js/game.js é carregado ANTES deste ficheiro.');
         }
-    };
-    
-    checkAssetsLoaded();
+
+        // Criar instância do jogo
+        game = new Game();
+
+        // Criar sistema de UI
+        if (typeof UI === 'function') {
+            ui = new UI(game);
+        } else {
+            console.warn('Classe UI não encontrada. Algumas funcionalidades podem não estar disponíveis.');
+        }
+
+        if (ui && typeof ui.setupPWA === 'function') {
+            ui.setupPWA();
+        }
+
+        // Aguardar assets
+        const checkAssetsLoaded = () => {
+            if (game && game.assetsLoaded) {
+                console.log('Assets carregados com sucesso!');
+                ui && ui.hideLoading && ui.hideLoading();
+                ui && ui.showScreen && ui.showScreen('mainMenu');
+
+                game.selectedCharacter = 'axol';
+                ui && ui.updateCharacterPreview && ui.updateCharacterPreview();
+            } else {
+                setTimeout(checkAssetsLoaded, 100);
+            }
+        };
+        checkAssetsLoaded();
+    } catch (err) {
+        console.error('Erro ao inicializar o jogo:', err);
+    }
 });
 
 // Configurações globais
 const CONFIG = {
-    // Configurações do jogo
     GRID_SIZE: 32,
-    MAP_WIDTH: 25,
-    MAP_HEIGHT: 19,
-    
-    // Configurações do jogador
+    MAP_WIDTH: 25,   // 25*32 = 800
+    MAP_HEIGHT: 19,  // 19*32 = 608 (ajusta o canvas lógico)
     PLAYER_SPEED: 150,
     PLAYER_LIVES: 3,
-    
-    // Configurações das bombas
     BOMB_TIMER: 3000,
     EXPLOSION_DURATION: 500,
-    
-    // Configurações dos power-ups
     POWERUP_SPAWN_CHANCE: 0.3,
     POWERUP_LIFETIME: 30000,
-    
-    // Pontuação
     POINTS_WALL_DESTROYED: 10,
     POINTS_BOMB_EXPLODED: 20,
     POINTS_POWERUP_COLLECTED: 50,
     POINTS_LEVEL_COMPLETED: 1000,
-    
-    // Configurações visuais
     ANIMATION_SPEED: 200,
     INVULNERABILITY_DURATION: 2000,
-    
-    // Configurações de áudio (para futuro)
     SOUND_ENABLED: true,
     MUSIC_ENABLED: true,
     VOLUME: 0.7
 };
 
-// Funções utilitárias globais
+// Utils
 const Utils = {
-    // Converter coordenadas de tela para grid
-    screenToGrid: (x, y) => {
-        return {
-            x: Math.floor(x / CONFIG.GRID_SIZE),
-            y: Math.floor(y / CONFIG.GRID_SIZE)
-        };
+    screenToGrid: (x, y) => ({ x: Math.floor(x / CONFIG.GRID_SIZE), y: Math.floor(y / CONFIG.GRID_SIZE) }),
+    gridToScreen: (gx, gy) => ({ x: gx * CONFIG.GRID_SIZE, y: gy * CONFIG.GRID_SIZE }),
+    distance: (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1),
+    rectCollision: (r1, r2) => r1.x < r2.x + r2.width && r1.x + r1.width > r2.x && r1.y < r2.y + r2.height && r1.y + r1.height > r2.y,
+    random: (min, max) => Math.random() * (max - min) + min,
+    randomInt: (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
+    clamp: (v, min, max) => Math.min(Math.max(v, min), max),
+    lerp: (a, b, t) => a + (b - a) * t,
+    formatTime: (ms) => {
+        const sec = Math.floor(ms / 1000);
+        const min = Math.floor(sec / 60);
+        return `${String(min).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
     },
-    
-    // Converter coordenadas de grid para tela
-    gridToScreen: (gridX, gridY) => {
-        return {
-            x: gridX * CONFIG.GRID_SIZE,
-            y: gridY * CONFIG.GRID_SIZE
-        };
-    },
-    
-    // Calcular distância entre dois pontos
-    distance: (x1, y1, x2, y2) => {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        return Math.sqrt(dx * dx + dy * dy);
-    },
-    
-    // Verificar colisão entre retângulos
-    rectCollision: (rect1, rect2) => {
-        return rect1.x < rect2.x + rect2.width &&
-               rect1.x + rect1.width > rect2.x &&
-               rect1.y < rect2.y + rect2.height &&
-               rect1.y + rect1.height > rect2.y;
-    },
-    
-    // Gerar número aleatório entre min e max
-    random: (min, max) => {
-        return Math.random() * (max - min) + min;
-    },
-    
-    // Gerar inteiro aleatório entre min e max
-    randomInt: (min, max) => {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    },
-    
-    // Clampar valor entre min e max
-    clamp: (value, min, max) => {
-        return Math.min(Math.max(value, min), max);
-    },
-    
-    // Interpolar entre dois valores
-    lerp: (start, end, factor) => {
-        return start + (end - start) * factor;
-    },
-    
-    // Formatar tempo em mm:ss
-    formatTime: (milliseconds) => {
-        const seconds = Math.floor(milliseconds / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    },
-    
-    // Salvar dados no localStorage
-    saveData: (key, data) => {
-        try {
-            localStorage.setItem(key, JSON.stringify(data));
-            return true;
-        } catch (e) {
-            console.error('Erro ao salvar dados:', e);
-            return false;
-        }
-    },
-    
-    // Carregar dados do localStorage
-    loadData: (key, defaultValue = null) => {
-        try {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : defaultValue;
-        } catch (e) {
-            console.error('Erro ao carregar dados:', e);
-            return defaultValue;
-        }
-    }
+    saveData: (k, d) => { try { localStorage.setItem(k, JSON.stringify(d)); return true; } catch(e){ console.error(e); return false; } },
+    loadData: (k, def=null) => { try { const d = localStorage.getItem(k); return d ? JSON.parse(d) : def; } catch(e){ console.error(e); return def; } }
 };
 
-// Sistema de estatísticas e conquistas
+// Stats
 const Stats = {
-    // Carregar estatísticas salvas
-    load: () => {
-        return Utils.loadData('bomberman_stats', {
-            gamesPlayed: 0,
-            gamesWon: 0,
-            totalScore: 0,
-            bestScore: 0,
-            wallsDestroyed: 0,
-            bombsExploded: 0,
-            powerupsCollected: 0,
-            totalPlayTime: 0,
-            levelsCompleted: 0,
-            charactersUnlocked: ['axol'], // Axol é desbloqueado por padrão
-            achievements: []
-        });
-    },
-    
-    // Salvar estatísticas
-    save: (stats) => {
-        Utils.saveData('bomberman_stats', stats);
-    },
-    
-    // Atualizar estatística específica
-    update: (key, value) => {
-        const stats = Stats.load();
-        stats[key] = value;
-        Stats.save(stats);
-    },
-    
-    // Incrementar estatística
-    increment: (key, amount = 1) => {
-        const stats = Stats.load();
-        stats[key] = (stats[key] || 0) + amount;
-        Stats.save(stats);
-    },
-    
-    // Verificar conquistas
+    load: () => Utils.loadData('bomberman_stats', {
+        gamesPlayed: 0, gamesWon: 0, totalScore: 0, bestScore: 0,
+        wallsDestroyed: 0, bombsExploded: 0, powerupsCollected: 0,
+        totalPlayTime: 0, levelsCompleted: 0,
+        charactersUnlocked: ['axol'], achievements: []
+    }),
+    save: (s) => Utils.saveData('bomberman_stats', s),
+    update: (k, v) => { const s = Stats.load(); s[k] = v; Stats.save(s); },
+    increment: (k, n=1) => { const s = Stats.load(); s[k] = (s[k]||0)+n; Stats.save(s); },
     checkAchievements: () => {
-        const stats = Stats.load();
-        const achievements = [];
-        
-        // Conquista: Primeira vitória
-        if (stats.gamesWon >= 1 && !stats.achievements.includes('first_win')) {
-            achievements.push({
-                id: 'first_win',
-                name: 'Primeira Vitória',
-                description: 'Vença seu primeiro jogo'
-            });
-        }
-        
-        // Conquista: Destruidor de paredes
-        if (stats.wallsDestroyed >= 100 && !stats.achievements.includes('wall_destroyer')) {
-            achievements.push({
-                id: 'wall_destroyer',
-                name: 'Destruidor de Paredes',
-                description: 'Destrua 100 paredes'
-            });
-        }
-        
-        // Conquista: Mestre das bombas
-        if (stats.bombsExploded >= 50 && !stats.achievements.includes('bomb_master')) {
-            achievements.push({
-                id: 'bomb_master',
-                name: 'Mestre das Bombas',
-                description: 'Exploda 50 bombas'
-            });
-        }
-        
-        // Adicionar novas conquistas às estatísticas
-        if (achievements.length > 0) {
-            stats.achievements.push(...achievements.map(a => a.id));
-            Stats.save(stats);
-            
-            // Mostrar notificações das conquistas
-            achievements.forEach(achievement => {
-                ui.showNotification(`Conquista desbloqueada: ${achievement.name}!`, 3000);
-            });
-        }
-        
-        return achievements;
+        const s = Stats.load(), a = [];
+        if (s.gamesWon>=1 && !s.achievements.includes('first_win')) a.push({id:'first_win',name:'Primeira Vitória'});
+        if (s.wallsDestroyed>=100 && !s.achievements.includes('wall_destroyer')) a.push({id:'wall_destroyer',name:'Destruidor de Paredes'});
+        if (s.bombsExploded>=50 && !s.achievements.includes('bomb_master')) a.push({id:'bomb_master',name:'Mestre das Bombas'});
+        if (a.length){ s.achievements.push(...a.map(x=>x.id)); Stats.save(s); a.forEach(x=>ui && ui.showNotification && ui.showNotification(`Conquista: ${x.name}`,3000)); }
+        return a;
     }
 };
 
-// Sistema de configurações
+// Settings
 const Settings = {
-    // Carregar configurações
-    load: () => {
-        return Utils.loadData('bomberman_settings', {
-            soundEnabled: true,
-            musicEnabled: true,
-            volume: 0.7,
-            difficulty: 'normal', // easy, normal, hard
-            controlScheme: 'arrows', // arrows, wasd
-            showFPS: false,
-            autoSave: true
-        });
-    },
-    
-    // Salvar configurações
-    save: (settings) => {
-        Utils.saveData('bomberman_settings', settings);
-    },
-    
-    // Atualizar configuração específica
-    update: (key, value) => {
-        const settings = Settings.load();
-        settings[key] = value;
-        Settings.save(settings);
-    }
+    load: () => Utils.loadData('bomberman_settings', {
+        soundEnabled:true,musicEnabled:true,volume:0.7,difficulty:'normal',
+        controlScheme:'arrows',showFPS:false,autoSave:true
+    }),
+    save: (s) => Utils.saveData('bomberman_settings', s),
+    update: (k,v) => { const s=Settings.load(); s[k]=v; Settings.save(s); }
 };
 
-// Tratamento de erros globais
-window.addEventListener('error', (event) => {
-    console.error('Erro no jogo:', event.error);
-    
-    // Mostrar mensagem de erro amigável ao usuário
-    if (ui) {
-        ui.showNotification('Ops! Algo deu errado. Recarregue a página.', 5000);
-    }
+// Global error handlers
+window.addEventListener('error', e => { console.error('Erro:', e.error); ui && ui.showNotification && ui.showNotification('Ops! Algo deu errado.', 5000); });
+window.addEventListener('unhandledrejection', e => { console.error('Promise rejeitada:', e.reason); e.preventDefault(); });
+window.addEventListener('online', ()=> ui && ui.showNotification && ui.showNotification('Conexão restaurada!',2000));
+window.addEventListener('offline',()=> ui && ui.showNotification && ui.showNotification('Modo offline!',2000));
+
+// Prevenir gestos/menus
+['gesturestart','gesturechange','gestureend','contextmenu'].forEach(evt=>{
+    document.addEventListener(evt,e=>e.preventDefault(),{passive:false});
 });
 
-// Tratamento de promessas rejeitadas
-window.addEventListener('unhandledrejection', (event) => {
-    console.error('Promise rejeitada:', event.reason);
-    event.preventDefault();
-});
-
-// Detectar se o jogo está sendo executado offline
-window.addEventListener('online', () => {
-    console.log('Conexão restaurada');
-    if (ui) {
-        ui.showNotification('Conexão restaurada!', 2000);
-    }
-});
-
-window.addEventListener('offline', () => {
-    console.log('Sem conexão com a internet');
-    if (ui) {
-        ui.showNotification('Modo offline ativado', 2000);
-    }
-});
-
-// Prevenir zoom por pinch em dispositivos móveis
-document.addEventListener('gesturestart', (e) => {
-    e.preventDefault();
-});
-
-document.addEventListener('gesturechange', (e) => {
-    e.preventDefault();
-});
-
-document.addEventListener('gestureend', (e) => {
-    e.preventDefault();
-});
-
-// Prevenir menu de contexto (clique direito)
-document.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-});
-
-// Log de inicialização
-console.log('BombermanGamme v1.0');
+// Logs
+console.log('BombermanGame v1.0');
 console.log('Criado com HTML5, CSS3 e JavaScript');
 console.log('Personagens: Axol, Bisou e Pepeca');
 
-// Exportar para debug (apenas em desenvolvimento)
-if (typeof window !== 'undefined') {
-    window.BombermanGame = {
-        game: () => game,
-        ui: () => ui,
-        config: CONFIG,
-        utils: Utils,
-        stats: Stats,
-        settings: Settings
-    };
+// Export global
+if (typeof window!=='undefined'){
+    if (typeof Game==='function'){ window.Game=Game; window.BombermanGame=Game; }
+    if (typeof UI==='function'){ window.UI=UI; }
+    window.__BM={game:()=>game,ui:()=>ui,config:CONFIG,utils:Utils,stats:Stats,settings:Settings};
 }
-
