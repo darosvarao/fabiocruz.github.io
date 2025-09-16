@@ -4,7 +4,7 @@ let ui;
 
 // Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Bomberman Axol - Iniciando...');
+    console.log('BombermanGame - Iniciando...');
     
     // Criar instância do jogo
     game = new Game();
