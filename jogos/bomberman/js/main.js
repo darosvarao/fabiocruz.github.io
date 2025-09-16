@@ -319,7 +319,7 @@ document.addEventListener('contextmenu', (e) => {
 });
 
 // Log de inicialização
-console.log('Bomberman Axol v1.0');
+console.log('BombermanGamme v1.0');
 console.log('Criado com HTML5, CSS3 e JavaScript');
 console.log('Personagens: Axol, Bisou e Pepeca');
 
