@@ -2,57 +2,59 @@
 <html lang="pt">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bomberman Neon – Axol, Bisou e Pepeca</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bomberman Neon — Bisou • Pepeca • Axol</title>
   <style>
-    html,body {
-      margin:0;
-      padding:0;
-      background:#0a0a0f;
-      height:100%;
-    }
-    #game {
-      display:block;
-      margin:0 auto;
-      image-rendering: pixelated;
-      background:#000;
-    }
+    html,body{height:100%;margin:0;background:#0b0e13;color:#e5f6ff;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:16px}
+    #game{display:block;image-rendering:pixelated;border:2px solid #19d4ff;border-radius:10px;box-shadow:0 0 32px rgba(25,212,255,.25)}
+    .hud{display:flex;gap:12px;align-items:center;justify-content:center;color:#9fe7ff;font-size:14px;opacity:.9}
+    .btn{appearance:none;border:1px solid #19d4ff;background:transparent;color:#19d4ff;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .btn:hover{background:rgba(25,212,255,.08)}
+    .note{font-size:12px;color:#7cc7ff80}
   </style>
 </head>
 <body>
-  <canvas id="game" width="416" height="352"></canvas>
+  <div class="wrap">
+    <canvas id="game" width="416" height="352" aria-label="Jogo Bomberman Neon"></canvas>
+    <div class="hud">
+      <button class="btn" id="btnRestart" type="button">Reiniciar</button>
+      <span class="note">Dicas: Setas movem • Espaço coloca bomba</span>
+    </div>
+  </div>
 
-  <!-- Config -->
+  <!-- Config simples (podes mover para main.js se quiseres) -->
   <script>
-    const CONFIG = {
+    window.CONFIG = {
       GRID_SIZE: 32,
-      WIDTH: 416,   // 13 * 32
-      HEIGHT: 352,  // 11 * 32
+      WIDTH: 416,   // 13 x 32
+      HEIGHT: 352,  // 11 x 32
       DEBUG: false
     };
   </script>
 
-  <!-- Só estes dois scripts bastam -->
+  <!-- APENAS estes dois ficheiros na Rota 1 -->
   <script src="main.js"></script>
   <script src="game.js"></script>
 
   <script>
-    // Arranque do jogo
-    window.addEventListener('load', () => {
+    // Arranque seguro (Rota 1)
+    (function () {
       const canvas = document.getElementById('game');
-      if (!canvas) {
-        console.error('Canvas #game não encontrado');
-        return;
-      }
-      if (typeof window.Game === 'function') {
-        const game = new window.Game(canvas, CONFIG);
-        if (game.start) game.start();
-      } else if (typeof window.initGame === 'function') {
-        window.initGame(canvas, CONFIG);
-      } else {
-        console.error('Nem Game nem initGame encontrados. Confere game.js');
-      }
-    });
+      const start = () => {
+        if (typeof window.Game === 'function') {
+          window.__game && window.__game.stop && window.__game.stop();
+          window.__game = new window.Game(canvas, window.CONFIG);
+          if (window.__game.start) window.__game.start();
+        } else if (typeof window.initGame === 'function') {
+          window.initGame(canvas, window.CONFIG);
+        } else {
+          console.error('Game/initGame não encontrado em game.js');
+        }
+      };
+      window.addEventListener('load', start);
+      document.getElementById('btnRestart').addEventListener('click', start);
+    })();
   </script>
 </body>
 </html>
