@@ -30,7 +30,6 @@ class BombermanGame {
         
         // Game settings
         this.tileSize = 32;
-        this.gridSize  = this.tileSize; // se ainda não existir
         this.mapWidth = 19;
         this.mapHeight = 15;
         
@@ -710,3 +709,7 @@ class GameMap {
     }
 }
 
+
+
+// Expose to global for HTML inline app
+window.BombermanGame = BombermanGame;
