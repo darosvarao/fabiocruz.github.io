@@ -177,7 +177,7 @@
             </div>
             
             <div class="game-area">
-                <canvas id="gameCanvas" width="800" height="600"></canvas>
+                <canvas id="gameCanvas" width="416" height="352" style="width:800px;height:600px"></canvas>
             </div>
             
             <!-- Touch Controls -->
@@ -484,7 +484,7 @@
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🌟 DOM carregado, inicializando aplicação...');
-            window.bombermanApp = BombermanApp();
+            window.bombermanApp = new BombermanApp();
         });
     </script>
 </body>
