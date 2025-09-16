@@ -1,61 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jogos Cyberpunk – Bomberman Neon</title>
-
+  <title>Bomberman Neon – Axol, Bisou e Pepeca</title>
   <style>
-  /* SEÇÃO DE JOGOS (BLOCO CURTO) */
-  #jogos {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 80px 0;
-  }
-  #jogos .section-title {
-    color: white;
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 2.5em;
-  }
-  .game-showcase { max-width: 600px; margin: 0 auto; text-align: center; }
-  .game-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: 30px;
-    color: #333;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
-  }
-  .game-card:hover { transform: translateY(-10px); }
-  .game-preview h3 { font-size: 1.8em; margin-bottom: 15px; color: #2c3e50; }
-  .game-preview p { color: #7f8c8d; margin-bottom: 20px; line-height: 1.6; }
-  .game-features { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
-  .game-features span {
-    background: #ecf0f1; color: #2c3e50; padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 500;
-  }
-  .game-actions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-  .btn-game, .btn-game-full {
-    padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;
-    display: inline-block; min-width: 150px;
-  }
-  .btn-game { background: linear-gradient(45deg, #e74c3c, #c0392b); color: white; }
-  .btn-game:hover { background: linear-gradient(45deg, #c0392b, #a93226); transform: translateY(-2px); }
-  .btn-game-full { background: linear-gradient(45deg, #3498db, #2980b9); color: white; }
-  .btn-game-full:hover { background: linear-gradient(45deg, #2980b9, #1f618d); transform: translateY(-2px); }
-
-  /* RESPONSIVO — (FALTAVA FECHAR ESTA CHAVE) */
-  @media (max-width: 768px) {
-    .game-actions { flex-direction: column; align-items: center; }
-    .btn-game, .btn-game-full { width: 200px; }
-    .game-features { flex-direction: column; align-items: center; }
-  }
+    html,body {
+      margin:0;
+      padding:0;
+      background:#0a0a0f;
+      height:100%;
+    }
+    #game {
+      display:block;
+      margin:0 auto;
+      image-rendering: pixelated;
+      background:#000;
+    }
   </style>
+</head>
+<body>
+  <canvas id="game" width="416" height="352"></canvas>
 
-  <!-- BLOCO GRANDE DE ESTILOS DA SECÇÃO CYBERPUNK -->
-  <style>
-  /* CYBERPUNK GAMES SECTION (COMPLETO) */
-  .cyberpunk-games-section {
-    position: relative;
-    background:
-      radial-gradient(circle at 20% 20%,
+  <!-- Config -->
+  <script>
+    const CONFIG = {
+      GRID_SIZE: 32,
+      WIDTH: 416,   // 13 * 32
+      HEIGHT: 352,  // 11 * 32
+      DEBUG: false
+    };
+  </script>
+
+  <!-- Só estes dois scripts bastam -->
+  <script src="main.js"></script>
+  <script src="game.js"></script>
+
+  <script>
+    // Arranque do jogo
+    window.addEventListener('load', () => {
+      const canvas = document.getElementById('game');
+      if (!canvas) {
+        console.error('Canvas #game não encontrado');
+        return;
+      }
+      if (typeof window.Game === 'function') {
+        const game = new window.Game(canvas, CONFIG);
+        if (game.start) game.start();
+      } else if (typeof window.initGame === 'function') {
+        window.initGame(canvas, CONFIG);
+      } else {
+        console.error('Nem Game nem initGame encontrados. Confere game.js');
+      }
+    });
+  </script>
+</body>
+</html>
