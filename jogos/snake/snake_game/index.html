@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Cyberpunk</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading" class="screen">
+        <div class="loading-container neon-logo">
+            <h1>Snake Cyberpunk</h1>
+            <h2>Digital Evolution</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-text">Carregando...</div>
+        </div>
+    </div>
+
+    <!-- MAIN MENU -->
+    <div id="mainMenu" class="screen hidden">
+        <div class="menu-container">
+            <div class="neon-title">
+                <h1>Snake Cyberpunk</h1>
+            </div>
+            <p class="subtitle">Escolhe o teu destino digital</p>
+
+            <div class="character-preview">
+                <img id="previewImage" class="character-showcase" src="assets/sprites/axol_head.png" alt="Preview">
+            </div>
+
+            <div class="menu-buttons">
+                <button id="startGame" class="neon-btn primary">Iniciar Jogo</button>
+                <button id="selectCharacter" class="neon-btn secondary">Selecionar Personagem</button>
+                <button id="instructions" class="neon-btn tertiary">Instruções</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARACTER SELECT -->
+    <div id="characterSelect" class="screen hidden">
+        <div class="character-select-container">
+            <h2 class="section-title">Seleciona o teu Personagem</h2>
+            <div class="characters-grid">
+                <div class="character-option" data-character="axol">
+                    <div class="character-card">
+                        <img src="assets/sprites/axol_head.png" alt="Axol">
+                        <h3>Axol</h3>
+                        <p>O guerreiro digital</p>
+                        <div class="stats">
+                            <div class="stat">Velocidade: ★★★☆☆</div>
+                            <div class="stat">Força: ★★★★☆</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="character-option" data-character="bisou">
+                    <div class="character-card">
+                        <img src="assets/sprites/bisou_head.png" alt="Bisou">
+                        <h3>Bisou</h3>
+                        <p>A felina mística</p>
+                        <div class="stats">
+                            <div class="stat">Velocidade: ★★★★☆</div>
+                            <div class="stat">Força: ★★☆☆☆</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="character-option" data-character="pepeca">
+                    <div class="character-card">
+                        <img src="assets/sprites/pepeca_head.png" alt="Pepeca">
+                        <h3>Pepeca</h3>
+                        <p>A lenda aquática</p>
+                        <div class="stats">
+                            <div class="stat">Velocidade: ★★☆☆☆</div>
+                            <div class="stat">Força: ★★★★★</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="character-buttons">
+                <button id="backToMenu" class="neon-btn secondary">Voltar</button>
+                <button id="confirmCharacter" class="neon-btn primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS -->
+    <div id="instructionsScreen" class="screen hidden">
+        <div class="instructions-container">
+            <h2 class="section-title">Instruções</h2>
+            <div class="instructions-content">
+                <div class="instruction-block">
+                    <h3>Controles</h3>
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="key">↑</span> Mover para cima</div>
+                        <div class="control-item"><span class="key">↓</span> Mover para baixo</div>
+                        <div class="control-item"><span class="key">←</span> Mover para esquerda</div>
+                        <div class="control-item"><span class="key">→</span> Mover para direita</div>
+                        <div class="control-item"><span class="key">Espaço</span> Pausar</div>
+                    </div>
+                </div>
+                <div class="instruction-block">
+                    <h3>Objetivo</h3>
+                    <p>Come a comida, evita os obstáculos e alcança a maior pontuação!</p>
+                </div>
+            </div>
+            <button id="backToMenuFromInstructions" class="neon-btn primary">Voltar</button>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="gameScreen" class="screen hidden">
+        <div class="game-container">
+            <div class="game-hud">
+                <div class="hud-left">
+                    <div class="stat-display"><span class="stat-label">Score:</span> <span id="scoreValue" class="stat-value">0</span></div>
+                    <div class="stat-display"><span class="stat-label">Level:</span> <span id="levelValue" class="stat-value">1</span></div>
+                    <div class="stat-display"><span class="stat-label">Length:</span> <span id="lengthValue" class="stat-value">1</span></div>
+                </div>
+                <div class="hud-center" id="activeEffects"></div>
+                <div class="hud-right">
+                    <button id="pauseBtn" class="hud-btn">Pause</button>
+                </div>
+            </div>
+            <div class="game-area">
+                <canvas id="gameCanvas" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAUSE SCREEN -->
+    <div id="pauseScreen" class="screen hidden">
+        <div class="pause-container">
+            <h2 class="pause-title">Jogo em Pausa</h2>
+            <div class="pause-buttons">
+                <button id="resumeGame" class="neon-btn primary">Continuar</button>
+                <button id="backToMenuFromPause" class="neon-btn secondary">Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="gameOverScreen" class="screen hidden">
+        <div class="gameover-container">
+            <h2 class="gameover-title">Game Over</h2>
+            <div class="final-stats">
+                <p>Score: <span id="finalScore"></span></p>
+                <p>Nível: <span id="finalLevel"></span></p>
+                <p>Comprimento: <span id="finalLength"></span></p>
+                <p>Tempo: <span id="finalTime"></span></p>
+            </div>
+            <div class="gameover-buttons">
+                <button id="playAgain" class="neon-btn primary">Jogar Novamente</button>
+                <button id="backToMenuFromGameOver" class="neon-btn secondary">Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOUCH CONTROLS -->
+    <div class="touch-controls">
+        <div class="dpad">
+            <button class="dpad-btn up" data-direction="up">▲</button>
+            <button class="dpad-btn left" data-direction="left">◀</button>
+            <button class="dpad-btn center"></button>
+            <button class="dpad-btn right" data-direction="right">▶</button>
+            <button class="dpad-btn down" data-direction="down">▼</button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="game.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
