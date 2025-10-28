@@ -4,52 +4,123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cosmic Chatbot Demo</title>
+
 <style>
   body {
-  background: linear-gradient(180deg, #080c18, #141b2d);
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-image: url('imagens/axol_super_sayan.png');
-  background-size: cover;
-  background-position: center;
-}
+    background: linear-gradient(180deg, #080c18, #141b2d);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('imagens/axol_super_sayan.png');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
 
-h1 {
-  color: #9c8fff;
-  margin-bottom: 10px;
-  text-shadow: 0 0 10px #9c8fff;
-}
+  h1 {
+    color: #9c8fff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #9c8fff;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
 
-#chat {
-  width: 90%;
-  max-width: 400px;
-  height: 420px;
-  background: rgba(0,0,0,0.55);
-  border-radius: 16px;
-  overflow-y: auto;
-  padding: 10px;
-  box-shadow: 0 0 20px rgba(155,130,255,0.6);
-  backdrop-filter: blur(6px);
-}
+  @keyframes glow {
+    from { text-shadow: 0 0 5px #8a7dff; }
+    to { text-shadow: 0 0 20px #d8cbff; }
+  }
+
+  #chat {
+    width: 90%;
+    max-width: 400px;
+    height: 420px;
+    background: rgba(0,0,0,0.55);
+    border-radius: 16px;
+    overflow-y: auto;
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(155,130,255,0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .msg {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.6s forwards;
+  }
+
+  .user {
+    background: rgba(138,125,255,0.4);
+    align-self: flex-end;
+  }
+
+  .bot {
+    background: rgba(255,255,255,0.1);
+    align-self: flex-start;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  input {
+    width: 80%;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+
+  button {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: none;
+    background: #8a7dff;
+    color: white;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out, transform 0.2s;
+  }
+
+  button:hover { background: #6b5de6; transform: scale(1.05); }
+
+  footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #aaa;
+  }
 </style>
 </head>
-<body>
 
+<body>
 <h1>🔮 Cosmic Chatbot</h1>
+
 <div id="chat"></div>
+
 <div>
   <input type="text" id="input" placeholder="Ask the stars..." />
   <button onclick="send()">Send</button>
 </div>
 
+<audio id="ping" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1caa3d90bb.mp3?filename=interface-124464.mp3"></audio>
+
+<footer>© FabioCruzArteMisticaDigital</footer>
+
 <script>
 const chat = document.getElementById('chat');
 const input = document.getElementById('input');
+const ping = document.getElementById('ping');
 
 const responses = [
   "✨ Trust your timing — the universe moves when you do.",
@@ -75,14 +146,12 @@ function send() {
   setTimeout(() => {
     const reply = responses[Math.floor(Math.random() * responses.length)];
     addMessage(reply, 'bot');
+    ping.currentTime = 0;
+    ping.play();
   }, 800);
 }
 
 addMessage("🌌 Welcome, traveler. Ask your question to the universe.", 'bot');
 </script>
-<p style="margin-top:15px;font-size:12px;color:#888;">
-© FabioCruzArteMisticaDigital
-</p>
-
 </body>
 </html>
