@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmic Chatbot Demo</title>
+<style>
+  body {
+  background: linear-gradient(180deg, #080c18, #141b2d);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url('imagens/axol_super_sayan.png');
+  background-size: cover;
+  background-position: center;
+}
+
+h1 {
+  color: #9c8fff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px #9c8fff;
+}
+
+#chat {
+  width: 90%;
+  max-width: 400px;
+  height: 420px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 16px;
+  overflow-y: auto;
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(155,130,255,0.6);
+  backdrop-filter: blur(6px);
+}
+</style>
+</head>
+<body>
+
+<h1>🔮 Cosmic Chatbot</h1>
+<div id="chat"></div>
+<div>
+  <input type="text" id="input" placeholder="Ask the stars..." />
+  <button onclick="send()">Send</button>
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+
+const responses = [
+  "✨ Trust your timing — the universe moves when you do.",
+  "🌙 Even the stars rest. Breathe before the next step.",
+  "🪐 You already have what you seek — just see it clearly.",
+  "🌸 Energy flows where your focus goes.",
+  "🔥 Creation is born in chaos — keep moving."
+];
+
+function addMessage(text, sender) {
+  const msg = document.createElement('div');
+  msg.classList.add('msg', sender);
+  msg.textContent = text;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function send() {
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, 'user');
+  input.value = '';
+  setTimeout(() => {
+    const reply = responses[Math.floor(Math.random() * responses.length)];
+    addMessage(reply, 'bot');
+  }, 800);
+}
+
+addMessage("🌌 Welcome, traveler. Ask your question to the universe.", 'bot');
+</script>
+<p style="margin-top:15px;font-size:12px;color:#888;">
+© FabioCruzArteMisticaDigital
+</p>
+
+</body>
+</html>
