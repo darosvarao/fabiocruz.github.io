@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { Cpu, Zap, Bitcoin, Coins, Trophy, Gamepad2, ArrowRight, History as HistoryIcon } from "lucide-react";
+import { Cpu, Zap, Bitcoin, Coins, Trophy, Gamepad2, ArrowRight, History as HistoryIcon, Battery } from "lucide-react";
 import { Link } from "wouter";
 import { useEffect, useState } from "react";
 
@@ -147,7 +147,7 @@ export default function Home() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           <Card className="neon-border-cyan bg-card/80 backdrop-blur">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Hash Power</CardTitle>
@@ -193,6 +193,24 @@ export default function Home() {
                 {formatCrypto(stats?.ethBalance || 0, 6)} ETH
               </div>
               <p className="text-xs text-muted-foreground mt-1">Scaled balance</p>
+            </CardContent>
+          </Card>
+
+          <Card className="neon-border-magenta bg-card/80 backdrop-blur">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Energy</CardTitle>
+              <Battery className="h-4 w-4 text-secondary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold neon-magenta">
+                {stats?.energy || 0}/{stats?.maxEnergy || 100}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {stats?.energy === stats?.maxEnergy 
+                  ? "Full energy" 
+                  : `Next: ${Math.floor((stats?.timeUntilNextEnergy || 0) / 60)}m ${(stats?.timeUntilNextEnergy || 0) % 60}s`
+                }
+              </p>
             </CardContent>
           </Card>
         </div>

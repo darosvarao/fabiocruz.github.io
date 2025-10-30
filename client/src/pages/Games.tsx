@@ -3,8 +3,11 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Battery, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 import { Link, useLocation } from "wouter";
+import { trpc } from "@/lib/trpc";
 import MemoryGame from "@/components/MemoryGame";
 import ClickSpeedGame from "@/components/ClickSpeedGame";
 import PuzzleGame from "@/components/PuzzleGame";
@@ -13,12 +16,20 @@ export default function Games() {
   const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("memory");
+  const { data: stats, refetch: refetchStats } = trpc.user.getStats.useQuery(undefined, {
+    enabled: isAuthenticated,
+    refetchInterval: 10000, // Refresh every 10 seconds
+  });
 
   const handleGameComplete = () => {
+    refetchStats();
     setTimeout(() => {
       setLocation("/");
     }, 2000);
   };
+
+  const hasEnoughEnergy = (stats?.energy || 0) >= (stats?.energyCostPerGame || 20);
+  const energyPercentage = ((stats?.energy || 0) / (stats?.maxEnergy || 100)) * 100;
 
   if (!isAuthenticated) {
     return (
@@ -49,6 +60,44 @@ export default function Games() {
             Play games to earn temporary hash power bonuses
           </p>
         </div>
+
+        {/* Energy Display */}
+        <Card className="neon-border-magenta bg-card/80 backdrop-blur">
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Battery className="h-6 w-6 text-secondary" />
+                  <span className="text-lg font-bold">Energy</span>
+                </div>
+                <span className="text-2xl font-bold neon-magenta">
+                  {stats?.energy || 0}/{stats?.maxEnergy || 100}
+                </span>
+              </div>
+              <Progress value={energyPercentage} className="h-3" />
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Cost per game: {stats?.energyCostPerGame || 20} energy</span>
+                {stats?.energy !== stats?.maxEnergy && (
+                  <span>
+                    Full in: {Math.floor((stats?.timeUntilFullEnergy || 0) / 60)}m {(stats?.timeUntilFullEnergy || 0) % 60}s
+                  </span>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Low Energy Warning */}
+        {!hasEnoughEnergy && (
+          <Alert className="neon-border-pink bg-destructive/10">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Insufficient Energy</AlertTitle>
+            <AlertDescription>
+              You need {stats?.energyCostPerGame || 20} energy to play a game. Energy recharges at 1 point per minute.
+              Wait {Math.ceil(((stats?.energyCostPerGame || 20) - (stats?.energy || 0)))} minutes or return to the dashboard.
+            </AlertDescription>
+          </Alert>
+        )}
 
         {/* Games Tabs */}
         <Card className="neon-border-cyan bg-card/80 backdrop-blur">

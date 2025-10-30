@@ -45,3 +45,11 @@
 - [x] Otimizar performance
 - [x] Criar guia de utilizador
 - [x] Preparar checkpoint final
+
+## Sistema de Energia
+- [x] Adicionar campo de energia ao schema de utilizadores
+- [x] Implementar lógica de consumo de energia ao jogar
+- [x] Implementar recarga automática de energia com o tempo
+- [x] Adicionar visualização de energia no dashboard
+- [x] Bloquear jogos quando energia está esgotada
+- [x] Mostrar tempo até próxima recarga de energia

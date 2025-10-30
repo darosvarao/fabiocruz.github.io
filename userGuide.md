@@ -42,6 +42,8 @@ Aceda aos minijogos através do botão **"Games"** no dashboard. Escolha entre t
 
 Cada jogo concluído dá um bónus de hash power que dura **30 minutos**. Os bónus acumulam se jogar vários jogos.
 
+**Sistema de Energia:** Cada jogo consome **20 pontos de energia**. A energia máxima é 100 e recarrega automaticamente à taxa de **1 ponto por minuto**. O dashboard mostra a sua energia atual e o tempo até à próxima recarga. Se a energia estiver esgotada, terá de esperar pela recarga antes de jogar novamente.
+
 ### Conquistas
 
 Clique em **"Achievements"** para ver o seu progresso. As conquistas desbloqueiam automaticamente quando cumpre os requisitos, como comprar a primeira mineradora, atingir determinado hash power ou jogar um número específico de jogos. Cada conquista desbloqueada recompensa credits extra.

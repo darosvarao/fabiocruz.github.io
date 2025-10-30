@@ -5,6 +5,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { checkAndUnlockAchievements } from "./achievements";
+import { updateUserEnergy, consumeEnergy, getTimeUntilNextEnergy, getTimeUntilFullEnergy, MAX_ENERGY, ENERGY_COST_PER_GAME } from "./energy";
 import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
@@ -34,6 +35,11 @@ export const appRouter = router({
         await db.updateUserHashPower(user.id, currentHashPower);
       }
       
+      // Update and get current energy
+      const currentEnergy = await updateUserEnergy(user.id);
+      const timeUntilNextEnergy = getTimeUntilNextEnergy(new Date(user.lastEnergyUpdate));
+      const timeUntilFullEnergy = getTimeUntilFullEnergy(currentEnergy, new Date(user.lastEnergyUpdate));
+      
       return {
         id: user.id,
         name: user.name,
@@ -42,6 +48,11 @@ export const appRouter = router({
         ethBalance: user.ethBalance,
         dogeBalance: user.dogeBalance,
         credits: user.credits,
+        energy: currentEnergy,
+        maxEnergy: MAX_ENERGY,
+        energyCostPerGame: ENERGY_COST_PER_GAME,
+        timeUntilNextEnergy,
+        timeUntilFullEnergy,
       };
     }),
   }),
@@ -154,6 +165,12 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => {
         const user = await db.getUserByOpenId(ctx.user.openId);
         if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        
+        // Consume energy
+        const energyResult = await consumeEnergy(user.id);
+        if (!energyResult.success) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: energyResult.message });
+        }
         
         // Calculate bonus based on score and game type
         let hashPowerBonus = 0;

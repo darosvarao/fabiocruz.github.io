@@ -20,6 +20,8 @@ export const users = mysqlTable("users", {
   ethBalance: int("ethBalance").default(0).notNull(), // stored in wei (1 ETH = 1,000,000,000,000,000,000 wei) - scaled down to fit int
   dogeBalance: int("dogeBalance").default(0).notNull(), // stored in koinus (1 DOGE = 100,000,000 koinus)
   credits: int("credits").default(1000).notNull(), // in-game currency for buying miners
+  energy: int("energy").default(100).notNull(), // energy for playing games (max 100)
+  lastEnergyUpdate: timestamp("lastEnergyUpdate").defaultNow().notNull(), // last time energy was updated
 });
 
 export type User = typeof users.$inferSelect;
