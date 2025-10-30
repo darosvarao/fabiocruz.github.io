@@ -72,6 +72,14 @@ Aceda ao painel de gestão através do ícone no canto superior direito da inter
 
 O card **"Watch Ads for Credits"** no dashboard permite ganhar credits gratuitos assistindo a anúncios. Cada anúncio dá **100 credits** como recompensa. Pode assistir até **20 anúncios por dia**, com um intervalo de **5 minutos** entre cada anúncio. O sistema mostra quantos anúncios já assistiu hoje e quando o próximo estará disponível. Esta é uma excelente forma de ganhar credits sem gastar dinheiro real.
 
+### Power-Ups e Boosts
+
+Na loja encontrará uma secção de **Power-Ups** com itens consumíveis que aceleram o seu progresso:
+
+**2x Hash Power (500 credits):** Duplica as suas recompensas de mineração durante **1 hora**. Quando ativo, verá um card especial no dashboard a piscar mostrando o multiplicador ativo. Perfeito para maximizar ganhos quando tem tempo para jogar.
+
+**Energy Refill (200 credits):** Recarrega instantaneamente a sua energia para 100, permitindo jogar mais minijogos imediatamente. Útil quando quer jogar vários jogos seguidos mas a energia está baixa. O botão fica desativado quando a energia já está cheia.
+
 ## Próximos Passos
 
 Comece por comprar a sua primeira mineradora na loja usando os 1000 credits iniciais. Experimente os minijogos para ganhar bónus temporários de hash power. Assista a anúncios para ganhar credits extras gratuitamente. Reclame as suas recompensas a cada 10 minutos e veja o seu império de mineração crescer. Desbloqueie todas as conquistas para se tornar um verdadeiro magnata da mineração crypto!

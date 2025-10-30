@@ -263,23 +263,40 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Watch Ad Card */}
-        <Card className="neon-border-cyan bg-gradient-to-br from-cyan-950/50 to-card/80 backdrop-blur">
+        {/* Hash Power Multiplier (if active) */}
+        {stats?.hashPowerMultiplier && stats.hashPowerMultiplier > 1 && (
+          <Card className="neon-border-cyan bg-gradient-to-br from-cyan-950/50 to-card/80 backdrop-blur animate-pulse">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="h-6 w-6 text-primary" />
+                Active Boost
+              </CardTitle>
+              <CardDescription>2x Hash Power Multiplier</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center">
+                <div className="text-4xl font-bold neon-cyan mb-2">{stats.hashPowerMultiplier}x</div>
+                <p className="text-sm text-muted-foreground">
+                  Your mining rewards are doubled!
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Energy Card */}
+        <Card className="neon-border-magenta bg-gradient-to-br from-magenta-950/50 to-card/80 backdrop-blur">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Play className="h-6 w-6 text-primary" />
-              Watch Ads for Credits
+              <Battery className="h-6 w-6 text-primary" />
+              Energy
             </CardTitle>
-            <CardDescription>
-              Earn {stats?.adRewardCredits || 100} credits per ad
-            </CardDescription>
+            <CardDescription>For playing minigames</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Today:</span>
-              <span className="font-bold neon-cyan">
-                {stats?.adsWatchedToday || 0} / {stats?.maxAdsPerDay || 20}
-              </span>
+              <span className="text-muted-foreground">Current:</span>
+              <span className="font-bold neon-magenta">{stats?.energy || 0} / {stats?.maxEnergy || 100}</span>
             </div>
             
             {stats?.canWatchAd ? (

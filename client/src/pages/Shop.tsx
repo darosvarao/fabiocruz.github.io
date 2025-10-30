@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { Cpu, Zap, Coins, ArrowLeft, ShoppingCart } from "lucide-react";
+import { Cpu, Zap, Coins, ArrowLeft, ShoppingCart, Battery, Clock } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -35,6 +35,28 @@ export default function Shop() {
     },
     onError: (error) => {
       toast.error(error.message);
+    },
+  });
+
+  const purchaseBoostMutation = trpc.boosts.purchaseHashPower2x.useMutation({
+    onSuccess: (data) => {
+      refetchStats();
+      toast.success("2x Hash Power activated!", {
+        description: `Active for 1 hour until ${new Date(data.expiresAt!).toLocaleTimeString()}`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Purchase failed", { description: error.message });
+    },
+  });
+
+  const purchaseEnergyMutation = trpc.boosts.purchaseEnergyRefill.useMutation({
+    onSuccess: () => {
+      refetchStats();
+      toast.success("Energy refilled to 100!");
+    },
+    onError: (error) => {
+      toast.error("Purchase failed", { description: error.message });
     },
   });
 
@@ -88,11 +110,115 @@ export default function Shop() {
           </Card>
         </div>
 
-        {/* Miners Grid */}
-        {loadingMiners ? (
-          <div className="text-center text-2xl neon-cyan">Loading miners...</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Power-Ups Section */}
+        <Card className="neon-border-magenta bg-card/80 backdrop-blur">
+          <CardHeader>
+            <CardTitle className="text-2xl neon-magenta flex items-center gap-2">
+              <Zap className="h-7 w-7" />
+              Power-Ups
+            </CardTitle>
+            <CardDescription>
+              Temporary boosts and instant refills to accelerate your mining
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 2x Hash Power Boost */}
+              <Card className="neon-border-cyan bg-gradient-to-br from-cyan-950/30 to-card">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <Zap className="h-10 w-10 text-primary" />
+                    <div>
+                      <CardTitle className="text-lg neon-cyan">2x Hash Power</CardTitle>
+                      <CardDescription className="text-xs">Lasts 1 hour</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Double your mining rewards for 1 hour. Perfect for maximizing earnings!
+                  </p>
+                  <div className="flex items-center justify-between pt-2 border-t border-border">
+                    <span className="text-2xl font-bold neon-cyan">
+                      {stats?.boostHashPower2xPrice || 500} Credits
+                    </span>
+                    <Button
+                      onClick={() => purchaseBoostMutation.mutate()}
+                      disabled={purchaseBoostMutation.isPending || (stats?.hashPowerMultiplier || 1) > 1}
+                      className="neon-border-cyan"
+                    >
+                      {(stats?.hashPowerMultiplier || 1) > 1 ? (
+                        <>
+                          <Clock className="mr-2 h-4 w-4" />
+                          Active
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="mr-2 h-4 w-4" />
+                          Buy
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Energy Refill */}
+              <Card className="neon-border-pink bg-gradient-to-br from-pink-950/30 to-card">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <Battery className="h-10 w-10 text-secondary" />
+                    <div>
+                      <CardTitle className="text-lg neon-pink">Energy Refill</CardTitle>
+                      <CardDescription className="text-xs">Instant full energy</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Instantly refill your energy to 100. Play more games without waiting!
+                  </p>
+                  <div className="flex items-center justify-between pt-2 border-t border-border">
+                    <span className="text-2xl font-bold neon-pink">
+                      {stats?.energyRefillPrice || 200} Credits
+                    </span>
+                    <Button
+                      onClick={() => purchaseEnergyMutation.mutate()}
+                      disabled={purchaseEnergyMutation.isPending || (stats?.energy || 0) >= 100}
+                      className="neon-border-pink"
+                    >
+                      {(stats?.energy || 0) >= 100 ? (
+                        "Full"
+                      ) : (
+                        <>
+                          <ShoppingCart className="mr-2 h-4 w-4" />
+                          Buy
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Miners Section */}
+        <Card className="neon-border-cyan bg-card/80 backdrop-blur">
+          <CardHeader>
+            <CardTitle className="text-2xl neon-cyan flex items-center gap-2">
+              <Cpu className="h-7 w-7" />
+              Mining Equipment
+            </CardTitle>
+            <CardDescription>
+              Purchase miners to increase your hash power permanently
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {loadingMiners ? (
+              <div className="text-center text-2xl neon-cyan">Loading miners...</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {miners?.map((miner) => (
               <Card 
                 key={miner.id} 
@@ -140,8 +266,10 @@ export default function Shop() {
                 </CardFooter>
               </Card>
             ))}
-          </div>
-        )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Info Section */}
         <Card className="neon-border-cyan bg-card/80 backdrop-blur">

@@ -29,6 +29,13 @@
       "when": 1761837119902,
       "tag": "0003_bright_black_widow",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1761837808420,
+      "tag": "0004_goofy_sabretooth",
+      "breakpoints": true
     }
   ]
 }

@@ -62,3 +62,13 @@
 - [x] Dar recompensa de 50-100 credits por anúncio assistido
 - [x] Adicionar contador de anúncios assistidos hoje
 - [x] Mostrar tempo até próximo anúncio disponível
+
+## Sistema de Boosts e Itens Consumíveis
+- [x] Criar tabela de boosts ativos na base de dados
+- [x] Adicionar tipos de boost (2x hash power, energia extra)
+- [x] Criar secção de Power-Ups na loja
+- [x] Implementar compra de boost 2x hash power (1 hora)
+- [x] Implementar compra de recarga de energia instantânea
+- [x] Mostrar boosts ativos no dashboard
+- [x] Aplicar multiplicador de boost ao calcular recompensas
+- [x] Expirar boosts automaticamente após duração

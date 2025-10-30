@@ -31,7 +31,22 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
- * Miners (equipment) that users can purchase
+ * Active boosts/power-ups for users
+ */
+export const activeBoosts = mysqlTable("activeBoosts", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  boostType: mysqlEnum("boostType", ["hash_power_2x", "energy_refill"]).notNull(),
+  multiplier: int("multiplier").default(1).notNull(), // for hash_power boosts
+  activatedAt: timestamp("activatedAt").defaultNow().notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+});
+
+export type ActiveBoost = typeof activeBoosts.$inferSelect;
+export type InsertActiveBoost = typeof activeBoosts.$inferInsert;
+
+/**
+ * Miners (mining equipment) that users can purchase
  */
 export const miners = mysqlTable("miners", {
   id: int("id").autoincrement().primaryKey(),

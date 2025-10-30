@@ -7,6 +7,7 @@ import * as db from "./db";
 import { checkAndUnlockAchievements } from "./achievements";
 import { updateUserEnergy, consumeEnergy, getTimeUntilNextEnergy, getTimeUntilFullEnergy, MAX_ENERGY, ENERGY_COST_PER_GAME } from "./energy";
 import { canWatchAd, watchAd, getTimeUntilNextAd, AD_REWARD_CREDITS, MAX_ADS_PER_DAY } from "./ads";
+import { purchaseHashPowerBoost, purchaseEnergyRefill, getActiveBoosts, getHashPowerMultiplier, BOOST_HASH_POWER_2X_PRICE, ENERGY_REFILL_PRICE } from "./boosts";
 import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
@@ -28,12 +29,16 @@ export const appRouter = router({
       const user = await db.getUserByOpenId(ctx.user.openId);
       if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
       
-      // Calculate current hash power
-      const currentHashPower = await db.calculateUserHashPower(user.id);
+      // Calculate base hash power
+      const baseHashPower = await db.calculateUserHashPower(user.id);
+      
+      // Apply hash power multiplier from boosts
+      const multiplier = await getHashPowerMultiplier(user.id);
+      const currentHashPower = Math.floor(baseHashPower * multiplier);
       
       // Update if changed
-      if (currentHashPower !== user.totalHashPower) {
-        await db.updateUserHashPower(user.id, currentHashPower);
+      if (baseHashPower !== user.totalHashPower) {
+        await db.updateUserHashPower(user.id, baseHashPower);
       }
       
       // Update and get current energy
@@ -44,6 +49,10 @@ export const appRouter = router({
       // Get ad status
       const adStatus = await canWatchAd(user.id);
       const timeUntilNextAd = user.lastAdWatched ? getTimeUntilNextAd(new Date(user.lastAdWatched)) : 0;
+      
+      // Get active boosts
+      const activeBoosts = await getActiveBoosts(user.id);
+      const hashPowerMultiplier = await getHashPowerMultiplier(user.id);
       
       return {
         id: user.id,
@@ -63,6 +72,10 @@ export const appRouter = router({
         maxAdsPerDay: MAX_ADS_PER_DAY,
         adRewardCredits: AD_REWARD_CREDITS,
         timeUntilNextAd,
+        activeBoosts,
+        hashPowerMultiplier,
+        boostHashPower2xPrice: BOOST_HASH_POWER_2X_PRICE,
+        energyRefillPrice: ENERGY_REFILL_PRICE,
       };
     }),
   }),
@@ -227,6 +240,42 @@ export const appRouter = router({
         
         return await db.getUserGameSessions(user.id, input.limit);
       }),
+  }),
+
+  // Boosts and Power-ups
+  boosts: router({
+    getActive: protectedProcedure.query(async ({ ctx }) => {
+      const user = await db.getUserByOpenId(ctx.user.openId);
+      if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+      
+      return await getActiveBoosts(user.id);
+    }),
+    
+    purchaseHashPower2x: protectedProcedure.mutation(async ({ ctx }) => {
+      const user = await db.getUserByOpenId(ctx.user.openId);
+      if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+      
+      const result = await purchaseHashPowerBoost(user.id);
+      
+      if (!result.success) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: result.message });
+      }
+      
+      return result;
+    }),
+    
+    purchaseEnergyRefill: protectedProcedure.mutation(async ({ ctx }) => {
+      const user = await db.getUserByOpenId(ctx.user.openId);
+      if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+      
+      const result = await purchaseEnergyRefill(user.id);
+      
+      if (!result.success) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: result.message });
+      }
+      
+      return result;
+    }),
   }),
 
   // Ads
