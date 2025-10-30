@@ -1,11 +1,18 @@
-import { eq } from "drizzle-orm";
+import { eq, desc, and, gte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { 
+  InsertUser, users, 
+  miners, Miner, InsertMiner,
+  userMiners, UserMiner, InsertUserMiner,
+  miningRewards, MiningReward, InsertMiningReward,
+  achievements, Achievement, InsertAchievement,
+  userAchievements, UserAchievement, InsertUserAchievement,
+  gameSessions, GameSession, InsertGameSession
+} from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
@@ -89,4 +96,222 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ===== MINERS =====
+
+export async function getAllMiners() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(miners);
+}
+
+export async function getMinerById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(miners).where(eq(miners.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createMiner(miner: InsertMiner) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(miners).values(miner);
+  return result;
+}
+
+// ===== USER MINERS =====
+
+export async function getUserMiners(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .select({
+      id: userMiners.id,
+      userId: userMiners.userId,
+      minerId: userMiners.minerId,
+      purchasedAt: userMiners.purchasedAt,
+      isActive: userMiners.isActive,
+      miner: miners,
+    })
+    .from(userMiners)
+    .leftJoin(miners, eq(userMiners.minerId, miners.id))
+    .where(eq(userMiners.userId, userId));
+  
+  return result;
+}
+
+export async function purchaseMiner(userId: number, minerId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(userMiners).values({
+    userId,
+    minerId,
+  });
+  
+  return result;
+}
+
+export async function calculateUserHashPower(userId: number): Promise<number> {
+  const db = await getDb();
+  if (!db) return 0;
+  
+  // Get all active miners
+  const userMinersData = await db
+    .select({
+      hashPower: miners.hashPower,
+    })
+    .from(userMiners)
+    .leftJoin(miners, eq(userMiners.minerId, miners.id))
+    .where(and(
+      eq(userMiners.userId, userId),
+      eq(userMiners.isActive, true)
+    ));
+  
+  // Get active game bonuses
+  const now = new Date();
+  const activeBonuses = await db
+    .select({
+      hashPowerBonus: gameSessions.hashPowerBonus,
+    })
+    .from(gameSessions)
+    .where(and(
+      eq(gameSessions.userId, userId),
+      gte(gameSessions.bonusExpiresAt, now)
+    ));
+  
+  const minerPower = userMinersData.reduce((sum, m) => sum + (m.hashPower || 0), 0);
+  const bonusPower = activeBonuses.reduce((sum, b) => sum + (b.hashPowerBonus || 0), 0);
+  
+  return minerPower + bonusPower;
+}
+
+export async function updateUserHashPower(userId: number, hashPower: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(users)
+    .set({ totalHashPower: hashPower })
+    .where(eq(users.id, userId));
+}
+
+// ===== MINING REWARDS =====
+
+export async function createMiningReward(reward: InsertMiningReward) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(miningRewards).values(reward);
+  return result;
+}
+
+export async function getUserMiningHistory(userId: number, limit: number = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(miningRewards)
+    .where(eq(miningRewards.userId, userId))
+    .orderBy(desc(miningRewards.timestamp))
+    .limit(limit);
+}
+
+export async function updateUserBalance(userId: number, btc: number, eth: number, doge: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(users)
+    .set({
+      btcBalance: sql`${users.btcBalance} + ${btc}`,
+      ethBalance: sql`${users.ethBalance} + ${eth}`,
+      dogeBalance: sql`${users.dogeBalance} + ${doge}`,
+    })
+    .where(eq(users.id, userId));
+}
+
+export async function updateUserCredits(userId: number, amount: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(users)
+    .set({
+      credits: sql`${users.credits} + ${amount}`,
+    })
+    .where(eq(users.id, userId));
+}
+
+// ===== ACHIEVEMENTS =====
+
+export async function getAllAchievements() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(achievements);
+}
+
+export async function getUserAchievements(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .select({
+      id: userAchievements.id,
+      userId: userAchievements.userId,
+      achievementId: userAchievements.achievementId,
+      unlockedAt: userAchievements.unlockedAt,
+      achievement: achievements,
+    })
+    .from(userAchievements)
+    .leftJoin(achievements, eq(userAchievements.achievementId, achievements.id))
+    .where(eq(userAchievements.userId, userId));
+  
+  return result;
+}
+
+export async function unlockAchievement(userId: number, achievementId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Check if already unlocked
+  const existing = await db
+    .select()
+    .from(userAchievements)
+    .where(and(
+      eq(userAchievements.userId, userId),
+      eq(userAchievements.achievementId, achievementId)
+    ))
+    .limit(1);
+  
+  if (existing.length > 0) {
+    return null; // Already unlocked
+  }
+  
+  const result = await db.insert(userAchievements).values({
+    userId,
+    achievementId,
+  });
+  
+  return result;
+}
+
+// ===== GAME SESSIONS =====
+
+export async function createGameSession(session: InsertGameSession) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(gameSessions).values(session);
+  return result;
+}
+
+export async function getUserGameSessions(userId: number, limit: number = 20) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(gameSessions)
+    .where(eq(gameSessions.userId, userId))
+    .orderBy(desc(gameSessions.playedAt))
+    .limit(limit);
+}
