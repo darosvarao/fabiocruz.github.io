@@ -6,6 +6,7 @@ import { z } from "zod";
 import * as db from "./db";
 import { checkAndUnlockAchievements } from "./achievements";
 import { updateUserEnergy, consumeEnergy, getTimeUntilNextEnergy, getTimeUntilFullEnergy, MAX_ENERGY, ENERGY_COST_PER_GAME } from "./energy";
+import { canWatchAd, watchAd, getTimeUntilNextAd, AD_REWARD_CREDITS, MAX_ADS_PER_DAY } from "./ads";
 import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
@@ -40,6 +41,10 @@ export const appRouter = router({
       const timeUntilNextEnergy = getTimeUntilNextEnergy(new Date(user.lastEnergyUpdate));
       const timeUntilFullEnergy = getTimeUntilFullEnergy(currentEnergy, new Date(user.lastEnergyUpdate));
       
+      // Get ad status
+      const adStatus = await canWatchAd(user.id);
+      const timeUntilNextAd = user.lastAdWatched ? getTimeUntilNextAd(new Date(user.lastAdWatched)) : 0;
+      
       return {
         id: user.id,
         name: user.name,
@@ -53,6 +58,11 @@ export const appRouter = router({
         energyCostPerGame: ENERGY_COST_PER_GAME,
         timeUntilNextEnergy,
         timeUntilFullEnergy,
+        canWatchAd: adStatus.canWatch,
+        adsWatchedToday: adStatus.adsWatchedToday || 0,
+        maxAdsPerDay: MAX_ADS_PER_DAY,
+        adRewardCredits: AD_REWARD_CREDITS,
+        timeUntilNextAd,
       };
     }),
   }),
@@ -217,6 +227,29 @@ export const appRouter = router({
         
         return await db.getUserGameSessions(user.id, input.limit);
       }),
+  }),
+
+  // Ads
+  ads: router({
+    canWatch: protectedProcedure.query(async ({ ctx }) => {
+      const user = await db.getUserByOpenId(ctx.user.openId);
+      if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+      
+      return await canWatchAd(user.id);
+    }),
+    
+    watch: protectedProcedure.mutation(async ({ ctx }) => {
+      const user = await db.getUserByOpenId(ctx.user.openId);
+      if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+      
+      const result = await watchAd(user.id);
+      
+      if (!result.success) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: result.message });
+      }
+      
+      return result;
+    }),
   }),
 
   // Achievements

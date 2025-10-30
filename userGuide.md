@@ -68,8 +68,12 @@ Aceda ao painel de gestão através do ícone no canto superior direito da inter
 
 **Settings:** Alterar o nome e logo do site (VITE_APP_TITLE/VITE_APP_LOGO), configurar domínios personalizados ou modificar o prefixo do domínio auto-gerado
 
+### Ganhar Credits com Anúncios
+
+O card **"Watch Ads for Credits"** no dashboard permite ganhar credits gratuitos assistindo a anúncios. Cada anúncio dá **100 credits** como recompensa. Pode assistir até **20 anúncios por dia**, com um intervalo de **5 minutos** entre cada anúncio. O sistema mostra quantos anúncios já assistiu hoje e quando o próximo estará disponível. Esta é uma excelente forma de ganhar credits sem gastar dinheiro real.
+
 ## Próximos Passos
 
-Comece por comprar a sua primeira mineradora na loja usando os 1000 credits iniciais. Experimente os minijogos para ganhar bónus temporários de hash power. Reclame as suas recompensas a cada 10 minutos e veja o seu império de mineração crescer. Desbloqueie todas as conquistas para se tornar um verdadeiro magnata da mineração crypto!
+Comece por comprar a sua primeira mineradora na loja usando os 1000 credits iniciais. Experimente os minijogos para ganhar bónus temporários de hash power. Assista a anúncios para ganhar credits extras gratuitamente. Reclame as suas recompensas a cada 10 minutos e veja o seu império de mineração crescer. Desbloqueie todas as conquistas para se tornar um verdadeiro magnata da mineração crypto!
 
 Fale com o Manus AI a qualquer momento para solicitar alterações ou adicionar novas funcionalidades ao simulador.

@@ -22,6 +22,9 @@ export const users = mysqlTable("users", {
   credits: int("credits").default(1000).notNull(), // in-game currency for buying miners
   energy: int("energy").default(100).notNull(), // energy for playing games (max 100)
   lastEnergyUpdate: timestamp("lastEnergyUpdate").defaultNow().notNull(), // last time energy was updated
+  lastAdWatched: timestamp("lastAdWatched"), // last time user watched an ad
+  adsWatchedToday: int("adsWatchedToday").default(0).notNull(), // number of ads watched today
+  lastAdResetDate: timestamp("lastAdResetDate").defaultNow().notNull(), // last date the daily ad counter was reset
 });
 
 export type User = typeof users.$inferSelect;

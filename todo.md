@@ -53,3 +53,12 @@
 - [x] Adicionar visualização de energia no dashboard
 - [x] Bloquear jogos quando energia está esgotada
 - [x] Mostrar tempo até próxima recarga de energia
+
+## Sistema de Anúncios
+- [x] Adicionar campos de controlo de anúncios ao schema (último anúncio visto, cooldown)
+- [x] Integrar Google AdSense ou sistema de anúncios
+- [x] Criar botão "Watch Ad" no dashboard
+- [x] Implementar cooldown de 5 minutos entre anúncios
+- [x] Dar recompensa de 50-100 credits por anúncio assistido
+- [x] Adicionar contador de anúncios assistidos hoje
+- [x] Mostrar tempo até próximo anúncio disponível

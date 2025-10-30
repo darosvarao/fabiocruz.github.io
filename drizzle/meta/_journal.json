@@ -22,6 +22,13 @@
       "when": 1761835338554,
       "tag": "0002_shocking_spacker_dave",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1761837119902,
+      "tag": "0003_bright_black_widow",
+      "breakpoints": true
     }
   ]
 }

@@ -3,15 +3,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { Cpu, Zap, Bitcoin, Coins, Trophy, Gamepad2, ArrowRight, History as HistoryIcon, Battery } from "lucide-react";
+import { Cpu, Zap, Bitcoin, Coins, Trophy, Gamepad2, ArrowRight, History as HistoryIcon, Battery, Play } from "lucide-react";
 import { Link } from "wouter";
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const { data: stats, refetch: refetchStats } = trpc.user.getStats.useQuery(undefined, {
     enabled: isAuthenticated,
-    refetchInterval: 30000, // Refresh every 30 seconds
+    refetchInterval: 1000,
+  });
+  const watchAdMutation = trpc.ads.watch.useMutation({
+    onSuccess: (data) => {
+      refetchStats();
+      toast.success(`Earned ${data.creditsEarned} credits!`, {
+        description: `New balance: ${data.newBalance} credits`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Cannot watch ad", {
+        description: error.message,
+      });
+    },
   });
 
   const claimRewardMutation = trpc.mining.claimReward.useMutation({
@@ -43,7 +57,7 @@ export default function Home() {
     return (amount / Math.pow(10, decimals)).toFixed(decimals);
   };
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center cyber-grid">
         <div className="text-2xl neon-cyan">Loading...</div>
@@ -243,6 +257,58 @@ export default function Home() {
               <div className="bg-muted/50 p-4 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">
                   You need mining equipment to earn rewards. Visit the <Link href="/shop" className="text-primary hover:underline">Shop</Link> to purchase your first miner!
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Watch Ad Card */}
+        <Card className="neon-border-cyan bg-gradient-to-br from-cyan-950/50 to-card/80 backdrop-blur">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Play className="h-6 w-6 text-primary" />
+              Watch Ads for Credits
+            </CardTitle>
+            <CardDescription>
+              Earn {stats?.adRewardCredits || 100} credits per ad
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Today:</span>
+              <span className="font-bold neon-cyan">
+                {stats?.adsWatchedToday || 0} / {stats?.maxAdsPerDay || 20}
+              </span>
+            </div>
+            
+            {stats?.canWatchAd ? (
+              <Button 
+                onClick={() => watchAdMutation.mutate()}
+                disabled={watchAdMutation.isPending}
+                className="w-full neon-border-cyan"
+                size="lg"
+              >
+                {watchAdMutation.isPending ? (
+                  "Loading Ad..."
+                ) : (
+                  <>
+                    <Play className="mr-2 h-5 w-5" />
+                    Watch Ad (+{stats?.adRewardCredits || 100} Credits)
+                  </>
+                )}
+              </Button>
+            ) : (
+              <div className="space-y-2">
+                <Button disabled className="w-full" size="lg">
+                  <Play className="mr-2 h-5 w-5" />
+                  Ad Not Available
+                </Button>
+                <p className="text-xs text-center text-muted-foreground">
+                  {stats?.adsWatchedToday === stats?.maxAdsPerDay 
+                    ? "Daily limit reached. Come back tomorrow!" 
+                    : `Next ad in: ${Math.floor((stats?.timeUntilNextAd || 0) / 60)}m ${(stats?.timeUntilNextAd || 0) % 60}s`
+                  }
                 </p>
               </div>
             )}
