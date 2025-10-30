@@ -72,3 +72,7 @@
 - [x] Mostrar boosts ativos no dashboard
 - [x] Aplicar multiplicador de boost ao calcular recompensas
 - [x] Expirar boosts automaticamente após duração
+
+## Bugs a Corrigir
+- [x] Corrigir erro ao ganhar/completar minijogos (todos os jogos)
+- [x] Mover consumo de energia para o início do jogo em vez do final

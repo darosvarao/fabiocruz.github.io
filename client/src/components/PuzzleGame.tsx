@@ -14,10 +14,26 @@ export default function PuzzleGame({ onComplete }: PuzzleGameProps) {
   const [isWon, setIsWon] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
 
+  const startGameMutation = trpc.games.startGame.useMutation({
+    onSuccess: () => {
+      // Game initialized successfully
+    },
+    onError: (error) => {
+      toast.error("Cannot start game", {
+        description: error.message,
+      });
+    },
+  });
+
   const submitScoreMutation = trpc.games.submitScore.useMutation({
     onSuccess: (data) => {
       toast.success(`Puzzle solved! Earned ${data.hashPowerBonus} hash power for 30 minutes!`);
       onComplete();
+    },
+    onError: (error) => {
+      toast.error("Failed to submit score", {
+        description: error.message,
+      });
     },
   });
 
@@ -35,6 +51,9 @@ export default function PuzzleGame({ onComplete }: PuzzleGameProps) {
     setMoves(0);
     setIsWon(false);
     setStartTime(Date.now());
+    
+    // Consume energy when starting new game
+    startGameMutation.mutate();
   };
 
   const shuffle = (array: number[]) => {

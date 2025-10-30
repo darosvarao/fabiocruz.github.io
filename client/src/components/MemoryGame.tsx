@@ -26,10 +26,27 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
   const [gameStarted, setGameStarted] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
 
+  const startGameMutation = trpc.games.startGame.useMutation({
+    onSuccess: () => {
+      setGameStarted(true);
+      setStartTime(Date.now());
+    },
+    onError: (error) => {
+      toast.error("Cannot start game", {
+        description: error.message,
+      });
+    },
+  });
+
   const submitScoreMutation = trpc.games.submitScore.useMutation({
     onSuccess: (data) => {
       toast.success(`Game complete! Earned ${data.hashPowerBonus} hash power for 30 minutes!`);
       onComplete();
+    },
+    onError: (error) => {
+      toast.error("Failed to submit score", {
+        description: error.message,
+      });
     },
   });
 
@@ -56,8 +73,9 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
 
   const handleCardClick = (id: number) => {
     if (!gameStarted) {
-      setGameStarted(true);
-      setStartTime(Date.now());
+      // Consume energy on first click
+      startGameMutation.mutate();
+      return; // Wait for mutation to complete
     }
 
     if (isChecking || flippedCards.length >= 2) return;

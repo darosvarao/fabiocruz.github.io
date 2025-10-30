@@ -16,10 +16,29 @@ export default function ClickSpeedGame({ onComplete }: ClickSpeedGameProps) {
   const [gameOver, setGameOver] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const startGameMutation = trpc.games.startGame.useMutation({
+    onSuccess: () => {
+      setIsPlaying(true);
+      setTimeLeft(10);
+      setClicks(0);
+      setGameOver(false);
+    },
+    onError: (error) => {
+      toast.error("Cannot start game", {
+        description: error.message,
+      });
+    },
+  });
+
   const submitScoreMutation = trpc.games.submitScore.useMutation({
     onSuccess: (data) => {
       toast.success(`Game complete! Earned ${data.hashPowerBonus} hash power for 30 minutes!`);
       onComplete();
+    },
+    onError: (error) => {
+      toast.error("Failed to submit score", {
+        description: error.message,
+      });
     },
   });
 
@@ -38,10 +57,8 @@ export default function ClickSpeedGame({ onComplete }: ClickSpeedGameProps) {
   }, [timeLeft, isPlaying]);
 
   const startGame = () => {
-    setClicks(0);
-    setTimeLeft(10);
-    setIsPlaying(true);
-    setGameOver(false);
+    // Consume energy when starting game
+    startGameMutation.mutate();
   };
 
   const handleClick = () => {

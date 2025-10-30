@@ -180,6 +180,23 @@ export const appRouter = router({
 
   // Games
   games: router({
+    startGame: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const user = await db.getUserByOpenId(ctx.user.openId);
+        if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        
+        // Consume energy when starting game
+        const energyResult = await consumeEnergy(user.id);
+        if (!energyResult.success) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: energyResult.message || "Insufficient energy" });
+        }
+        
+        return {
+          success: true,
+          newEnergy: energyResult.newEnergy,
+        };
+      }),
+    
     submitScore: protectedProcedure
       .input(z.object({
         gameType: z.enum(["memory", "click_speed", "puzzle"]),
@@ -189,11 +206,7 @@ export const appRouter = router({
         const user = await db.getUserByOpenId(ctx.user.openId);
         if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
         
-        // Consume energy
-        const energyResult = await consumeEnergy(user.id);
-        if (!energyResult.success) {
-          throw new TRPCError({ code: "BAD_REQUEST", message: energyResult.message });
-        }
+        // Energy is now consumed when starting the game, not when submitting score
         
         // Calculate bonus based on score and game type
         let hashPowerBonus = 0;
