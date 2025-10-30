@@ -76,3 +76,6 @@
 ## Bugs a Corrigir
 - [x] Corrigir erro ao ganhar/completar minijogos (todos os jogos)
 - [x] Mover consumo de energia para o início do jogo em vez do final
+
+## Novos Bugs
+- [x] Corrigir erro "require is not defined" na página de jogos

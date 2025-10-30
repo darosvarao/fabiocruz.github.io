@@ -1,5 +1,7 @@
 import * as db from "./db";
 import { getUserByOpenId } from "./db";
+import { users } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
 /**
  * Check and unlock achievements for a user
@@ -11,11 +13,12 @@ export async function checkAndUnlockAchievements(userId: number) {
   const unlockedIds = new Set(userAchievements.map(ua => ua.achievementId));
   
   // Get user stats
-  const user = await db.getDb().then(db => 
-    db?.select().from(require("../drizzle/schema").users).where(
-      require("drizzle-orm").eq(require("../drizzle/schema").users.id, userId)
-    ).limit(1)
-  );
+  const database = await db.getDb();
+  if (!database) return;
+  
+  const user = await database.select().from(users).where(
+    eq(users.id, userId)
+  ).limit(1);
   
   if (!user || user.length === 0) return;
   const userStats = user[0];
