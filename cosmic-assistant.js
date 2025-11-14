@@ -1,4 +1,3 @@
-<script defer src="cosmic-assistant.js"></script>
 /* cosmic-assistant.js */
 (() => {
   const STORAGE_KEY = 'cosmic_responses_v2';
