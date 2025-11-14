@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cosmic Assistant • Control Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  body { background: #0b0f1a; color: #fff; font-family: Poppins, sans-serif; padding: 24px; }
+  h1 { color:#dcd6ff; text-shadow:0 0 10px #9c8fff; }
+  .wrap { max-width: 800px; margin: 0 auto; background: rgba(255,255,255,.05); border-radius: 16px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  textarea { width: 100%; height: 300px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.4); color: #fff; padding: 12px; outline: none; }
+  .row { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+  button { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; background:#8a7dff; color:#fff; font-weight:700; }
+  button:hover { background:#6b5de6; }
+  small { color:#bbb; }
+  .note { margin-top: 12px; color: #bbb; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>🔧 Cosmic Assistant • Control Panel</h1>
+  <div class="wrap">
+    <p><strong>How it works:</strong> One response per line. Click <em>Save</em> to update the chatbot on this browser. Use <em>Export/Import</em> to backup or move to another device.</p>
+    <textarea id="lines" placeholder="Example:
+✨ Trust your timing — the universe moves when you do.
+🌙 Even the stars rest. Breathe before the next step."></textarea>
+    <div class="row">
+      <button id="save">Save</button>
+      <button id="reset" style="background:#444">Reset to defaults</button>
+      <button id="export">Export JSON</button>
+      <button id="import">Import JSON</button>
+      <input type="file" id="file" accept="application/json" style="display:none">
+    </div>
+    <p class="note">This panel writes to <code>localStorage</code>. To make changes “global” for todos os visitantes, exporta o JSON e atualiza manualmente o array <code>DEFAULTS</code> em <strong>cosmic-assistant.js</strong> (commit no GitHub).</p>
+  </div>
+
+<script>
+const STORAGE_KEY = 'cosmic_responses_v2';
+const DEFAULTS = [
+  "✨ Trust your timing — the universe moves when you do.",
+  "🌙 Even the stars rest. Breathe before the next step.",
+  "🪐 You already have what you seek — just see it clearly.",
+  "🌸 Energy flows where your focus goes.",
+  "🔥 Creation is born in chaos — keep moving."
+];
+const ta = document.getElementById('lines');
+const file = document.getElementById('file');
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const arr = raw ? JSON.parse(raw) : DEFAULTS;
+    ta.value = (arr || DEFAULTS).join("\n");
+  } catch {
+    ta.value = DEFAULTS.join("\n");
+  }
+}
+function save() {
+  const arr = ta.value.split("\n").map(s => s.trim()).filter(Boolean);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  alert("Saved! The assistant will use these responses on this browser.");
+}
+function reset() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULTS));
+  load();
+  alert("Reset to defaults.");
+}
+function exportJSON() {
+  const raw = localStorage.getItem(STORAGE_KEY) || JSON.stringify(DEFAULTS);
+  const blob = new Blob([raw], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'cosmic_responses.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+function importJSON() {
+  file.click();
+}
+file.addEventListener('change', () => {
+  const f = file.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const arr = JSON.parse(reader.result);
+      if (!Array.isArray(arr)) throw new Error();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      load();
+      alert("Imported! Saved to localStorage.");
+    } catch {
+      alert("Invalid JSON file.");
+    }
+  };
+  reader.readAsText(f);
+});
+
+document.getElementById('save').onclick = save;
+document.getElementById('reset').onclick = reset;
+document.getElementById('export').onclick = exportJSON;
+document.getElementById('import').onclick = importJSON;
+
+load();
+</script>
+</body>
+</html>
