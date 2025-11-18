@@ -304,7 +304,6 @@
         <a class="btn ghost" href="https://linktr.ee/FabioCruzArteMisticaDigital" target="_blank" rel="noopener">🔗 Linktree</a>
         <a class="btn" href="chatbot.html">💬 Testar Chatbot</a>
       </div>
-
       <p class="note">Dica: segue-me no Pinterest, Instagram e TikTok para ver bastidores, WIPs e novas coleções.</p>
 
       <div class="footer">
@@ -315,6 +314,25 @@
     </section>
   </main>
  <script defer src="cosmic-assistant.js"></script>
+  <script>
+        // Criar estrelas animadas
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const numberOfStars = 100;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', createStars);
+    </script>
 </body>
 </html>
 
