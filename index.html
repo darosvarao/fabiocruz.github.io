@@ -1,6 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+ <style>
+  .cosmic-menu {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .cosmic-menu a {
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    color: #fff;
+    margin: 0 15px;
+    font-size: 16px;
+    padding: 6px 12px;
+    transition: 0.3s ease;
+  }
+
+  .cosmic-menu a:hover {
+    color: #ffd86b;
+    text-shadow: 0 0 8px #ffd86b;
+  }
+
+  .cosmic-menu a:active {
+    transform: scale(0.95);
+  }
+</style>
+    
 <script>
      defer src="cosmic-assistant.js"
 </script>    
